@@ -10,6 +10,7 @@ public class Tile : MonoBehaviour {
     [SerializeField] Material standardMaterial;
     [SerializeField] Material ballMaterial;
     [SerializeField] Material noBallMaterial;
+    [SerializeField] Transform raycastOrigin;
 
 
 
@@ -19,12 +20,35 @@ public class Tile : MonoBehaviour {
     public TileState state;
 
     public GameObject ball;
-    
 
-    void Start () {
 
-        state = TileState.open;
-	}
+    void Start()
+    {
+        
+        RaycastHit hit;
+
+        if (Physics.Raycast(raycastOrigin.position, Vector3.down, out hit))
+        {
+            if (hit.collider.tag == "Ball")
+            {
+                ball = hit.collider.gameObject;
+
+                switch (hit.collider.gameObject.GetComponent<PlayerBall>().ballTeam.ToString())
+                {
+                    case "red":
+                        state = TileState.red;
+                        break;
+                    case "blue":
+                        state = TileState.blue;
+                        break;
+                }
+            }
+        }
+        else
+        {
+            state = TileState.open;
+        }
+    }
 	
 	void Update () {
 

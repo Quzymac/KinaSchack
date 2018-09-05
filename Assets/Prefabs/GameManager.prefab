@@ -54,3 +54,6 @@ MonoBehaviour:
   cam: {fileID: 0}
   ballTile: {fileID: 0}
   destinationTile: {fileID: 0}
+  mask:
+    serializedVersion: 2
+    m_Bits: 512

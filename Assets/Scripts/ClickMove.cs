@@ -10,6 +10,10 @@ public class ClickMove : MonoBehaviour
     public bool holdingBall { get; set; }
     [SerializeField] GameObject ballTile;
     [SerializeField] GameObject destinationTile;
+    GameObject ball;
+
+    //ignore layer 9 (Ball)
+    int ignoreLayer = ~(1 << 9);
 
 
     // Use this for initialization
@@ -34,7 +38,7 @@ public class ClickMove : MonoBehaviour
             RaycastHit hit;
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
             {
-                if (Physics.Raycast(ray, out hit))
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity, ignoreLayer))
                 {
                     if (hit.collider.tag == "Tile")
                     {
@@ -58,6 +62,11 @@ public class ClickMove : MonoBehaviour
                             destinationTile = hit.collider.gameObject;
                             this.ballTile.GetComponent<Tile>().isHighlighted = false;
                             //this.destinationTile.GetComponent<Tile>().isHighlighted = true;
+
+                            ballTile.GetComponent<Tile>().ball.transform.position = destinationTile.transform.position;
+                            destinationTile.GetComponent<Tile>().ball = ballTile.GetComponent<Tile>().ball;
+                            ballTile.GetComponent<Tile>().ball = null;
+
                             this.destinationTile.GetComponent<Tile>().state = Tile.TileState.red;
                             this.ballTile.GetComponent<Tile>().state = Tile.TileState.open;
 
