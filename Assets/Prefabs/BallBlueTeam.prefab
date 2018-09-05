@@ -37,8 +37,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1985615575123486}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.98279953, y: 0.5, z: -8.269}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0.97481, y: 0, z: -8.745}
+  m_LocalScale: {x: 1.3, y: 1.3, z: 1.3}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -96,7 +96,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5528c7f03b13f064da26379cb0a276a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ballTeam: 0
+  ballTeam: 1
 --- !u!135 &135745622129768752
 SphereCollider:
   m_ObjectHideFlags: 1
