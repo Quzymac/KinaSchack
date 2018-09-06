@@ -14,8 +14,7 @@ public class ClickMove : MonoBehaviour
     [SerializeField] GameObject destinationTile;
     GameObject ball;
 
-    //ignore layer 9 (Ball)
-    int ignoreLayer = ~(1 << 9);
+    [SerializeField] LayerMask mask;
 
 
     // Use this for initialization
@@ -39,11 +38,13 @@ public class ClickMove : MonoBehaviour
             destinationTile = null;
             ballTile = hit.collider.gameObject;
             this.ballTile.GetComponent<Tile>().Highlighted(true);
+            ballTile.GetComponent<Tile>().CheckForMoves();
 
             holdingBall = true;
+
         }
         //if holding a ball, put down ball if tile is open
-        if (holdingBall && tileHit.GetComponent<Tile>().state == Tile.TileState.open)
+        if (holdingBall && tileHit.GetComponent<Tile>().state == Tile.TileState.open && tileHit.GetComponent<Tile>().validMove)
         {
             destinationTile = tileHit;
             this.ballTile.GetComponent<Tile>().Highlighted(false);
@@ -58,6 +59,8 @@ public class ClickMove : MonoBehaviour
 
             ballTile = null;
             holdingBall = false;
+
+
         }
        
     }
@@ -80,7 +83,7 @@ public class ClickMove : MonoBehaviour
         {
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
             {
-                if (Physics.Raycast(ray, out hit, Mathf.Infinity, ignoreLayer))
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity, mask))
                 {
                     if (hit.collider.tag == "Tile")
                     {

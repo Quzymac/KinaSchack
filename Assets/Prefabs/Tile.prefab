@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 23407773464869710}
   - component: {fileID: 64167728498244224}
   - component: {fileID: 114161562008348640}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Tile
   m_TagString: Tile
   m_Icon: {fileID: 0}
@@ -39,7 +39,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4720204529941620}
   - component: {fileID: 114461403057442718}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RaycastOrigin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56,7 +56,7 @@ GameObject:
   - component: {fileID: 4767857642016388}
   - component: {fileID: 33536223000353620}
   - component: {fileID: 23432286049223212}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: MiddlePart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -96,7 +96,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1374967823276372}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.75725, y: 0, z: -8.745}
+  m_LocalPosition: {x: -1.6233, y: 0, z: -10.245}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4720204529941620}
@@ -219,6 +219,7 @@ MonoBehaviour:
   raycastOrigin: {fileID: 4720204529941620}
   state: 0
   ball: {fileID: 0}
+  neighbours: []
 --- !u!114 &114461403057442718
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -230,3 +231,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46d0b47a36fa4c047a05f091b2a59c18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mask:
+    serializedVersion: 2
+    m_Bits: 1024

@@ -10,11 +10,14 @@ public class Tile : MonoBehaviour {
     [SerializeField] Material standardMaterial;
     [SerializeField] Transform raycastOrigin;
 
+    public bool validMove;
+
     public enum TileState { open, red, blue, yellow, green, purple, black };
     public TileState state;
 
     public GameObject ball;
 
+    public List<GameObject> neighbours = new List<GameObject>();
 
     void Start()
     {
@@ -54,6 +57,22 @@ public class Tile : MonoBehaviour {
         {
             state = TileState.open;
         }
+        GetComponentInChildren<SetNeighbours>().CheckNeighbours();
+    }
+
+    public void CheckForMoves()
+    {
+        GetComponentInChildren<SetNeighbours>().CheckNeighbours();
+        for (int i = 0; i < 6; i++)
+        {
+            if (neighbours[i] != null)
+            {
+                if (neighbours[i].GetComponent<Tile>().state == TileState.open)
+                {
+                    neighbours[i].GetComponent<Tile>().Highlighted(true);
+                }
+            }
+        }
     }
 
     public void Highlighted(bool isHighlighted)
@@ -61,10 +80,21 @@ public class Tile : MonoBehaviour {
         if (isHighlighted)
         {
             middlePart.GetComponent<Renderer>().material = highlightedMaterial;
+            validMove = true;
         }
         else
         {
+            for (int i = 0; i < 6; i++)
+            {
+                if (neighbours[i] != null)
+                {
+                    neighbours[i].GetComponent<Tile>().middlePart.GetComponent<Renderer>().material = standardMaterial;
+                    neighbours[i].GetComponent<Tile>().validMove = false;
+                    
+                }
+            }
             middlePart.GetComponent<Renderer>().material = standardMaterial;
+            validMove = false;
         }
     }
 }
