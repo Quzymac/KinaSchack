@@ -32,12 +32,12 @@ public class ClickMove : MonoBehaviour
         {
             if (destinationTile != null)
             {
-                this.destinationTile.GetComponent<Tile>().Highlighted(false);
+                this.destinationTile.GetComponent<Tile>().MoveIsValid(false);
             }
 
             destinationTile = null;
             ballTile = hit.collider.gameObject;
-            this.ballTile.GetComponent<Tile>().Highlighted(true);
+            this.ballTile.GetComponent<Tile>().MoveIsValid(true);
             ballTile.GetComponent<Tile>().CheckForMoves();
 
             holdingBall = true;
@@ -47,8 +47,6 @@ public class ClickMove : MonoBehaviour
         if (holdingBall && tileHit.GetComponent<Tile>().state == Tile.TileState.open && tileHit.GetComponent<Tile>().validMove)
         {
             destinationTile = tileHit;
-            this.ballTile.GetComponent<Tile>().Highlighted(false);
-            //this.destinationTile.GetComponent<Tile>().isHighlighted = true;
 
             ballTile.GetComponent<Tile>().ball.transform.position = destinationTile.transform.position;
             destinationTile.GetComponent<Tile>().ball = ballTile.GetComponent<Tile>().ball;
@@ -57,9 +55,7 @@ public class ClickMove : MonoBehaviour
             this.destinationTile.GetComponent<Tile>().state = Tile.TileState.red;
             this.ballTile.GetComponent<Tile>().state = Tile.TileState.open;
 
-            ballTile = null;
-            holdingBall = false;
-
+            ResetSelectedBall();
 
         }
        
@@ -69,7 +65,8 @@ public class ClickMove : MonoBehaviour
     {
         if(ballTile != null)
         {
-            ballTile.GetComponent<Tile>().Highlighted(false);
+            ballTile.GetComponent<Tile>().ResetTiles();
+            ballTile.GetComponent<Tile>().MoveIsValid(false);
             ballTile = null;
             holdingBall = false;
         }

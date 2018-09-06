@@ -70,7 +70,7 @@ public class SetNeighbours : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < GetComponentInParent<Tile>().neighbours.Count; i++)
             {
                 if (GetComponentInParent<Tile>().neighbours[i] != null)
                 {
