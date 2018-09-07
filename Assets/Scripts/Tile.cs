@@ -87,17 +87,28 @@ public class Tile : MonoBehaviour {
     }
     public GameObject CheckIfJumpIsValid(int direction)
     {
-        if(neighbours[direction] != null && neighbours[direction].GetComponent<Tile>().state == TileState.open)
+
+        //----------------------------------------- try catch works but cant jump over
+
+        try
         {
-            neighbours[direction].GetComponent<Tile>().MoveIsValid(true);
-    
-            return neighbours[direction];
+            if (neighbours[direction] != null && neighbours[direction].GetComponent<Tile>().state == TileState.open)
+            {
+                neighbours[direction].GetComponent<Tile>().MoveIsValid(true);
+
+                return neighbours[direction];
+            }
+
+            else
+            {
+                return null;
+            }
         }
-        else
+        catch
         {
             return null;
         }
-    }
+        }
 
     public void ResetTiles()
     {
