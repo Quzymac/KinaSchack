@@ -17,10 +17,11 @@ public class Tile : MonoBehaviour {
     public enum TileState { open, red, blue, yellow, green, purple, black };
     public TileState state { get; set; }
 
-    public GameObject ball;
+   public GameObject ball;
 
     public List<GameObject> neighbours = new List<GameObject>();
 
+    List<GameObject> canJumpTo = new List<GameObject>();
 
 
 
@@ -66,61 +67,82 @@ public class Tile : MonoBehaviour {
 
     public void CheckForMoves()
     {
-        GetComponentInChildren<SetNeighbours>().CheckNeighbours();
-        
+        canJumpTo.Clear();
+        foreach (var neighbour in neighbours)
+        {
+            canJumpTo.Add(neighbour);
+        }
 
+
+        //gör om till metod? kalla på den igen på objektet som läggs till i listan "canJumpTo"
         for (int i = 0; i < neighbours.Count; i++)
         {
-            if (neighbours[i] != null)
+            if (canJumpTo[i] != null && canJumpTo[i].GetComponent<Tile>().state != TileState.open && canJumpTo[i].GetComponent<Tile>().neighbours[i].GetComponent<Tile>().state == TileState.open)
             {
-                if (neighbours[i].GetComponent<Tile>().state == TileState.open)
+                canJumpTo.Add(canJumpTo[i].GetComponent<Tile>().neighbours[i]);
+            }
+        }
+
+
+
+        //GetComponentInChildren<SetNeighbours>().CheckNeighbours();
+        
+
+        for (int i = 0; i < canJumpTo.Count; i++)
+        {
+            if (canJumpTo[i] != null)
+            {
+                if (canJumpTo[i].GetComponent<Tile>().state == TileState.open)
                 {
-                    neighbours[i].GetComponent<Tile>().MoveIsValid(true);
+                    canJumpTo[i].GetComponent<Tile>().MoveIsValid(true);
                 }
                 else
                 {
                     //add tile to list if you can jump over a ball to it
-                    neighbours[i].GetComponentInChildren<SetNeighbours>().CheckNeighbours();
-                    if (neighbours[i].GetComponent<Tile>().CheckIfJumpIsValid(i) != null)
+                    //canJumpTo[i].GetComponentInChildren<SetNeighbours>().CheckNeighbours();
+
+                    //canJumpTo[i].GetComponent<Tile>().CheckIfJumpIsValid();
+
+
+
+                    /*
+                    if (canJumpTo[i].GetComponent<Tile>().neighbours[i].CheckIfJumpIsValid() != null)
                     {
-                        neighbours.Add(neighbours[i].GetComponent<Tile>().CheckIfJumpIsValid(i));
+                        canJumpTo.Add(canJumpTo[i].GetComponent<Tile>().neighbours[i].CheckIfJumpIsValid(i));
                         
                     }
-                    
+                    */
                 }
             }
         }
     }
-    public GameObject CheckIfJumpIsValid(int direction)
-    {
-
-       
-            
-                if(neighbours[direction].GetComponent<Tile>().state == TileState.open)
-            {
-                neighbours[direction].GetComponent<Tile>().MoveIsValid(true);
-
-                return neighbours[direction];
-            }
-                
-
-            else
-            {
-                return null;
-            }
-     
-        }
-
-    public void ResetTiles()
+    public GameObject CheckIfJumpIsValid()
     {
         for (int i = 0; i < neighbours.Count; i++)
         {
-            if(neighbours[i] != null)
+            if (neighbours[i].GetComponent<Tile>().state == TileState.open)
             {
-                neighbours[i].GetComponent<Tile>().MoveIsValid(false);
+                neighbours[i].GetComponent<Tile>().MoveIsValid(true);
+
+                canJumpTo.Add(neighbours[i]);
+
+                return neighbours[i];
             }
         }
-        neighbours.Clear();
+
+        return null;
+    }
+
+    public void ResetTiles()
+    {
+        for (int i = 0; i < canJumpTo.Count; i++)
+        {
+            if(canJumpTo[i] != null)
+            {
+                canJumpTo[i].GetComponent<Tile>().MoveIsValid(false);
+            }
+        }
+        canJumpTo.Clear();
     }
 
 

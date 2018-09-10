@@ -9,7 +9,7 @@ public class ClickMove : MonoBehaviour
     [SerializeField] Camera cam;
     RaycastHit hit;
 
-    public bool holdingBall { get; set; }
+    public bool HolingBall { get; set; }
     [SerializeField] GameObject ballTile;
     [SerializeField] GameObject destinationTile;
     GameObject ball;
@@ -28,7 +28,7 @@ public class ClickMove : MonoBehaviour
     {
 
         //pick up red ball if you're not already holding a ball
-        if (!holdingBall && tileHit.GetComponent<Tile>().state == Tile.TileState.red)
+        if (!HolingBall && tileHit.GetComponent<Tile>().state == Tile.TileState.red)
         {
             if (destinationTile != null)
             {
@@ -40,11 +40,11 @@ public class ClickMove : MonoBehaviour
             this.ballTile.GetComponent<Tile>().MoveIsValid(true);
             ballTile.GetComponent<Tile>().CheckForMoves();
 
-            holdingBall = true;
+            HolingBall = true;
 
         }
         //if holding a ball, put down ball if tile is open
-        if (holdingBall && tileHit.GetComponent<Tile>().state == Tile.TileState.open && tileHit.GetComponent<Tile>().validMove)
+        if (HolingBall && tileHit.GetComponent<Tile>().state == Tile.TileState.open && tileHit.GetComponent<Tile>().validMove)
         {
             destinationTile = tileHit;
 
@@ -68,7 +68,7 @@ public class ClickMove : MonoBehaviour
             ballTile.GetComponent<Tile>().ResetTiles();
             ballTile.GetComponent<Tile>().MoveIsValid(false);
             ballTile = null;
-            holdingBall = false;
+            HolingBall = false;
         }
         
     }

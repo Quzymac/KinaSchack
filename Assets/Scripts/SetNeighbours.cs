@@ -20,7 +20,7 @@ public class SetNeighbours : MonoBehaviour
 
         for (int i = 0; i < 6; i++)
         {
-            //raycasts six times to find the surounding tiles
+            //raycasts six times to find the neighbouring tiles
             switch (i)
             {
                 case 0:
@@ -52,33 +52,6 @@ public class SetNeighbours : MonoBehaviour
                 GetComponentInParent<Tile>().neighbours.Add(hit.collider.gameObject);
 
             }
-        }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            for (int i = 0; i < GetComponentInParent<Tile>().neighbours.Count; i++)
-            {
-                if (GetComponentInParent<Tile>().neighbours[i] != null)
-                {
-                    print(i.ToString() + GetComponentInParent<Tile>().neighbours[i].GetComponent<Tile>().state);
-
-                }
-                else
-                {
-                    print(i +" empty space");
-                }
-            }
-        }
-                        
-
-
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-                CheckNeighbours();
         }
     }
 }
