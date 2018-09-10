@@ -5,16 +5,8 @@ using UnityEngine;
 public class SetNeighbours : MonoBehaviour
 {
 
-
-    //ignore layer 9 (Ball)
-    //int ignoreLayer = ~(1 << 9);
     [SerializeField] LayerMask mask;
-
     RaycastHit hit;
-
-    //list of neighbouring positions (2 = occupied, 1 = open, 0 = no neighbour)
-    //public List<GameObject> neighbours = new List<GameObject>();
-
 
     // Use this for initialization
     void Start()
@@ -50,8 +42,6 @@ public class SetNeighbours : MonoBehaviour
                     Physics.Raycast(transform.position, (Vector3.forward + Vector3.down + Vector3.left).normalized, out hit, Mathf.Infinity, mask);
                     break;
             }
-
-            transform.Rotate(0, 60, 0);
 
             if (hit.collider == null)
             {

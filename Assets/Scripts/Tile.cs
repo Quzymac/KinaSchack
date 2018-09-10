@@ -22,6 +22,8 @@ public class Tile : MonoBehaviour {
     public List<GameObject> neighbours = new List<GameObject>();
 
 
+
+
     void Start()
     {
         standardMaterial = middlePart.GetComponent<Renderer>().material;
@@ -65,6 +67,8 @@ public class Tile : MonoBehaviour {
     public void CheckForMoves()
     {
         GetComponentInChildren<SetNeighbours>().CheckNeighbours();
+        
+
         for (int i = 0; i < neighbours.Count; i++)
         {
             if (neighbours[i] != null)
@@ -76,9 +80,11 @@ public class Tile : MonoBehaviour {
                 else
                 {
                     //add tile to list if you can jump over a ball to it
+                    neighbours[i].GetComponentInChildren<SetNeighbours>().CheckNeighbours();
                     if (neighbours[i].GetComponent<Tile>().CheckIfJumpIsValid(i) != null)
                     {
                         neighbours.Add(neighbours[i].GetComponent<Tile>().CheckIfJumpIsValid(i));
+                        
                     }
                     
                 }
@@ -88,26 +94,21 @@ public class Tile : MonoBehaviour {
     public GameObject CheckIfJumpIsValid(int direction)
     {
 
-        //----------------------------------------- try catch works but cant jump over
-
-        try
-        {
-            if (neighbours[direction] != null && neighbours[direction].GetComponent<Tile>().state == TileState.open)
+       
+            
+                if(neighbours[direction].GetComponent<Tile>().state == TileState.open)
             {
                 neighbours[direction].GetComponent<Tile>().MoveIsValid(true);
 
                 return neighbours[direction];
             }
+                
 
             else
             {
                 return null;
             }
-        }
-        catch
-        {
-            return null;
-        }
+     
         }
 
     public void ResetTiles()

@@ -82,25 +82,24 @@ public class ClickMove : MonoBehaviour
             {
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity, mask))
                 {
-                    if (hit.collider.tag == "Tile")
-                    {
-                        //if you click the same tile as the ball is on
-                        if (hit.collider.gameObject.Equals(ballTile))
-                        {
-                            ResetSelectedBall();
-                        }
 
-                        else
-                        {
-                            ClickTile(hit.collider.gameObject);
-                        }
-                    }
-                    //resets if you click outside the game board
-                    else
+                    //resets if you click the same tile as the ball is on
+                    if (hit.collider.gameObject.Equals(ballTile))
                     {
                         ResetSelectedBall();
                     }
+
+                    else
+                    {
+                        ClickTile(hit.collider.gameObject);
+                    }
                 }
+                //resets if you click outside the game board
+                else
+                {
+                    ResetSelectedBall();
+                } 
+                
             }
         }
     }
