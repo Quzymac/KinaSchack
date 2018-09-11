@@ -12,12 +12,12 @@ public class Tile : MonoBehaviour {
 
     [SerializeField] LayerMask ballMask;
 
-    public bool validMove;
+    public bool validMove { get; set; }
 
     public enum TileState { open, red, blue, yellow, green, purple, black };
     public TileState state { get; set; }
 
-   public GameObject ball;
+    public GameObject ball { get; set; }
 
     public List<GameObject> neighbours = new List<GameObject>();
 
@@ -77,10 +77,14 @@ public class Tile : MonoBehaviour {
         //gör om till metod? kalla på den igen på objektet som läggs till i listan "canJumpTo"
         for (int i = 0; i < neighbours.Count; i++)
         {
-            if (canJumpTo[i] != null && canJumpTo[i].GetComponent<Tile>().state != TileState.open && canJumpTo[i].GetComponent<Tile>().neighbours[i].GetComponent<Tile>().state == TileState.open)
+            if(canJumpTo[i] != null && canJumpTo[i].GetComponent<Tile>().neighbours[i] != null)
             {
-                canJumpTo.Add(canJumpTo[i].GetComponent<Tile>().neighbours[i]);
+                if (canJumpTo[i].GetComponent<Tile>().state != TileState.open && canJumpTo[i].GetComponent<Tile>().neighbours[i].GetComponent<Tile>().state == TileState.open)
+                {
+                    canJumpTo.Add(canJumpTo[i].GetComponent<Tile>().neighbours[i]);
+                }
             }
+            
         }
 
 
