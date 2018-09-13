@@ -22,6 +22,37 @@ public class BoardSpawn : MonoBehaviour {
     }
 
 
+
+    IEnumerator SetNeigbours()
+    {
+        yield return new WaitForSeconds(0.5f);
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; j++)
+            {
+                if (i % 2 == 0)
+                {
+                    matris[i, j].GetComponent<Tile>().neighbours.Add(matris[i + 1, j + 1]);
+                    matris[i, j].GetComponent<Tile>().neighbours.Add(matris[i, j + 1]);
+                    matris[i, j].GetComponent<Tile>().neighbours.Add(matris[i - 1, j + 1]);
+                    matris[i, j].GetComponent<Tile>().neighbours.Add(matris[i - 1, j]);
+                    matris[i, j].GetComponent<Tile>().neighbours.Add(matris[i, j - 1]);
+                    matris[i, j].GetComponent<Tile>().neighbours.Add(matris[i + 1, j]);
+                }
+                else
+                {
+                    matris[i, j].GetComponent<Tile>().neighbours.Add(matris[i + 1, j]);
+                    matris[i, j].GetComponent<Tile>().neighbours.Add(matris[i, j + 1]);
+                    matris[i, j].GetComponent<Tile>().neighbours.Add(matris[i - 1, j]);
+                    matris[i, j].GetComponent<Tile>().neighbours.Add(matris[i - 1, j -1]);
+                    matris[i, j].GetComponent<Tile>().neighbours.Add(matris[i, j - 1]);
+                    matris[i, j].GetComponent<Tile>().neighbours.Add(matris[i + 1, j -1]);
+                }
+            }
+        }
+    }
+
+
     // Use this for initialization
     void Start () {
 
@@ -42,6 +73,7 @@ public class BoardSpawn : MonoBehaviour {
                 newObj.GetComponent<Tile>().column = j;
                 //------------tilldela tileobjektet värden för dess egen position i matrisen(lägg till variabler för detta i Tile scriptet)
                 matris[i, j] = newObj;
+
             }
 
         }

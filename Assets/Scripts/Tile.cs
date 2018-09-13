@@ -64,7 +64,7 @@ public class Tile : MonoBehaviour {
     void Start()
     {
 
-        StartCoroutine(addNeighbours());
+        //StartCoroutine(addNeighbours());
 
 
         standardMaterial = middlePart.GetComponent<Renderer>().material;
