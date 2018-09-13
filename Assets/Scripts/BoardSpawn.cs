@@ -7,13 +7,19 @@ public class BoardSpawn : MonoBehaviour {
     const int rows = 17;
     const int columns = 13;
 
-    GameObject[,] allTiles = new GameObject[rows, columns];
+    GameObject[,] matris = new GameObject[rows, columns];
 
 
     //Tile[,] allTiles = new Tile[rows, columns];
 
     [SerializeField] GameObject tilePrefab;
     GameObject newObj;
+
+    public GameObject[,] GetMatris
+    {
+        get { return matris; }
+        set { matris = value; }
+    }
 
 
     // Use this for initialization
@@ -32,9 +38,10 @@ public class BoardSpawn : MonoBehaviour {
                 {
                     newObj = Instantiate(tilePrefab, new Vector3(j * 1.73f, 0, i * 1.5f), transform.rotation);
                 }
-
+                newObj.GetComponent<Tile>().row = i;
+                newObj.GetComponent<Tile>().column = j;
                 //------------tilldela tileobjektet värden för dess egen position i matrisen(lägg till variabler för detta i Tile scriptet)
-                allTiles[i, j] = newObj;
+                matris[i, j] = newObj;
             }
 
         }
@@ -45,7 +52,7 @@ public class BoardSpawn : MonoBehaviour {
 	void Update () {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            print(allTiles[1, 1].transform.position);
+            print(matris[1, 1].transform.position);
         }
 		
 	}

@@ -96,7 +96,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1374967823276372}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.75725, y: 0, z: -8.745}
+  m_LocalPosition: {x: 2.7799072, y: 3.405202, z: 0.8439572}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4720204529941620}
@@ -213,15 +213,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ee5adc98e70cc745a4853c6dc2482af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameManager: {fileID: 1961394228621028, guid: 3be6360d16582244b935a1c54e25f1dd,
+    type: 2}
   middlePart: {fileID: 1630293113070350}
   highlightedMaterial: {fileID: 2100000, guid: 65b1f5dcacacac64a8e0765bb1f7fe31, type: 2}
-  standardMaterial: {fileID: 2100000, guid: 1e6a4f602a058574687f216c6e8a033e, type: 2}
   raycastOrigin: {fileID: 4720204529941620}
   ballMask:
     serializedVersion: 2
     m_Bits: 512
-  validMove: 0
-  ball: {fileID: 0}
   neighbours: []
 --- !u!114 &114461403057442718
 MonoBehaviour:

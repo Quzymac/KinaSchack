@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour {
 
+
+    [SerializeField] GameObject gameManager;
     [SerializeField] GameObject middlePart;
 
     [SerializeField] Material highlightedMaterial;
@@ -23,12 +25,49 @@ public class Tile : MonoBehaviour {
 
     List<GameObject> canJumpTo = new List<GameObject>();
 
+    public int row { get; set; }
+    public int column { get; set; }
 
+
+    IEnumerator addNeighbours()
+    {
+        yield return new WaitForSeconds(1f);
+        neighbours.Clear();
+
+
+        if (row < 14 && row > 5 && column < 10 && column > 2)
+            {
+            if (row % 2 == 0)
+            {
+                
+                neighbours.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column + 1]);
+                neighbours.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row, column + 1]);
+                neighbours.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column + 1]);
+                neighbours.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column]);
+                neighbours.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row, column - 1]);
+                neighbours.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column]);
+            }
+            else
+            {
+                neighbours.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column]);
+                neighbours.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row, column + 1]);
+                neighbours.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column]);
+                neighbours.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column - 1]);
+                neighbours.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row, column - 1]);
+                neighbours.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column - 1]);
+            }
+        } 
+        
+
+    }
 
     void Start()
     {
-        standardMaterial = middlePart.GetComponent<Renderer>().material;
 
+        StartCoroutine(addNeighbours());
+
+
+        standardMaterial = middlePart.GetComponent<Renderer>().material;
         
         RaycastHit hit;
 
