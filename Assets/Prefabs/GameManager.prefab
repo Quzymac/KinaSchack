@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4909276111679568}
   - component: {fileID: 114839538551624526}
+  - component: {fileID: 114058387042710064}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -40,6 +41,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114058387042710064
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1961394228621028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d725854be80161249a79e820ff4c4651, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tilePrefab: {fileID: 1374967823276372, guid: 85b74bc319bb77945a056f2cbd191231, type: 2}
 --- !u!114 &114839538551624526
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -57,3 +70,4 @@ MonoBehaviour:
   mask:
     serializedVersion: 2
     m_Bits: 1024
+  red: {fileID: 2100000, guid: e0552f90267d9f34ba1ea3bb3923caff, type: 2}

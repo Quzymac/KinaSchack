@@ -6,17 +6,16 @@ public class Tile : MonoBehaviour {
 
 
     [SerializeField] GameObject gameManager;
-    [SerializeField] GameObject middlePart;
+    [SerializeField] GameObject Highlighted;
 
-    [SerializeField] Material highlightedMaterial;
-    Material standardMaterial;
+    public Material standardMaterial { get; set; }
     [SerializeField] Transform raycastOrigin;
 
     [SerializeField] LayerMask ballMask;
 
     public bool validMove { get; set; }
 
-    public enum TileState { open, red, blue, yellow, green, purple, black };
+    public enum TileState { open, red, blue, yellow, green, purple, orange };
     public TileState state { get; set; }
 
     public GameObject ball { get; set; }
@@ -28,6 +27,7 @@ public class Tile : MonoBehaviour {
     public int row { get; set; }
     public int column { get; set; }
 
+    [SerializeField] Material red;
 
     IEnumerator addNeighbours()
     {
@@ -61,13 +61,15 @@ public class Tile : MonoBehaviour {
 
     }
 
+
+
     void Start()
     {
 
         //StartCoroutine(addNeighbours());
 
 
-        standardMaterial = middlePart.GetComponent<Renderer>().material;
+        standardMaterial = GetComponent<Renderer>().material;
         
         RaycastHit hit;
 
@@ -79,6 +81,8 @@ public class Tile : MonoBehaviour {
             {
                 case "red":
                     state = TileState.red;
+                    GetComponent<Renderer>().material = red;
+
                     break;
                 case "blue":
                     state = TileState.blue;
@@ -92,8 +96,8 @@ public class Tile : MonoBehaviour {
                 case "purple":
                     state = TileState.purple;
                     break;
-                case "black":
-                    state = TileState.black;
+                case "orange":
+                    state = TileState.orange;
                     break;
             }
         }
@@ -193,13 +197,14 @@ public class Tile : MonoBehaviour {
     {
         if (valid)
         {
-            middlePart.GetComponent<Renderer>().material = highlightedMaterial;
+            Highlighted.SetActive(true);
             validMove = true;
         }
         else
         {
-            middlePart.GetComponent<Renderer>().material = standardMaterial;
+            Highlighted.SetActive(false);
             validMove = false;
+           
         }
     }
 }

@@ -12,17 +12,12 @@ public class ClickMove : MonoBehaviour
     public bool HolingBall { get; set; }
     [SerializeField] GameObject ballTile;
     [SerializeField] GameObject destinationTile;
-    GameObject ball;
 
     [SerializeField] LayerMask mask;
 
+    [SerializeField] Material red;
 
-    // Use this for initialization
-    void Start()
-    {
-
-    }
-   
+    
 
     void ClickTile(GameObject tileHit)
     {
@@ -30,50 +25,43 @@ public class ClickMove : MonoBehaviour
         //pick up red ball if you're not already holding a ball
         if (!HolingBall && tileHit.GetComponent<Tile>().state == Tile.TileState.red)
         {
-            if (destinationTile != null)
-            {
-                this.destinationTile.GetComponent<Tile>().MoveIsValid(false);
-            }
-
-            destinationTile = null;
             ballTile = hit.collider.gameObject;
-            this.ballTile.GetComponent<Tile>().MoveIsValid(true);
             ballTile.GetComponent<Tile>().CheckForMoves();
-
             HolingBall = true;
-
         }
         //if holding a ball, put down ball if tile is open
         if (HolingBall && tileHit.GetComponent<Tile>().state == Tile.TileState.open && tileHit.GetComponent<Tile>().validMove)
         {
             destinationTile = tileHit;
 
+            //set state of tiles
+            destinationTile.GetComponent<Tile>().state = Tile.TileState.red;
+            ballTile.GetComponent<Tile>().state = Tile.TileState.open;
+
+            //set color of tiles
+            ballTile.GetComponent<Renderer>().material = ballTile.GetComponent<Tile>().standardMaterial;
+            destinationTile.GetComponent<Renderer>().material = red;
+            
+            //moves physical ball -- remove later
             ballTile.GetComponent<Tile>().ball.transform.position = destinationTile.transform.position;
             destinationTile.GetComponent<Tile>().ball = ballTile.GetComponent<Tile>().ball;
             ballTile.GetComponent<Tile>().ball = null;
 
-            this.destinationTile.GetComponent<Tile>().state = Tile.TileState.red;
-            this.ballTile.GetComponent<Tile>().state = Tile.TileState.open;
-
-            ResetSelectedBall();
-
+            ResetSelectedBall(); 
         }
-       
     }
 
+    //resets varibles, canJumpTo list and highlighting
     void ResetSelectedBall()
     {
         if(ballTile != null)
         {
             ballTile.GetComponent<Tile>().ResetTiles();
-            ballTile.GetComponent<Tile>().MoveIsValid(false);
             ballTile = null;
             HolingBall = false;
         }
-        
     }
 
-    //make new methods
     void Update()
     {
         if (Input.GetButtonDown("Fire1"))
@@ -82,13 +70,11 @@ public class ClickMove : MonoBehaviour
             {
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity, mask))
                 {
-
                     //resets if you click the same tile as the ball is on
                     if (hit.collider.gameObject.Equals(ballTile))
                     {
                         ResetSelectedBall();
                     }
-
                     else
                     {
                         ClickTile(hit.collider.gameObject);
@@ -99,7 +85,6 @@ public class ClickMove : MonoBehaviour
                 {
                     ResetSelectedBall();
                 } 
-                
             }
         }
     }
