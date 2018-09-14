@@ -15,7 +15,7 @@ public class Tile : MonoBehaviour {
 
     public bool validMove { get; set; }
 
-    public enum TileState { open, red, blue, yellow, green, purple, orange };
+    public enum TileState { invalid, open, red, blue, yellow, green, purple, orange };
     public TileState state { get; set; }
 
     public GameObject ball { get; set; }
@@ -29,45 +29,11 @@ public class Tile : MonoBehaviour {
 
     [SerializeField] Material red;
 
-    IEnumerator addNeighbours()
-    {
-        yield return new WaitForSeconds(1f);
-        neighbours.Clear();
-
-
-        if (row < 14 && row > 5 && column < 10 && column > 2)
-            {
-            if (row % 2 == 0)
-            {
-                
-                neighbours.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column + 1]);
-                neighbours.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row, column + 1]);
-                neighbours.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column + 1]);
-                neighbours.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column]);
-                neighbours.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row, column - 1]);
-                neighbours.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column]);
-            }
-            else
-            {
-                neighbours.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column]);
-                neighbours.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row, column + 1]);
-                neighbours.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column]);
-                neighbours.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column - 1]);
-                neighbours.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row, column - 1]);
-                neighbours.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column - 1]);
-            }
-        } 
-        
-
-    }
-
-
+ 
 
     void Start()
     {
-
-        //StartCoroutine(addNeighbours());
-
+        gameManager = FindObjectOfType<BoardSpawn>().gameObject;
 
         standardMaterial = GetComponent<Renderer>().material;
         
@@ -105,18 +71,40 @@ public class Tile : MonoBehaviour {
         {
             state = TileState.open;
         }
-        GetComponentInChildren<SetNeighbours>().CheckNeighbours();
+        //GetComponentInChildren<SetNeighbours>().CheckNeighbours();
     }
+
+    void FIndNeighbours()
+    {
+        if (row % 2 == 0)
+        {
+
+            canJumpTo.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column + 1]);
+            canJumpTo.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row, column + 1]);
+            canJumpTo.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column + 1]);
+            canJumpTo.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column]);
+            canJumpTo.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row, column - 1]);
+            canJumpTo.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column]);
+        }
+        else
+        {
+            canJumpTo.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column]);
+            canJumpTo.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row, column + 1]);
+            canJumpTo.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column]);
+            canJumpTo.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column - 1]);
+            canJumpTo.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row, column - 1]);
+            canJumpTo.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column - 1]);
+        }
+    }
+
 
     public void CheckForMoves()
     {
         canJumpTo.Clear();
-        foreach (var neighbour in neighbours)
-        {
-            canJumpTo.Add(neighbour);
-        }
 
+        FIndNeighbours();
 
+/*
         //gör om till metod? kalla på den igen på objektet som läggs till i listan "canJumpTo"
         for (int i = 0; i < neighbours.Count; i++)
         {
@@ -129,7 +117,7 @@ public class Tile : MonoBehaviour {
             }
             
         }
-
+        */
 
 
         //GetComponentInChildren<SetNeighbours>().CheckNeighbours();

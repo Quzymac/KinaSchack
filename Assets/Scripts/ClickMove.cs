@@ -66,6 +66,8 @@ public class ClickMove : MonoBehaviour
     {
         if (Input.GetButtonDown("Fire1"))
         {
+            //Vector3 ray = cam.ScreenToWorldPoint(Input.mousePosition); //ger en position i världen(vector3) översätt detta till object på denna position, all information finns eftersom inget flyttar på sig.
+
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
             {
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity, mask))
