@@ -26,7 +26,7 @@ public class ClickMove : MonoBehaviour
         if (!HolingBall && tileHit.GetComponent<Tile>().state == Tile.TileState.red)
         {
             ballTile = hit.collider.gameObject;
-            ballTile.GetComponent<Tile>().CheckForMoves();
+            ballTile.GetComponent<Tile>().CheckForValidMoves();
             HolingBall = true;
         }
         //if holding a ball, put down ball if tile is open

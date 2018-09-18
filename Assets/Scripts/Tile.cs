@@ -71,7 +71,6 @@ public class Tile : MonoBehaviour {
         {
             state = TileState.open;
         }
-        //GetComponentInChildren<SetNeighbours>().CheckNeighbours();
     }
 
     public void CheckIfCanMove()
@@ -92,28 +91,443 @@ public class Tile : MonoBehaviour {
             MoveIsValid(false);
         }
     }
-
-    void FindNeighbours()
+    public bool CanMove()
     {
-        if (row % 2 == 0)
+        if(state == TileState.open)
         {
-            gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column + 1].GetComponent<Tile>().CheckIfCanMove();
-            gameManager.GetComponent<BoardSpawn>().GetMatris[row, column + 1].GetComponent<Tile>().CheckIfCanMove();
-            gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column + 1].GetComponent<Tile>().CheckIfCanMove();
-            gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column].GetComponent<Tile>().CheckIfCanMove();
-            gameManager.GetComponent<BoardSpawn>().GetMatris[row, column - 1].GetComponent<Tile>().CheckIfCanMove();
-            gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column].GetComponent<Tile>().CheckIfCanMove();
+            return true;
         }
         else
         {
-            gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column].GetComponent<Tile>().CheckIfCanMove();
-            gameManager.GetComponent<BoardSpawn>().GetMatris[row, column + 1].GetComponent<Tile>().CheckIfCanMove();
-            gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column].GetComponent<Tile>().CheckIfCanMove();
-            gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column - 1].GetComponent<Tile>().CheckIfCanMove();
-            gameManager.GetComponent<BoardSpawn>().GetMatris[row, column - 1].GetComponent<Tile>().CheckIfCanMove();
-            gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column - 1].GetComponent<Tile>().CheckIfCanMove();
+            return false;
         }
     }
+
+    public bool CanJump()
+    {
+        if(state == TileState.red)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public void CheckForJumps()
+    {
+        if (row % 2 == 0)
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                switch (i)
+                {
+                    case 0:
+                        if (gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column + 1].GetComponent<Tile>().CanJump() &&)
+                        {
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row + 2, column + 1].GetComponent<Tile>().MoveIsValid(true);
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row + 2, column + 1].GetComponent<Tile>().CheckForJumps();
+                        }
+                        break;
+                    case 1:
+                        if (gameManager.GetComponent<BoardSpawn>().GetMatris[row, column + 1].GetComponent<Tile>().CanJump())
+                        {
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row, column + 2].GetComponent<Tile>().MoveIsValid(true);
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row, column + 2].GetComponent<Tile>().CheckForJumps();
+                        }
+                        break;
+                    case 2:
+                        if (gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column + 1].GetComponent<Tile>().CanJump())
+                        {
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row - 2, column + 1].GetComponent<Tile>().MoveIsValid(true);
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row - 2, column + 1].GetComponent<Tile>().CheckForJumps();
+                        }
+                        break;
+                    case 3:
+                        if (gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column].GetComponent<Tile>().CanJump())
+                        {
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row - 2, column - 1].GetComponent<Tile>().MoveIsValid(true);
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row - 2, column - 1].GetComponent<Tile>().CheckForJumps();
+                        }
+                        break;
+                    case 4:
+                        if (gameManager.GetComponent<BoardSpawn>().GetMatris[row, column - 1].GetComponent<Tile>().CanJump())
+                        {
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row, column - 2].GetComponent<Tile>().MoveIsValid(true);
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row, column - 2].GetComponent<Tile>().CheckForJumps();
+                        }
+                        break;
+                    case 5:
+                        if (gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column].GetComponent<Tile>().CanJump())
+                        {
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row + 2, column - 1].GetComponent<Tile>().MoveIsValid(true);
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row + 2, column - 1].GetComponent<Tile>().CheckForJumps();
+                        }
+                        break;
+                }
+            }
+        }
+        else
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                switch (i)
+                {
+                    case 0:
+                        if (gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column].GetComponent<Tile>().CanJump())
+                        {
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row + 2, column + 1].GetComponent<Tile>().MoveIsValid(true);
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row + 2, column + 1].GetComponent<Tile>().CheckForJumps();
+                        }
+                        break;
+                    case 1:
+                        if (gameManager.GetComponent<BoardSpawn>().GetMatris[row, column + 1].GetComponent<Tile>().CanJump())
+                        {
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row, column + 2].GetComponent<Tile>().MoveIsValid(true);
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row, column + 2].GetComponent<Tile>().CheckForJumps();
+                        }
+                        break;
+                    case 2:
+                        if (gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column].GetComponent<Tile>().CanJump())
+                        {
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row - 2, column + 1].GetComponent<Tile>().MoveIsValid(true);
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row - 2, column + 1].GetComponent<Tile>().CheckForJumps();
+                        }
+                        break;
+                    case 3:
+                        if (gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column - 1].GetComponent<Tile>().CanJump())
+                        {
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row - 2, column - 1].GetComponent<Tile>().MoveIsValid(true);
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row - 2, column - 1].GetComponent<Tile>().CheckForJumps();
+                        }
+                        break;
+                    case 4:
+                        if (gameManager.GetComponent<BoardSpawn>().GetMatris[row, column - 1].GetComponent<Tile>().CanJump())
+                        {
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row, column - 2].GetComponent<Tile>().MoveIsValid(true);
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row, column - 2].GetComponent<Tile>().CheckForJumps();
+                        }
+                        break;
+                    case 5:
+                        if (gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column - 1].GetComponent<Tile>().CanJump())
+                        {
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row + 2, column - 1].GetComponent<Tile>().MoveIsValid(true);
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row + 2, column - 1].GetComponent<Tile>().CheckForJumps();
+                        }
+                        break;
+                }
+            }
+        }
+    }
+
+
+    //public void CheckForJumps()
+    //{
+    //    if (row % 2 == 0)
+    //    {
+    //        for (int i = 0; i < 6; i++)
+    //        {
+    //            switch (i)
+    //            {
+    //                case 0:
+    //                    if (gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column + 1].GetComponent<Tile>().CanMove() == false)
+    //                    {
+    //                        if (gameManager.GetComponent<BoardSpawn>().GetMatris[row + 2, column + 1].GetComponent<Tile>().CanMove() && gameManager.GetComponent<BoardSpawn>().GetMatris[row + 2, column + 1].GetComponent<Tile>().validMove == false)
+    //                        {
+    //                            gameManager.GetComponent<BoardSpawn>().GetMatris[row + 2, column + 1].GetComponent<Tile>().CanMove();
+    //                            gameManager.GetComponent<BoardSpawn>().GetMatris[row + 2, column + 1].GetComponent<Tile>().CheckForJumps();
+    //                        }
+    //                    }
+    //                    break;
+    //                case 1:
+    //                    if (gameManager.GetComponent<BoardSpawn>().GetMatris[row, column + 1].GetComponent<Tile>().CanMove())
+    //                    {
+    //                        gameManager.GetComponent<BoardSpawn>().GetMatris[row, column + 1].GetComponent<Tile>().CanMove();
+    //                    }
+    //                    else
+    //                    {
+    //                        gameManager.GetComponent<BoardSpawn>().GetMatris[row, column + 2].GetComponent<Tile>().CanMove();
+    //                        gameManager.GetComponent<BoardSpawn>().GetMatris[row, column + 2].GetComponent<Tile>().CheckForJumps();
+    //                    }
+    //                    break;
+    //                case 2:
+    //                    if (gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column + 1].GetComponent<Tile>().CanMove())
+    //                    {
+    //                        gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column + 1].GetComponent<Tile>().CanMove();
+    //                    }
+    //                    else
+    //                    {
+    //                        gameManager.GetComponent<BoardSpawn>().GetMatris[row - 2, column + 1].GetComponent<Tile>().CanMove();
+    //                        gameManager.GetComponent<BoardSpawn>().GetMatris[row - 2, column + 1].GetComponent<Tile>().CheckForJumps();
+    //                    }
+    //                    break;
+    //                case 3:
+    //                    if (gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column].GetComponent<Tile>().CanMove())
+    //                    {
+    //                        gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column].GetComponent<Tile>().CanMove();
+    //                    }
+    //                    else
+    //                    {
+    //                        gameManager.GetComponent<BoardSpawn>().GetMatris[row - 2, column - 1].GetComponent<Tile>().CanMove();
+    //                        gameManager.GetComponent<BoardSpawn>().GetMatris[row - 2, column - 1].GetComponent<Tile>().CheckForJumps();
+    //                    }
+    //                    break;
+    //                case 4:
+    //                    if (gameManager.GetComponent<BoardSpawn>().GetMatris[row, column - 1].GetComponent<Tile>().CanMove() == false)
+    //                    {
+    //                        if (gameManager.GetComponent<BoardSpawn>().GetMatris[row, column - 2].GetComponent<Tile>().CanMove() && gameManager.GetComponent<BoardSpawn>().GetMatris[row, column - 2].GetComponent<Tile>().validMove == false)
+    //                        {
+    //                            gameManager.GetComponent<BoardSpawn>().GetMatris[row, column - 2].GetComponent<Tile>().CanMove();
+    //                            gameManager.GetComponent<BoardSpawn>().GetMatris[row, column - 2].GetComponent<Tile>().CheckForJumps();
+    //                        }
+    //                    }
+    //                    break;
+    //                case 5:
+    //                    if (gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column].GetComponent<Tile>().CanMove())
+    //                    {
+    //                        gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column].GetComponent<Tile>().CanMove();
+    //                    }
+    //                    else
+    //                    {
+    //                        gameManager.GetComponent<BoardSpawn>().GetMatris[row + 2, column - 1].GetComponent<Tile>().CanMove();
+    //                        gameManager.GetComponent<BoardSpawn>().GetMatris[row + 2, column - 1].GetComponent<Tile>().CheckForJumps();
+    //                    }
+    //                    break;
+    //            }
+
+    //        }
+    //    }
+    //    else
+    //    {
+    //        for (int i = 0; i < 6; i++)
+    //        {
+    //            switch (i)
+    //            {
+    //                case 0:
+    //                    if (gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column].GetComponent<Tile>().CanMove() == false)
+    //                    {
+    //                        if (gameManager.GetComponent<BoardSpawn>().GetMatris[row + 2, column + 1].GetComponent<Tile>().CanMove() && gameManager.GetComponent<BoardSpawn>().GetMatris[row + 2, column + 1].GetComponent<Tile>().validMove == false)
+    //                        {
+    //                            gameManager.GetComponent<BoardSpawn>().GetMatris[row + 2, column + 1].GetComponent<Tile>().CanMove();
+    //                            gameManager.GetComponent<BoardSpawn>().GetMatris[row + 2, column + 1].GetComponent<Tile>().CheckForJumps();
+    //                        }
+    //                    }
+    //                    break;
+    //                case 1:
+    //                    if (gameManager.GetComponent<BoardSpawn>().GetMatris[row, column + 1].GetComponent<Tile>().CanMove())
+    //                    {
+    //                        gameManager.GetComponent<BoardSpawn>().GetMatris[row, column + 1].GetComponent<Tile>().CanMove();
+    //                    }
+    //                    else
+    //                    {
+    //                        gameManager.GetComponent<BoardSpawn>().GetMatris[row, column + 2].GetComponent<Tile>().CanMove();
+    //                        gameManager.GetComponent<BoardSpawn>().GetMatris[row, column + 2].GetComponent<Tile>().CheckForJumps();
+    //                    }
+    //                    break;
+    //                case 2:
+    //                    if (gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column].GetComponent<Tile>().CanMove())
+    //                    {
+    //                        gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column].GetComponent<Tile>().CanMove();
+    //                    }
+    //                    else
+    //                    {
+    //                        gameManager.GetComponent<BoardSpawn>().GetMatris[row - 2, column + 1].GetComponent<Tile>().CanMove();
+    //                        gameManager.GetComponent<BoardSpawn>().GetMatris[row - 2, column + 1].GetComponent<Tile>().CheckForJumps();
+    //                    }
+    //                    break;
+    //                case 3:
+    //                    if (gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column - 1].GetComponent<Tile>().CanMove())
+    //                    {
+    //                        gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column - 1].GetComponent<Tile>().CanMove();
+    //                    }
+    //                    else
+    //                    {
+    //                        gameManager.GetComponent<BoardSpawn>().GetMatris[row - 2, column - 1].GetComponent<Tile>().CanMove();
+    //                        gameManager.GetComponent<BoardSpawn>().GetMatris[row - 2, column - 1].GetComponent<Tile>().CheckForJumps();
+    //                    }
+    //                    break;
+    //                case 4:
+    //                    if (gameManager.GetComponent<BoardSpawn>().GetMatris[row, column - 1].GetComponent<Tile>().CanMove() == false)
+    //                    {
+    //                        if (gameManager.GetComponent<BoardSpawn>().GetMatris[row, column - 2].GetComponent<Tile>().CanMove() && gameManager.GetComponent<BoardSpawn>().GetMatris[row, column - 2].GetComponent<Tile>().validMove == false)
+    //                        {
+    //                            gameManager.GetComponent<BoardSpawn>().GetMatris[row, column - 2].GetComponent<Tile>().CanMove();
+    //                            gameManager.GetComponent<BoardSpawn>().GetMatris[row, column - 2].GetComponent<Tile>().CheckForJumps();
+    //                        }
+    //                    }
+    //                    break;
+    //                case 5:
+    //                    if (gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column - 1].GetComponent<Tile>().CanMove())
+    //                    {
+    //                        gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column - 1].GetComponent<Tile>().CanMove();
+    //                    }
+    //                    else
+    //                    {
+    //                        gameManager.GetComponent<BoardSpawn>().GetMatris[row + 2, column - 1].GetComponent<Tile>().CanMove();
+    //                        gameManager.GetComponent<BoardSpawn>().GetMatris[row + 2, column - 1].GetComponent<Tile>().CheckForJumps();
+    //                    }
+    //                    break;
+    //            }
+
+    //        }
+    //    }
+
+    //}
+
+    public void CheckForValidMoves()
+    {
+        if(row%2 == 0)
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                switch (i)
+                {
+                    case 0:
+                        if (gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column + 1].GetComponent<Tile>().CanMove())
+                        {
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column + 1].GetComponent<Tile>().MoveIsValid(true);
+                        }
+                        else
+                        {
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row + 2, column + 1].GetComponent<Tile>().MoveIsValid(true);
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row + 2, column + 1].GetComponent<Tile>().CheckForJumps();
+                        }
+                        break;
+                    case 1:
+                        if (gameManager.GetComponent<BoardSpawn>().GetMatris[row, column + 1].GetComponent<Tile>().CanMove()){
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row, column + 1].GetComponent<Tile>().MoveIsValid(true);
+                        }
+                        else
+                        {
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row, column + 2].GetComponent<Tile>().MoveIsValid(true);
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row, column + 2].GetComponent<Tile>().CheckForJumps();
+                        }
+                        break;
+                    case 2:
+                        if (gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column + 1].GetComponent<Tile>().CanMove()) {
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column + 1].GetComponent<Tile>().MoveIsValid(true);
+                        }
+                        else
+                        {
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row - 2, column + 1].GetComponent<Tile>().MoveIsValid(true);
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row - 2, column + 1].GetComponent<Tile>().CheckForJumps();
+                        }
+                        break;
+                    case 3:
+                        if (gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column].GetComponent<Tile>().CanMove()) {
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column].GetComponent<Tile>().MoveIsValid(true);
+                        }
+                        else
+                        {
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row - 2, column - 1].GetComponent<Tile>().MoveIsValid(true);
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row - 2, column - 1].GetComponent<Tile>().CheckForJumps();
+                        }
+                        break;
+                    case 4:
+                        if (gameManager.GetComponent<BoardSpawn>().GetMatris[row, column - 1].GetComponent<Tile>().CanMove()){
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row, column - 1].GetComponent<Tile>().MoveIsValid(true);
+                        }
+                        else
+                        {
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row, column - 2].GetComponent<Tile>().MoveIsValid(true);
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row, column - 2].GetComponent<Tile>().CheckForJumps();
+                        }
+                        break;
+                    case 5:
+                        if (gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column].GetComponent<Tile>().CanMove())  {
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column].GetComponent<Tile>().MoveIsValid(true);
+                        }
+                        else
+                        {
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row + 2, column - 1].GetComponent<Tile>().MoveIsValid(true);
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row + 2, column - 1].GetComponent<Tile>().CheckForJumps();
+                        }
+                        break;
+                }
+               
+            }
+        }
+        else
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                switch (i)
+                {
+                    case 0:
+                        if (gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column].GetComponent<Tile>().CanMove())
+                        {
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column].GetComponent<Tile>().MoveIsValid(true);
+                        }
+                        else
+                        {
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row + 2, column + 1].GetComponent<Tile>().MoveIsValid(true);
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row + 2, column + 1].GetComponent<Tile>().CheckForJumps();
+                        }
+                        break;
+                    case 1:
+                        if (gameManager.GetComponent<BoardSpawn>().GetMatris[row, column + 1].GetComponent<Tile>().CanMove())
+                        {
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row, column + 1].GetComponent<Tile>().MoveIsValid(true);
+                        }
+                        else
+                        {
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row, column + 2].GetComponent<Tile>().MoveIsValid(true);
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row, column + 2].GetComponent<Tile>().CheckForJumps();
+                        }
+                        break;
+                    case 2:
+                        if (gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column].GetComponent<Tile>().CanMove())
+                        {
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column].GetComponent<Tile>().MoveIsValid(true);
+                        }
+                        else
+                        {
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row - 2, column + 1].GetComponent<Tile>().MoveIsValid(true);
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row - 2, column + 1].GetComponent<Tile>().CheckForJumps();
+                        }
+                        break;
+                    case 3:
+                        if (gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column - 1].GetComponent<Tile>().CanMove())
+                        {
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column - 1].GetComponent<Tile>().MoveIsValid(true);
+                        }
+                        else
+                        {
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row - 2, column - 1].GetComponent<Tile>().MoveIsValid(true);
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row - 2, column - 1].GetComponent<Tile>().CheckForJumps();
+                        }
+                        break;
+                    case 4:
+                        if (gameManager.GetComponent<BoardSpawn>().GetMatris[row, column - 1].GetComponent<Tile>().CanMove())
+                        {
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row, column - 1].GetComponent<Tile>().MoveIsValid(true);
+                        }
+                        else
+                        {
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row, column - 2].GetComponent<Tile>().MoveIsValid(true);
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row, column - 2].GetComponent<Tile>().CheckForJumps();
+                        }
+                        break;
+                    case 5:
+                        if (gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column - 1].GetComponent<Tile>().CanMove())
+                        {
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column - 1].GetComponent<Tile>().MoveIsValid(true);
+                        }
+                        else
+                        {
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row + 2, column - 1].GetComponent<Tile>().MoveIsValid(true);
+                            gameManager.GetComponent<BoardSpawn>().GetMatris[row + 2, column - 1].GetComponent<Tile>().CheckForJumps();
+                        }
+                        break;
+                }
+
+            }
+        }
+
+    }
+
+   
     public void ResetTiles()
     {
         if (row % 2 == 0)
@@ -135,90 +549,6 @@ public class Tile : MonoBehaviour {
             gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column - 1].GetComponent<Tile>().Resets();
         }
     }
-
-
-    public void CheckForMoves()
-    {
-        canJumpTo.Clear();
-
-        FindNeighbours();
-
-/*
-        //gör om till metod? kalla på den igen på objektet som läggs till i listan "canJumpTo"
-        for (int i = 0; i < neighbours.Count; i++)
-        {
-            if(canJumpTo[i] != null && canJumpTo[i].GetComponent<Tile>().neighbours[i] != null)
-            {
-                if (canJumpTo[i].GetComponent<Tile>().state != TileState.open && canJumpTo[i].GetComponent<Tile>().neighbours[i].GetComponent<Tile>().state == TileState.open)
-                {
-                    canJumpTo.Add(canJumpTo[i].GetComponent<Tile>().neighbours[i]);
-                }
-            }
-            
-        }
-        */
-
-
-        //GetComponentInChildren<SetNeighbours>().CheckNeighbours();
-        
-
-        for (int i = 0; i < canJumpTo.Count; i++)
-        {
-            if (canJumpTo[i] != null)
-            {
-                if (canJumpTo[i].GetComponent<Tile>().state == TileState.open)
-                {
-                    canJumpTo[i].GetComponent<Tile>().MoveIsValid(true);
-                }
-                else
-                {
-                    //add tile to list if you can jump over a ball to it
-                    //canJumpTo[i].GetComponentInChildren<SetNeighbours>().CheckNeighbours();
-
-                    //canJumpTo[i].GetComponent<Tile>().CheckIfJumpIsValid();
-
-
-
-                    /*
-                    if (canJumpTo[i].GetComponent<Tile>().neighbours[i].CheckIfJumpIsValid() != null)
-                    {
-                        canJumpTo.Add(canJumpTo[i].GetComponent<Tile>().neighbours[i].CheckIfJumpIsValid(i));
-                        
-                    }
-                    */
-                }
-            }
-        }
-    }
-    public GameObject CheckIfJumpIsValid()
-    {
-        for (int i = 0; i < neighbours.Count; i++)
-        {
-            if (neighbours[i].GetComponent<Tile>().state == TileState.open)
-            {
-                neighbours[i].GetComponent<Tile>().MoveIsValid(true);
-
-                canJumpTo.Add(neighbours[i]);
-
-                return neighbours[i];
-            }
-        }
-
-        return null;
-    }
-
-   /* public void ResetTiles()
-    {
-        for (int i = 0; i < canJumpTo.Count; i++)
-        {
-            if(canJumpTo[i] != null)
-            {
-                canJumpTo[i].GetComponent<Tile>().MoveIsValid(false);
-            }
-        }
-        canJumpTo.Clear();
-    }*/
-
 
     public void MoveIsValid(bool valid)
     {
