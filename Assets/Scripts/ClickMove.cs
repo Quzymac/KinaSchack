@@ -43,9 +43,9 @@ public class ClickMove : MonoBehaviour
             destinationTile.GetComponent<Renderer>().material = red;
             
             //moves physical ball -- remove later
-            ballTile.GetComponent<Tile>().ball.transform.position = destinationTile.transform.position;
-            destinationTile.GetComponent<Tile>().ball = ballTile.GetComponent<Tile>().ball;
-            ballTile.GetComponent<Tile>().ball = null;
+            //ballTile.GetComponent<Tile>().ball.transform.position = destinationTile.transform.position;
+            //destinationTile.GetComponent<Tile>().ball = ballTile.GetComponent<Tile>().ball;
+            //ballTile.GetComponent<Tile>().ball = null;
 
             ResetSelectedBall(); 
         }
@@ -89,5 +89,23 @@ public class ClickMove : MonoBehaviour
                 } 
             }
         }
+        //rightclick to spawn red ball --- for testing only
+        if (Input.GetButtonDown("Fire2"))
+        {
+
+            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+            {
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity, mask))
+                {
+                    if (hit.collider.gameObject.GetComponent<Tile>().state == Tile.TileState.open)
+                    {
+                        hit.collider.gameObject.GetComponent<Tile>().state = Tile.TileState.red;
+                        hit.collider.gameObject.GetComponent<Renderer>().material = red;
+
+                    }
+                }
+            }
+        }
     }
+
 }

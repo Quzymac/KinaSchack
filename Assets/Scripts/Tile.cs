@@ -74,26 +74,65 @@ public class Tile : MonoBehaviour {
         //GetComponentInChildren<SetNeighbours>().CheckNeighbours();
     }
 
-    void FIndNeighbours()
+    public void CheckIfCanMove()
     {
-        if (row % 2 == 0)
+        if(state == TileState.open)
         {
-
-            canJumpTo.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column + 1]);
-            canJumpTo.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row, column + 1]);
-            canJumpTo.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column + 1]);
-            canJumpTo.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column]);
-            canJumpTo.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row, column - 1]);
-            canJumpTo.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column]);
+            MoveIsValid(true);
         }
         else
         {
-            canJumpTo.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column]);
-            canJumpTo.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row, column + 1]);
-            canJumpTo.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column]);
-            canJumpTo.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column - 1]);
-            canJumpTo.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row, column - 1]);
-            canJumpTo.Add(gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column - 1]);
+            //check if you can jump over
+        }
+    }
+    public void Resets()
+    {
+        if (validMove)
+        {
+            MoveIsValid(false);
+        }
+    }
+
+    void FindNeighbours()
+    {
+        if (row % 2 == 0)
+        {
+            gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column + 1].GetComponent<Tile>().CheckIfCanMove();
+            gameManager.GetComponent<BoardSpawn>().GetMatris[row, column + 1].GetComponent<Tile>().CheckIfCanMove();
+            gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column + 1].GetComponent<Tile>().CheckIfCanMove();
+            gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column].GetComponent<Tile>().CheckIfCanMove();
+            gameManager.GetComponent<BoardSpawn>().GetMatris[row, column - 1].GetComponent<Tile>().CheckIfCanMove();
+            gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column].GetComponent<Tile>().CheckIfCanMove();
+        }
+        else
+        {
+            gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column].GetComponent<Tile>().CheckIfCanMove();
+            gameManager.GetComponent<BoardSpawn>().GetMatris[row, column + 1].GetComponent<Tile>().CheckIfCanMove();
+            gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column].GetComponent<Tile>().CheckIfCanMove();
+            gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column - 1].GetComponent<Tile>().CheckIfCanMove();
+            gameManager.GetComponent<BoardSpawn>().GetMatris[row, column - 1].GetComponent<Tile>().CheckIfCanMove();
+            gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column - 1].GetComponent<Tile>().CheckIfCanMove();
+        }
+    }
+    public void ResetTiles()
+    {
+        if (row % 2 == 0)
+        {
+            gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column + 1].GetComponent<Tile>().Resets();
+            gameManager.GetComponent<BoardSpawn>().GetMatris[row, column + 1].GetComponent<Tile>().Resets();
+            gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column + 1].GetComponent<Tile>().Resets();
+            gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column].GetComponent<Tile>().Resets();
+            gameManager.GetComponent<BoardSpawn>().GetMatris[row, column - 1].GetComponent<Tile>().Resets();
+            gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column].GetComponent<Tile>().Resets();
+        }
+        else
+        {
+            gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column].GetComponent<Tile>().Resets();
+            gameManager.GetComponent<BoardSpawn>().GetMatris[row, column + 1].GetComponent<Tile>().Resets();
+            gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column].GetComponent<Tile>().Resets();
+            gameManager.GetComponent<BoardSpawn>().GetMatris[row - 1, column - 1].GetComponent<Tile>().Resets();
+            gameManager.GetComponent<BoardSpawn>().GetMatris[row, column - 1].GetComponent<Tile>().Resets();
+            gameManager.GetComponent<BoardSpawn>().GetMatris[row + 1, column - 1].GetComponent<Tile>().Resets();
         }
     }
 
@@ -102,7 +141,7 @@ public class Tile : MonoBehaviour {
     {
         canJumpTo.Clear();
 
-        FIndNeighbours();
+        FindNeighbours();
 
 /*
         //gör om till metod? kalla på den igen på objektet som läggs till i listan "canJumpTo"
@@ -168,7 +207,7 @@ public class Tile : MonoBehaviour {
         return null;
     }
 
-    public void ResetTiles()
+   /* public void ResetTiles()
     {
         for (int i = 0; i < canJumpTo.Count; i++)
         {
@@ -178,7 +217,7 @@ public class Tile : MonoBehaviour {
             }
         }
         canJumpTo.Clear();
-    }
+    }*/
 
 
     public void MoveIsValid(bool valid)
