@@ -5,9 +5,9 @@ using UnityEngine;
 public class BoardController : MonoBehaviour
 {
 
-
     [SerializeField] Camera cam;
     RaycastHit hit;
+    [SerializeField] LayerMask mask;
 
     public bool HolingBall { get; set; }
     [SerializeField] Tile ballTile;
@@ -18,12 +18,9 @@ public class BoardController : MonoBehaviour
 
     Tile[,] matris = new Tile[rows, columns];
 
-    [SerializeField] LayerMask mask;
-
     [SerializeField] Material red;
 
     List<Tile> validJumpList = new List<Tile>();
-    List<Tile> previouslyTraveled = new List<Tile>();
 
     public Tile[,] Matris
     {
@@ -44,22 +41,13 @@ public class BoardController : MonoBehaviour
     {
         if (row % 2 == 0)
         {
-            if (!hasJumped)
+            if (matris[row + 1, column + 1].state == Tile.TileState.open && !matris[row, column].validMove && !hasJumped)
             {
-                if (matris[row + 1, column + 1].state == Tile.TileState.open &&
-                                            !matris[row, column].validMove)
-                {
-                    validJumpList.Add(matris[row + 1, column + 1]);
-                }
+                validJumpList.Add(matris[row + 1, column + 1]);
             }
             else
             {
-                if (matris[row, column].state == Tile.TileState.open && matris[row + 1, column + 1].state == Tile.TileState.open)
-                {
-                    return;
-                }
-                if (matris[row + 2, column + 1].state == Tile.TileState.open &&
-                    matris[row + 1, column + 1].state != Tile.TileState.open && !validJumpList.Contains(matris[row + 2, column + 1]))
+                if (matris[row + 2, column + 1].state == Tile.TileState.open &&  matris[row + 1, column + 1].state != Tile.TileState.open && !validJumpList.Contains(matris[row + 2, column + 1]))
                 {
                     validJumpList.Add(matris[row + 2, column + 1]);
                     CheckForValidMoves(matris[row + 2, column + 1].GetComponent<Tile>(), true);
@@ -68,21 +56,12 @@ public class BoardController : MonoBehaviour
         }
         else
         {
-            if (!hasJumped)
+            if (matris[row + 1, column].state == Tile.TileState.open && !matris[row, column].validMove && !hasJumped)
             {
-                if (matris[row + 1, column].state == Tile.TileState.open &&
-                                !matris[row, column].validMove)
-                {
-                    validJumpList.Add(matris[row + 1, column]);
-                    previouslyTraveled.Add(matris[row + 1, column]);
-                }
+                validJumpList.Add(matris[row + 1, column]);
             }
             else
             {
-                if (matris[row, column].state == Tile.TileState.open && matris[row + 1, column].state == Tile.TileState.open)
-                {
-                    return;
-                }
                 if (matris[row + 2, column + 1].state == Tile.TileState.open &&
                     matris[row + 1, column].state != Tile.TileState.open && !validJumpList.Contains(matris[row + 2, column + 1]))
                 {
@@ -94,42 +73,30 @@ public class BoardController : MonoBehaviour
     }
     public void EastMove(int row, int column, bool hasJumped)
     {
-        if (matris[row, column + 1].state == Tile.TileState.open &&
-                        !matris[row, column].validMove && !hasJumped)
+        if (matris[row, column + 1].state == Tile.TileState.open &&!matris[row, column].validMove && !hasJumped)
         {
             validJumpList.Add(matris[row, column + 1]);
         }
         else
         {
-            if (matris[row, column].state == Tile.TileState.open && matris[row, column + 1].state == Tile.TileState.open)
-            {
-                return;
-            }
             if (matris[row, column + 2].state == Tile.TileState.open &&
                 matris[row, column + 1].state != Tile.TileState.open && !validJumpList.Contains(matris[row, column + 2]))
             {
                 validJumpList.Add(matris[row, column + 2]);
                 CheckForValidMoves(matris[row, column + 2].GetComponent<Tile>(), true);
             }
-            //EastMove(row, column + 1);
         }
     }
     public void SouthEastMove(int row, int column, bool hasJumped)
     {
         if (row % 2 == 0)
         {
-            if (matris[row - 1, column + 1].state == Tile.TileState.open &&
-                            !matris[row, column].validMove && !hasJumped)
+            if (matris[row - 1, column + 1].state == Tile.TileState.open && !matris[row, column].validMove && !hasJumped)
             {
                 validJumpList.Add(matris[row - 1, column + 1]);
-                previouslyTraveled.Add(matris[row + 1, column + 1]);
             }
             else
             {
-                if (matris[row, column].state == Tile.TileState.open && matris[row - 1, column + 1].state == Tile.TileState.open)
-                {
-                    return;
-                }
                 if (matris[row - 2, column + 1].state == Tile.TileState.open &&
                     matris[row - 1, column + 1].state != Tile.TileState.open && !validJumpList.Contains(matris[row - 2, column + 1]))
                 {
@@ -140,18 +107,12 @@ public class BoardController : MonoBehaviour
         }
         else
         {
-            if (matris[row - 1, column].state == Tile.TileState.open &&
-                            !matris[row, column].validMove && !hasJumped)
+            if (matris[row - 1, column].state == Tile.TileState.open && !matris[row, column].validMove && !hasJumped)
             {
                 validJumpList.Add(matris[row - 1, column]);
-                previouslyTraveled.Add(matris[row + 1, column + 1]);
             }
             else
             {
-                if (matris[row, column].state == Tile.TileState.open && matris[row- 1, column + 1].state == Tile.TileState.open)
-                {
-                    return;
-                }
                 if (matris[row - 2, column + 1].state == Tile.TileState.open &&
                     matris[row - 1, column].state != Tile.TileState.open && !validJumpList.Contains(matris[row - 2, column + 1]))
                 {
@@ -165,11 +126,9 @@ public class BoardController : MonoBehaviour
     {
         if (row % 2 == 0)
         {
-            if (matris[row - 1, column].state == Tile.TileState.open &&
-                            !matris[row, column].validMove && !hasJumped)
+            if (matris[row - 1, column].state == Tile.TileState.open && !matris[row, column].validMove && !hasJumped)
             {
                 validJumpList.Add(matris[row - 1, column]);
-                previouslyTraveled.Add(matris[row + 1, column + 1]);
             }
             else
             {
@@ -183,11 +142,9 @@ public class BoardController : MonoBehaviour
         }
         else
         {
-            if (matris[row - 1, column - 1].state == Tile.TileState.open &&
-                            !matris[row, column].validMove && !hasJumped)
+            if (matris[row - 1, column - 1].state == Tile.TileState.open && !matris[row, column].validMove && !hasJumped)
             {
                 validJumpList.Add(matris[row - 1, column - 1]);
-                previouslyTraveled.Add(matris[row + 1, column + 1]);
             }
             else
             {
@@ -202,18 +159,12 @@ public class BoardController : MonoBehaviour
     }
     public void WestMove(int row, int column, bool hasJumped)
     {
-        if (matris[row, column - 1].state == Tile.TileState.open &&
-                        !matris[row, column].validMove && !hasJumped)
+        if (matris[row, column - 1].state == Tile.TileState.open && !matris[row, column].validMove && !hasJumped)
         {
             validJumpList.Add(matris[row, column - 1]);
-            previouslyTraveled.Add(matris[row + 1, column + 1]);
         }
         else
         {
-            if (matris[row, column].state == Tile.TileState.open && matris[row, column - 1].state == Tile.TileState.open)
-            {
-                return;
-            }
             if (matris[row, column - 2].state == Tile.TileState.open &&
                 matris[row, column - 1].state != Tile.TileState.open && !validJumpList.Contains(matris[row, column - 2]))
             {
@@ -226,11 +177,9 @@ public class BoardController : MonoBehaviour
     {
         if (row % 2 == 0)
         {
-            if (matris[row + 1, column].state == Tile.TileState.open &&
-                            !matris[row, column].validMove && !hasJumped)
+            if (matris[row + 1, column].state == Tile.TileState.open && !matris[row, column].validMove && !hasJumped)
             {
                 validJumpList.Add(matris[row + 1, column]);
-                previouslyTraveled.Add(matris[row + 1, column + 1]);
             }
             else
             {
@@ -244,11 +193,9 @@ public class BoardController : MonoBehaviour
         }
         else
         {
-            if (matris[row + 1, column - 1].state == Tile.TileState.open &&
-                            !matris[row, column].validMove && !hasJumped)
+            if (matris[row + 1, column - 1].state == Tile.TileState.open && !matris[row, column].validMove && !hasJumped)
             {
                 validJumpList.Add(matris[row + 1, column - 1]);
-                previouslyTraveled.Add(matris[row + 1, column + 1]);
             }
             else
             {
@@ -268,9 +215,7 @@ public class BoardController : MonoBehaviour
     {
         int row = tile.row;
         int column = tile.column;
-
-        previouslyTraveled.Add(tile);
-
+        
         NorthEastMove(row, column, jumped);
         EastMove(row, column, jumped);
         SouthEastMove(row, column, jumped);
@@ -287,20 +232,19 @@ public class BoardController : MonoBehaviour
 
     void ClickTile(Tile tileHit)
     {
-
         //pick up red ball if you're not already holding a ball
         if (!HolingBall && tileHit.state == Tile.TileState.red)
         {
-            ballTile = hit.collider.gameObject.GetComponent<Tile>();
+            ballTile = tileHit;
 
             CheckForValidMoves(ballTile, false);
-            //ballTile.GetComponent<Tile>().CheckForValidMoves();
             HolingBall = true;
         }
-        //if holding a ball, put down ball if tile is open
+        //if holding a "ball", put down ball if tile is open and a valid move
         if (HolingBall && tileHit.state == Tile.TileState.open && tileHit.validMove)
         {
             destinationTile = tileHit;
+            ResetSelectedBall();
 
             //set state of tiles
             destinationTile.state = Tile.TileState.red;
@@ -310,32 +254,22 @@ public class BoardController : MonoBehaviour
             ballTile.GetComponent<Renderer>().material = ballTile.standardMaterial;
             destinationTile.GetComponent<Renderer>().material = red;
 
-            //moves physical ball -- remove later
-            //ballTile.GetComponent<Tile>().ball.transform.position = destinationTile.transform.position;
-            //destinationTile.GetComponent<Tile>().ball = ballTile.GetComponent<Tile>().ball;
-            //ballTile.GetComponent<Tile>().ball = null;
-
-
-            foreach (Tile jump in validJumpList)
+            if (ballTile != null)
             {
-                jump.MoveIsValid(false);
+                ballTile = null;
+                HolingBall = false;
             }
-            validJumpList.Clear();
-            previouslyTraveled.Clear();
-
-            ResetSelectedBall();
         }
     }
 
-    //resets varibles, canJumpTo list and highlighting
+    //resets varibles, validJumpList list and highlighting
     void ResetSelectedBall()
     {
-        if (ballTile != null)
+        foreach (Tile jump in validJumpList)
         {
-            ballTile.ResetTiles();
-            ballTile = null;
-            HolingBall = false;
+            jump.MoveIsValid(false);
         }
+        validJumpList.Clear();
     }
 
     void Update()
@@ -349,9 +283,12 @@ public class BoardController : MonoBehaviour
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity, mask))
                 {
                     //resets if you click the same tile as the ball is on
-                    if (hit.collider.gameObject.Equals(ballTile))
+                    if (hit.collider.gameObject.GetComponent<Tile>().Equals(ballTile))
                     {
                         ResetSelectedBall();
+
+                        ballTile = null;
+                        HolingBall = false;
                     }
                     else
                     {

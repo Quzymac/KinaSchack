@@ -6,7 +6,6 @@ public class Tile : MonoBehaviour {
 
 
     [SerializeField] BoardController boardController;
-    [SerializeField] GameObject Highlighted;
 
     public Material standardMaterial { get; set; }
     [SerializeField] Transform raycastOrigin;
@@ -18,16 +17,12 @@ public class Tile : MonoBehaviour {
     public enum TileState { invalid, open, red, blue, yellow, green, purple, orange };
     public TileState state { get; set; }
 
-    public GameObject ball { get; set; }
-
-    public List<GameObject> neighbours = new List<GameObject>();
-
-    List<GameObject> canJumpTo = new List<GameObject>();
-
     public int row { get; set; }
     public int column { get; set; }
 
     [SerializeField] Material red;
+    [SerializeField] Material highlighted;
+
 
 
 
@@ -35,12 +30,12 @@ public class Tile : MonoBehaviour {
     {
         if (valid)
         {
-            Highlighted.SetActive(true);
+            GetComponent<Renderer>().material = highlighted;
             validMove = true;
         }
         else
         {
-            Highlighted.SetActive(false);
+            GetComponent<Renderer>().material = standardMaterial;
             validMove = false;
 
         }
@@ -91,59 +86,4 @@ public class Tile : MonoBehaviour {
         //}
     }
     
-
-    public void Resets()
-    {
-        if (validMove)
-        {
-            MoveIsValid(false);
-        }
-    }
-    public bool CanMove()
-    {
-        if(state == TileState.open)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    public bool CanJump()
-    {
-        if(state == TileState.red)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-   //old code
-
-    public void ResetTiles()
-    {
-        if (row % 2 == 0)
-        {
-            boardController.Matris[row + 1, column + 1].GetComponent<Tile>().Resets();
-            boardController.Matris[row, column + 1].GetComponent<Tile>().Resets();
-            boardController.Matris[row - 1, column + 1].GetComponent<Tile>().Resets();
-            boardController.Matris[row - 1, column].GetComponent<Tile>().Resets();
-            boardController.Matris[row, column - 1].GetComponent<Tile>().Resets();
-            boardController.Matris[row + 1, column].GetComponent<Tile>().Resets();
-        }
-        else
-        {
-            boardController.Matris[row + 1, column].GetComponent<Tile>().Resets();
-            boardController.Matris[row, column + 1].GetComponent<Tile>().Resets();
-            boardController.Matris[row - 1, column].GetComponent<Tile>().Resets();
-            boardController.Matris[row - 1, column - 1].GetComponent<Tile>().Resets();
-            boardController.Matris[row, column - 1].GetComponent<Tile>().Resets();
-            boardController.Matris[row + 1, column - 1].GetComponent<Tile>().Resets();
-        }
-    }
 }
