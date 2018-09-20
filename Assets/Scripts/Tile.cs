@@ -51,42 +51,44 @@ public class Tile : MonoBehaviour {
         boardController = FindObjectOfType<BoardController>();
 
         standardMaterial = GetComponent<Renderer>().material;
-        
-        RaycastHit hit;
+
+        state = TileState.open;
+
 
         // old code
-        if (Physics.Raycast(raycastOrigin.position, Vector3.down, out hit, Mathf.Infinity, ballMask))
-        {
-            ball = hit.collider.gameObject;
+        //RaycastHit hit;
+        //if (Physics.Raycast(raycastOrigin.position, Vector3.down, out hit, Mathf.Infinity, ballMask))
+        //{
+        //    ball = hit.collider.gameObject;
 
-            switch (hit.collider.gameObject.GetComponent<PlayerBall>().ballTeam.ToString())
-            {
-                case "red":
-                    state = TileState.red;
-                    GetComponent<Renderer>().material = red;
+        //    switch (hit.collider.gameObject.GetComponent<PlayerBall>().ballTeam.ToString())
+        //    {
+        //        case "red":
+        //            state = TileState.red;
+        //            GetComponent<Renderer>().material = red;
 
-                    break;
-                case "blue":
-                    state = TileState.blue;
-                    break;
-                case "yellow":
-                    state = TileState.yellow;
-                    break;
-                case "green":
-                    state = TileState.green;
-                    break;
-                case "purple":
-                    state = TileState.purple;
-                    break;
-                case "orange":
-                    state = TileState.orange;
-                    break;
-            }
-        }
-        else
-        {
-            state = TileState.open;
-        }
+        //            break;
+        //        case "blue":
+        //            state = TileState.blue;
+        //            break;
+        //        case "yellow":
+        //            state = TileState.yellow;
+        //            break;
+        //        case "green":
+        //            state = TileState.green;
+        //            break;
+        //        case "purple":
+        //            state = TileState.purple;
+        //            break;
+        //        case "orange":
+        //            state = TileState.orange;
+        //            break;
+        //    }
+        //}
+        //else
+        //{
+        //    state = TileState.open;
+        //}
     }
     
 

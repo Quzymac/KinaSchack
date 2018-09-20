@@ -55,7 +55,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4720204529941620}
-  - component: {fileID: 114461403057442718}
   - component: {fileID: 23177120430794284}
   m_Layer: 10
   m_Name: RaycastOrigin
@@ -322,28 +321,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ee5adc98e70cc745a4853c6dc2482af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManager: {fileID: 1961394228621028, guid: 3be6360d16582244b935a1c54e25f1dd,
-    type: 2}
-  middlePart: {fileID: 1505593056799666}
+  boardController: {fileID: 0}
   Highlighted: {fileID: 1630293113070350}
-  highlightedMaterial: {fileID: 2100000, guid: 65b1f5dcacacac64a8e0765bb1f7fe31, type: 2}
   raycastOrigin: {fileID: 4720204529941620}
   ballMask:
     serializedVersion: 2
     m_Bits: 512
   neighbours: []
   red: {fileID: 2100000, guid: e0552f90267d9f34ba1ea3bb3923caff, type: 2}
---- !u!114 &114461403057442718
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1550484032825144}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 46d0b47a36fa4c047a05f091b2a59c18, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mask:
-    serializedVersion: 2
-    m_Bits: 1024

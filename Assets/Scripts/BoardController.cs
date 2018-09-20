@@ -44,51 +44,51 @@ public class BoardController : MonoBehaviour
     {
         if (row % 2 == 0)
         {
-            if (matris[row + 1, column + 1].state == Tile.TileState.open &&
-                            !matris[row, column].validMove && !hasJumped)
+            if (!hasJumped)
             {
-                validJumpList.Add(matris[row + 1, column + 1]);
-                previouslyTraveled.Add(matris[row + 1, column + 1]);
+                if (matris[row + 1, column + 1].state == Tile.TileState.open &&
+                                            !matris[row, column].validMove)
+                {
+                    validJumpList.Add(matris[row + 1, column + 1]);
+                }
             }
             else
             {
+                if (matris[row, column].state == Tile.TileState.open && matris[row + 1, column + 1].state == Tile.TileState.open)
+                {
+                    return;
+                }
                 if (matris[row + 2, column + 1].state == Tile.TileState.open &&
-                    matris[row + 1, column + 1].state != Tile.TileState.open)
+                    matris[row + 1, column + 1].state != Tile.TileState.open && !validJumpList.Contains(matris[row + 2, column + 1]))
                 {
                     validJumpList.Add(matris[row + 2, column + 1]);
-                    previouslyTraveled.Add(matris[row + 1, column + 1]);
-                }
-                if (!previouslyTraveled.Contains(matris[row + 2, column + 1]))
-                {
                     CheckForValidMoves(matris[row + 2, column + 1].GetComponent<Tile>(), true);
-
                 }
-                //NorthEastMove(row + 1, column + 1);
             }
         }
         else
         {
-
-            if (matris[row + 1, column].state == Tile.TileState.open &&
-                            !matris[row, column].validMove && !hasJumped)
+            if (!hasJumped)
             {
-                validJumpList.Add(matris[row + 1, column]);
-                previouslyTraveled.Add(matris[row + 1, column + 1]);
+                if (matris[row + 1, column].state == Tile.TileState.open &&
+                                !matris[row, column].validMove)
+                {
+                    validJumpList.Add(matris[row + 1, column]);
+                    previouslyTraveled.Add(matris[row + 1, column]);
+                }
             }
             else
             {
+                if (matris[row, column].state == Tile.TileState.open && matris[row + 1, column].state == Tile.TileState.open)
+                {
+                    return;
+                }
                 if (matris[row + 2, column + 1].state == Tile.TileState.open &&
-                    matris[row + 1, column].state != Tile.TileState.open)
+                    matris[row + 1, column].state != Tile.TileState.open && !validJumpList.Contains(matris[row + 2, column + 1]))
                 {
                     validJumpList.Add(matris[row + 2, column + 1]);
-                    previouslyTraveled.Add(matris[row + 1, column + 1]);
-                }
-                if (!previouslyTraveled.Contains(matris[row + 2, column + 1]))
-                {
                     CheckForValidMoves(matris[row + 2, column + 1].GetComponent<Tile>(), true);
-
                 }
-                //NorthEastMove(row + 1, column);
             }
         }
     }
@@ -98,20 +98,18 @@ public class BoardController : MonoBehaviour
                         !matris[row, column].validMove && !hasJumped)
         {
             validJumpList.Add(matris[row, column + 1]);
-            previouslyTraveled.Add(matris[row + 1, column + 1]);
         }
         else
         {
+            if (matris[row, column].state == Tile.TileState.open && matris[row, column + 1].state == Tile.TileState.open)
+            {
+                return;
+            }
             if (matris[row, column + 2].state == Tile.TileState.open &&
-                matris[row, column + 1].state != Tile.TileState.open)
+                matris[row, column + 1].state != Tile.TileState.open && !validJumpList.Contains(matris[row, column + 2]))
             {
                 validJumpList.Add(matris[row, column + 2]);
-                previouslyTraveled.Add(matris[row + 1, column + 1]);
-            }
-            if (!previouslyTraveled.Contains(matris[row, column + 2]))
-            {
                 CheckForValidMoves(matris[row, column + 2].GetComponent<Tile>(), true);
-
             }
             //EastMove(row, column + 1);
         }
@@ -128,18 +126,16 @@ public class BoardController : MonoBehaviour
             }
             else
             {
+                if (matris[row, column].state == Tile.TileState.open && matris[row - 1, column + 1].state == Tile.TileState.open)
+                {
+                    return;
+                }
                 if (matris[row - 2, column + 1].state == Tile.TileState.open &&
-                    matris[row - 1, column + 1].state != Tile.TileState.open)
+                    matris[row - 1, column + 1].state != Tile.TileState.open && !validJumpList.Contains(matris[row - 2, column + 1]))
                 {
                     validJumpList.Add(matris[row - 2, column + 1]);
-                    previouslyTraveled.Add(matris[row + 1, column + 1]);
-                }
-                if (!previouslyTraveled.Contains(matris[row - 2, column + 1]))
-                {
                     CheckForValidMoves(matris[row - 2, column + 1].GetComponent<Tile>(), true);
-
                 }
-                //SouthEastMove(row - 1, column + 1);
             }
         }
         else
@@ -152,18 +148,16 @@ public class BoardController : MonoBehaviour
             }
             else
             {
+                if (matris[row, column].state == Tile.TileState.open && matris[row- 1, column + 1].state == Tile.TileState.open)
+                {
+                    return;
+                }
                 if (matris[row - 2, column + 1].state == Tile.TileState.open &&
-                    matris[row - 1, column].state != Tile.TileState.open)
+                    matris[row - 1, column].state != Tile.TileState.open && !validJumpList.Contains(matris[row - 2, column + 1]))
                 {
                     validJumpList.Add(matris[row - 2, column + 1]);
-                    previouslyTraveled.Add(matris[row + 1, column + 1]);
-                }
-                if (!previouslyTraveled.Contains(matris[row - 2, column + 1]))
-                {
                     CheckForValidMoves(matris[row - 2, column + 1].GetComponent<Tile>(), true);
-
                 }
-                //SouthEastMove(row - 1, column);
             }
         }
     }
@@ -180,17 +174,11 @@ public class BoardController : MonoBehaviour
             else
             {
                 if (matris[row - 2, column - 1].state == Tile.TileState.open &&
-                    matris[row - 1, column].state != Tile.TileState.open)
+                    matris[row - 1, column].state != Tile.TileState.open && !validJumpList.Contains(matris[row - 2, column - 1]))
                 {
                     validJumpList.Add(matris[row - 2, column - 1]);
-                    previouslyTraveled.Add(matris[row + 1, column + 1]);
-                }
-                if (!previouslyTraveled.Contains(matris[row - 2, column - 1]))
-                {
                     CheckForValidMoves(matris[row - 2, column - 1].GetComponent<Tile>(), true);
-
                 }
-                //SouthWestMove(row - 1, column);
             }
         }
         else
@@ -204,17 +192,11 @@ public class BoardController : MonoBehaviour
             else
             {
                 if (matris[row - 2, column - 1].state == Tile.TileState.open &&
-                    matris[row - 1, column - 1].state != Tile.TileState.open)
+                    matris[row - 1, column - 1].state != Tile.TileState.open && !validJumpList.Contains(matris[row - 2, column - 1]))
                 {
                     validJumpList.Add(matris[row - 2, column - 1]);
-                    previouslyTraveled.Add(matris[row + 1, column + 1]);
-                }
-                if (!previouslyTraveled.Contains(matris[row - 2, column - 1]))
-                {
                     CheckForValidMoves(matris[row - 2, column - 1].GetComponent<Tile>(), true);
-
                 }
-                //SouthWestMove(row - 1, column - 1);
             }
         }
     }
@@ -228,18 +210,16 @@ public class BoardController : MonoBehaviour
         }
         else
         {
+            if (matris[row, column].state == Tile.TileState.open && matris[row, column - 1].state == Tile.TileState.open)
+            {
+                return;
+            }
             if (matris[row, column - 2].state == Tile.TileState.open &&
-                matris[row, column - 1].state != Tile.TileState.open)
+                matris[row, column - 1].state != Tile.TileState.open && !validJumpList.Contains(matris[row, column - 2]))
             {
                 validJumpList.Add(matris[row, column - 2]);
-                previouslyTraveled.Add(matris[row + 1, column + 1]);
-            }
-            if (!previouslyTraveled.Contains(matris[row, column - 2]))
-            {
                 CheckForValidMoves(matris[row, column - 2].GetComponent<Tile>(), true);
-
             }
-            //WestMove(row, column - 1);
         }
     }
     public void NorthWestMove(int row, int column, bool hasJumped)
@@ -255,17 +235,11 @@ public class BoardController : MonoBehaviour
             else
             {
                 if (matris[row + 2, column - 1].state == Tile.TileState.open &&
-                    matris[row + 1, column].state != Tile.TileState.open)
+                    matris[row + 1, column].state != Tile.TileState.open && !validJumpList.Contains(matris[row + 2, column - 1]))
                 {
                     validJumpList.Add(matris[row + 2, column - 1]);
-                    previouslyTraveled.Add(matris[row + 1, column + 1]);
-                }
-                if (!previouslyTraveled.Contains(matris[row + 2, column - 1]))
-                {
                     CheckForValidMoves(matris[row + 2, column - 1].GetComponent<Tile>(), true);
-
                 }
-                //NorthWestMove(row + 1, column);
             }
         }
         else
@@ -279,16 +253,11 @@ public class BoardController : MonoBehaviour
             else
             {
                 if (matris[row + 2, column - 1].state == Tile.TileState.open &&
-                    matris[row + 1, column - 1].state != Tile.TileState.open)
+                    matris[row + 1, column - 1].state != Tile.TileState.open && !validJumpList.Contains(matris[row + 2, column - 1]))
                 {
                     validJumpList.Add(matris[row + 2, column - 1]);
-                    previouslyTraveled.Add(matris[row + 1, column + 1]);
-                }
-                if (!previouslyTraveled.Contains(matris[row + 2, column - 1]))
-                {
                     CheckForValidMoves(matris[row + 2, column - 1].GetComponent<Tile>(), true);
                 }
-                //NorthWestMove(row + 1, column - 1);
             }
         }
     }
