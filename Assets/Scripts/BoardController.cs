@@ -254,6 +254,7 @@ public class BoardController : MonoBehaviour
             ballTile.GetComponent<Renderer>().material = ballTile.standardMaterial;
             destinationTile.GetComponent<Renderer>().material = red;
 
+            //resets varibles
             if (ballTile != null)
             {
                 ballTile = null;
@@ -262,7 +263,7 @@ public class BoardController : MonoBehaviour
         }
     }
 
-    //resets varibles, validJumpList list and highlighting
+    //resets validJumpList list and highlighting
     void ResetSelectedBall()
     {
         foreach (Tile jump in validJumpList)
@@ -299,6 +300,12 @@ public class BoardController : MonoBehaviour
                 else
                 {
                     ResetSelectedBall();
+
+                    if (ballTile != null)
+                    {
+                        ballTile = null;
+                        HolingBall = false;
+                    }
                 }
             }
         }
