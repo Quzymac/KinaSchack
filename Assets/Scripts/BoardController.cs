@@ -35,19 +35,37 @@ public class BoardController : MonoBehaviour
     {
         get { return columns; }
     }
+    
+   // add returns to methods if possible
+
+
+    //Checks if move to a tile is possible
+    public bool TileIsValid(int row, int column)
+    {
+        if (row >= rows || column >= columns || row < 0 || column < 0 || matris[row, column] == null || matris[row, column].state != Tile.TileState.open)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
 
 
     public void NorthEastMove(int row, int column, bool hasJumped)
     {
         if (row % 2 == 0)
         {
-            if (matris[row + 1, column + 1].state == Tile.TileState.open && !matris[row, column].validMove && !hasJumped)
+            if (TileIsValid(row + 1, column + 1) && !matris[row, column].validMove && !hasJumped)
             {
                 validJumpList.Add(matris[row + 1, column + 1]);
             }
+
             else
             {
-                if (matris[row + 2, column + 1].state == Tile.TileState.open &&  matris[row + 1, column + 1].state != Tile.TileState.open && !validJumpList.Contains(matris[row + 2, column + 1]))
+                if (TileIsValid(row + 2, column + 1) && matris[row + 1, column + 1].state != Tile.TileState.open && !validJumpList.Contains(matris[row + 2, column + 1]))
                 {
                     validJumpList.Add(matris[row + 2, column + 1]);
                     CheckForValidMoves(matris[row + 2, column + 1].GetComponent<Tile>(), true);
@@ -56,14 +74,13 @@ public class BoardController : MonoBehaviour
         }
         else
         {
-            if (matris[row + 1, column].state == Tile.TileState.open && !matris[row, column].validMove && !hasJumped)
+            if (TileIsValid(row + 1, column) && !matris[row, column].validMove && !hasJumped)
             {
                 validJumpList.Add(matris[row + 1, column]);
             }
             else
             {
-                if (matris[row + 2, column + 1].state == Tile.TileState.open &&
-                    matris[row + 1, column].state != Tile.TileState.open && !validJumpList.Contains(matris[row + 2, column + 1]))
+                if (TileIsValid(row + 2, column + 1) && matris[row + 1, column].state != Tile.TileState.open && !validJumpList.Contains(matris[row + 2, column + 1]))
                 {
                     validJumpList.Add(matris[row + 2, column + 1]);
                     CheckForValidMoves(matris[row + 2, column + 1].GetComponent<Tile>(), true);
@@ -73,14 +90,13 @@ public class BoardController : MonoBehaviour
     }
     public void EastMove(int row, int column, bool hasJumped)
     {
-        if (matris[row, column + 1].state == Tile.TileState.open &&!matris[row, column].validMove && !hasJumped)
+        if (TileIsValid(row, column + 1) && !matris[row, column].validMove && !hasJumped)
         {
             validJumpList.Add(matris[row, column + 1]);
         }
         else
         {
-            if (matris[row, column + 2].state == Tile.TileState.open &&
-                matris[row, column + 1].state != Tile.TileState.open && !validJumpList.Contains(matris[row, column + 2]))
+            if (TileIsValid(row, column + 2) && matris[row, column + 1].state != Tile.TileState.open && !validJumpList.Contains(matris[row, column + 2]))
             {
                 validJumpList.Add(matris[row, column + 2]);
                 CheckForValidMoves(matris[row, column + 2].GetComponent<Tile>(), true);
@@ -91,14 +107,13 @@ public class BoardController : MonoBehaviour
     {
         if (row % 2 == 0)
         {
-            if (matris[row - 1, column + 1].state == Tile.TileState.open && !matris[row, column].validMove && !hasJumped)
+            if (TileIsValid(row - 1, column + 1) && !matris[row, column].validMove && !hasJumped)
             {
                 validJumpList.Add(matris[row - 1, column + 1]);
             }
             else
             {
-                if (matris[row - 2, column + 1].state == Tile.TileState.open &&
-                    matris[row - 1, column + 1].state != Tile.TileState.open && !validJumpList.Contains(matris[row - 2, column + 1]))
+                if (TileIsValid(row - 2, column + 1) && matris[row - 1, column + 1].state != Tile.TileState.open && !validJumpList.Contains(matris[row - 2, column + 1]))
                 {
                     validJumpList.Add(matris[row - 2, column + 1]);
                     CheckForValidMoves(matris[row - 2, column + 1].GetComponent<Tile>(), true);
@@ -107,14 +122,13 @@ public class BoardController : MonoBehaviour
         }
         else
         {
-            if (matris[row - 1, column].state == Tile.TileState.open && !matris[row, column].validMove && !hasJumped)
+            if (TileIsValid(row - 1, column) && !matris[row, column].validMove && !hasJumped)
             {
                 validJumpList.Add(matris[row - 1, column]);
             }
             else
             {
-                if (matris[row - 2, column + 1].state == Tile.TileState.open &&
-                    matris[row - 1, column].state != Tile.TileState.open && !validJumpList.Contains(matris[row - 2, column + 1]))
+                if (TileIsValid(row - 2, column + 1) && matris[row - 1, column].state != Tile.TileState.open && !validJumpList.Contains(matris[row - 2, column + 1]))
                 {
                     validJumpList.Add(matris[row - 2, column + 1]);
                     CheckForValidMoves(matris[row - 2, column + 1].GetComponent<Tile>(), true);
@@ -126,14 +140,13 @@ public class BoardController : MonoBehaviour
     {
         if (row % 2 == 0)
         {
-            if (matris[row - 1, column].state == Tile.TileState.open && !matris[row, column].validMove && !hasJumped)
+            if (TileIsValid(row - 1, column) && !matris[row, column].validMove && !hasJumped)
             {
                 validJumpList.Add(matris[row - 1, column]);
             }
             else
             {
-                if (matris[row - 2, column - 1].state == Tile.TileState.open &&
-                    matris[row - 1, column].state != Tile.TileState.open && !validJumpList.Contains(matris[row - 2, column - 1]))
+                if (TileIsValid(row - 2, column - 1) && matris[row - 1, column].state != Tile.TileState.open && !validJumpList.Contains(matris[row - 2, column - 1]))
                 {
                     validJumpList.Add(matris[row - 2, column - 1]);
                     CheckForValidMoves(matris[row - 2, column - 1].GetComponent<Tile>(), true);
@@ -142,14 +155,13 @@ public class BoardController : MonoBehaviour
         }
         else
         {
-            if (matris[row - 1, column - 1].state == Tile.TileState.open && !matris[row, column].validMove && !hasJumped)
+            if (TileIsValid(row - 1, column - 1) && !matris[row, column].validMove && !hasJumped)
             {
                 validJumpList.Add(matris[row - 1, column - 1]);
             }
             else
             {
-                if (matris[row - 2, column - 1].state == Tile.TileState.open &&
-                    matris[row - 1, column - 1].state != Tile.TileState.open && !validJumpList.Contains(matris[row - 2, column - 1]))
+                if (TileIsValid(row - 2, column - 1) && matris[row - 1, column - 1].state != Tile.TileState.open && !validJumpList.Contains(matris[row - 2, column - 1]))
                 {
                     validJumpList.Add(matris[row - 2, column - 1]);
                     CheckForValidMoves(matris[row - 2, column - 1].GetComponent<Tile>(), true);
@@ -159,14 +171,13 @@ public class BoardController : MonoBehaviour
     }
     public void WestMove(int row, int column, bool hasJumped)
     {
-        if (matris[row, column - 1].state == Tile.TileState.open && !matris[row, column].validMove && !hasJumped)
+        if (TileIsValid(row, column - 1) && !matris[row, column].validMove && !hasJumped)
         {
             validJumpList.Add(matris[row, column - 1]);
         }
         else
         {
-            if (matris[row, column - 2].state == Tile.TileState.open &&
-                matris[row, column - 1].state != Tile.TileState.open && !validJumpList.Contains(matris[row, column - 2]))
+            if (TileIsValid(row, column - 2) && matris[row, column - 1].state != Tile.TileState.open && !validJumpList.Contains(matris[row, column - 2]))
             {
                 validJumpList.Add(matris[row, column - 2]);
                 CheckForValidMoves(matris[row, column - 2].GetComponent<Tile>(), true);
@@ -177,14 +188,13 @@ public class BoardController : MonoBehaviour
     {
         if (row % 2 == 0)
         {
-            if (matris[row + 1, column].state == Tile.TileState.open && !matris[row, column].validMove && !hasJumped)
+            if (TileIsValid(row + 1, column) && !matris[row, column].validMove && !hasJumped)
             {
                 validJumpList.Add(matris[row + 1, column]);
             }
             else
             {
-                if (matris[row + 2, column - 1].state == Tile.TileState.open &&
-                    matris[row + 1, column].state != Tile.TileState.open && !validJumpList.Contains(matris[row + 2, column - 1]))
+                if (TileIsValid(row + 2, column - 1) && matris[row + 1, column].state != Tile.TileState.open && !validJumpList.Contains(matris[row + 1, column - 1]))
                 {
                     validJumpList.Add(matris[row + 2, column - 1]);
                     CheckForValidMoves(matris[row + 2, column - 1].GetComponent<Tile>(), true);
@@ -193,14 +203,13 @@ public class BoardController : MonoBehaviour
         }
         else
         {
-            if (matris[row + 1, column - 1].state == Tile.TileState.open && !matris[row, column].validMove && !hasJumped)
+            if (TileIsValid(row + 1, column - 1) && !matris[row, column].validMove && !hasJumped)
             {
                 validJumpList.Add(matris[row + 1, column - 1]);
             }
             else
             {
-                if (matris[row + 2, column - 1].state == Tile.TileState.open &&
-                    matris[row + 1, column - 1].state != Tile.TileState.open && !validJumpList.Contains(matris[row + 2, column - 1]))
+                if (TileIsValid(row + 2, column - 1) && matris[row + 1, column - 1].state != Tile.TileState.open && !validJumpList.Contains(matris[row + 2, column - 1]))
                 {
                     validJumpList.Add(matris[row + 2, column - 1]);
                     CheckForValidMoves(matris[row + 2, column - 1].GetComponent<Tile>(), true);

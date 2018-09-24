@@ -47,7 +47,7 @@ public class Tile : MonoBehaviour {
 
         standardMaterial = GetComponent<Renderer>().material;
 
-        state = TileState.open;
+        //state = TileState.invalid;
 
 
         // old code
