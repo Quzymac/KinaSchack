@@ -16,10 +16,12 @@ public class BoardController : MonoBehaviour
     const int rows = 17;
     const int columns = 13;
 
+    public bool[] playerActive = new bool[6] { false, false, false, false, false, false };
+
+    int playerTurn;
+
     Tile[,] matris = new Tile[rows, columns];
-
-    [SerializeField] Material red;
-
+    
     List<Tile> validJumpList = new List<Tile>();
 
     public Tile[,] Matris
@@ -35,10 +37,9 @@ public class BoardController : MonoBehaviour
     {
         get { return columns; }
     }
+
     
-   // add returns to methods if possible
-
-
+    //add returns to methods if possible
     //Checks if move to a tile is possible
     public bool TileIsValid(int row, int column)
     {
@@ -51,8 +52,6 @@ public class BoardController : MonoBehaviour
             return true;
         }
     }
-
-
 
     public void NorthEastMove(int row, int column, bool hasJumped)
     {
@@ -218,8 +217,6 @@ public class BoardController : MonoBehaviour
         }
     }
 
-
-
     void CheckForValidMoves(Tile tile, bool jumped)
     {
         int row = tile.row;
@@ -242,7 +239,7 @@ public class BoardController : MonoBehaviour
     void ClickTile(Tile tileHit)
     {
         //pick up red ball if you're not already holding a ball
-        if (!HolingBall && tileHit.state == Tile.TileState.red)
+        if (!HolingBall && tileHit.state == (Tile.TileState)playerTurn + 2)
         {
             ballTile = tileHit;
 
@@ -255,19 +252,44 @@ public class BoardController : MonoBehaviour
             destinationTile = tileHit;
             ResetSelectedBall();
 
-            //set state of tiles
-            destinationTile.state = Tile.TileState.red;
-            ballTile.state = Tile.TileState.open;
-
-            //set color of tiles
-            ballTile.GetComponent<Renderer>().material = ballTile.standardMaterial;
-            destinationTile.GetComponent<Renderer>().material = red;
+            //set state and color of tiles
+            destinationTile.SetState(playerTurn + 2);
+            ballTile.SetState(1);
 
             //resets varibles
             if (ballTile != null)
             {
                 ballTile = null;
                 HolingBall = false;
+            }
+
+            //moves to next player
+            playerTurn++;
+            if (playerTurn == 6)
+            {
+                playerTurn = 0;
+            }
+            //if next player is inactive move to next
+            if (!playerActive[playerTurn])
+            {
+                playerTurn++;
+                if (playerTurn == 6)
+                {
+                    playerTurn = 0;
+                }
+                //if next player is also inactive move to next, 
+                if (!playerActive[playerTurn])
+                {
+                    playerTurn++;
+                    if (playerTurn == 6)
+                    {
+                        playerTurn = 0;
+                    }
+                }
+            }
+            if (playerTurn == 6)
+            {
+                playerTurn = 0;
             }
         }
     }
@@ -282,6 +304,7 @@ public class BoardController : MonoBehaviour
         validJumpList.Clear();
     }
 
+    //move with mouse clicks
     void Update()
     {
         if (Input.GetButtonDown("Fire1"))
@@ -328,8 +351,7 @@ public class BoardController : MonoBehaviour
                 {
                     if (hit.collider.gameObject.GetComponent<Tile>().state == Tile.TileState.open)
                     {
-                        hit.collider.gameObject.GetComponent<Tile>().state = Tile.TileState.red;
-                        hit.collider.gameObject.GetComponent<Renderer>().material = red;
+                        hit.collider.gameObject.GetComponent<Tile>().SetState(2);
 
                     }
                 }
