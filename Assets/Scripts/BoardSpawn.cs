@@ -29,9 +29,7 @@ public class BoardSpawn : MonoBehaviour {
                                       0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0,
                                     0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 
                                       0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0 };
-
     
-
     void Start ()
     {
         boardController = FindObjectOfType<BoardController>();
@@ -77,7 +75,7 @@ public class BoardSpawn : MonoBehaviour {
 
     void PlayerOneSpawn(bool twoPlayerGame)
     {
-        boardController.playerActive[0] = true;
+        boardController.playersActive[0] = true;
         boardController.Matris[0, 6].SetState(2);
         boardController.Matris[1, 6].SetState(2);
         boardController.Matris[1, 7].SetState(2);
@@ -101,7 +99,7 @@ public class BoardSpawn : MonoBehaviour {
     }
     void PlayerTwoSpawn()
     {
-        boardController.playerActive[1] = true;
+        boardController.playersActive[1] = true;
         boardController.Matris[4, 0].SetState(3);
         boardController.Matris[4, 1].SetState(3);
         boardController.Matris[4, 2].SetState(3);
@@ -115,7 +113,7 @@ public class BoardSpawn : MonoBehaviour {
     }
     void PlayerThreeSpawn()
     {
-        boardController.playerActive[2] = true;
+        boardController.playersActive[2] = true;
         boardController.Matris[9, 2].SetState(4);
         boardController.Matris[10, 2].SetState(4);
         boardController.Matris[10, 1].SetState(4);
@@ -129,7 +127,7 @@ public class BoardSpawn : MonoBehaviour {
     }
     void PlayerFourSpawn(bool twoPlayerGame)
     {
-        boardController.playerActive[3] = true;
+        boardController.playersActive[3] = true;
         boardController.Matris[16, 6].SetState(5);
         boardController.Matris[15, 6].SetState(5);
         boardController.Matris[15, 7].SetState(5);
@@ -152,7 +150,7 @@ public class BoardSpawn : MonoBehaviour {
     }
     void PlayerFiveSpawn()
     {
-        boardController.playerActive[4] = true;
+        boardController.playersActive[4] = true;
         boardController.Matris[9, 11].SetState(6);
         boardController.Matris[10, 10].SetState(6);
         boardController.Matris[10, 11].SetState(6);
@@ -166,7 +164,7 @@ public class BoardSpawn : MonoBehaviour {
     }
     void PlayerSixSpawn()
     {
-        boardController.playerActive[5] = true;
+        boardController.playersActive[5] = true;
         boardController.Matris[4, 12].SetState(7);
         boardController.Matris[4, 11].SetState(7);
         boardController.Matris[4, 10].SetState(7);

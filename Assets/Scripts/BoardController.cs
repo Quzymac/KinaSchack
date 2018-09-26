@@ -16,9 +16,9 @@ public class BoardController : MonoBehaviour
     const int rows = 17;
     const int columns = 13;
 
-    public bool[] playerActive = new bool[6] { false, false, false, false, false, false };
+    public bool[] playersActive = new bool[6] { false, false, false, false, false, false };
 
-    int playerTurn;
+    public int PlayerTurn { get; set; }
 
     Tile[,] matris = new Tile[rows, columns];
     
@@ -239,7 +239,7 @@ public class BoardController : MonoBehaviour
     void ClickTile(Tile tileHit)
     {
         //pick up red ball if you're not already holding a ball
-        if (!HolingBall && tileHit.state == (Tile.TileState)playerTurn + 2)
+        if (!HolingBall && tileHit.state == (Tile.TileState)PlayerTurn + 2)
         {
             ballTile = tileHit;
 
@@ -253,7 +253,7 @@ public class BoardController : MonoBehaviour
             ResetSelectedBall();
 
             //set state and color of tiles
-            destinationTile.SetState(playerTurn + 2);
+            destinationTile.SetState(PlayerTurn + 2);
             ballTile.SetState(1);
 
             //resets varibles
@@ -264,32 +264,32 @@ public class BoardController : MonoBehaviour
             }
 
             //moves to next player
-            playerTurn++;
-            if (playerTurn == 6)
+            PlayerTurn++;
+            if (PlayerTurn == 6)
             {
-                playerTurn = 0;
+                PlayerTurn = 0;
             }
             //if next player is inactive move to next
-            if (!playerActive[playerTurn])
+            if (!playersActive[PlayerTurn])
             {
-                playerTurn++;
-                if (playerTurn == 6)
+                PlayerTurn++;
+                if (PlayerTurn == 6)
                 {
-                    playerTurn = 0;
+                    PlayerTurn = 0;
                 }
                 //if next player is also inactive move to next, 
-                if (!playerActive[playerTurn])
+                if (!playersActive[PlayerTurn])
                 {
-                    playerTurn++;
-                    if (playerTurn == 6)
+                    PlayerTurn++;
+                    if (PlayerTurn == 6)
                     {
-                        playerTurn = 0;
+                        PlayerTurn = 0;
                     }
                 }
             }
-            if (playerTurn == 6)
+            if (PlayerTurn == 6)
             {
-                playerTurn = 0;
+                PlayerTurn = 0;
             }
         }
     }
@@ -352,7 +352,7 @@ public class BoardController : MonoBehaviour
                     if (hit.collider.gameObject.GetComponent<Tile>().state == Tile.TileState.open)
                     {
                         hit.collider.gameObject.GetComponent<Tile>().SetState(2);
-
+                        
                     }
                 }
             }
