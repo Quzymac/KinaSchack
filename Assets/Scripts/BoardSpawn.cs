@@ -87,6 +87,17 @@ public class BoardSpawn : MonoBehaviour {
         boardController.Matris[3, 7].SetState(2);
         boardController.Matris[3, 8].SetState(2);
 
+        boardController.PlayerOnePieces.Add(boardController.Matris[0, 6]);
+        boardController.PlayerOnePieces.Add(boardController.Matris[1, 6]);
+        boardController.PlayerOnePieces.Add(boardController.Matris[1, 7]);
+        boardController.PlayerOnePieces.Add(boardController.Matris[2, 5]);
+        boardController.PlayerOnePieces.Add(boardController.Matris[2, 6]);
+        boardController.PlayerOnePieces.Add(boardController.Matris[2, 7]);
+        boardController.PlayerOnePieces.Add(boardController.Matris[3, 5]);
+        boardController.PlayerOnePieces.Add(boardController.Matris[3, 6]);
+        boardController.PlayerOnePieces.Add(boardController.Matris[3, 7]);
+        boardController.PlayerOnePieces.Add(boardController.Matris[3, 8]);
+
         if (twoPlayerGame)
          {
              boardController.Matris[4, 4].SetState(2);
@@ -94,7 +105,13 @@ public class BoardSpawn : MonoBehaviour {
              boardController.Matris[4, 6].SetState(2);
              boardController.Matris[4, 7].SetState(2);
              boardController.Matris[4, 8].SetState(2);
-         }
+
+            boardController.PlayerOnePieces.Add(boardController.Matris[4, 4]);
+            boardController.PlayerOnePieces.Add(boardController.Matris[4, 5]);
+            boardController.PlayerOnePieces.Add(boardController.Matris[4, 6]);
+            boardController.PlayerOnePieces.Add(boardController.Matris[4, 7]);
+            boardController.PlayerOnePieces.Add(boardController.Matris[4, 8]);
+        }
 
     }
     void PlayerTwoSpawn()
@@ -139,14 +156,25 @@ public class BoardSpawn : MonoBehaviour {
         boardController.Matris[13, 7].SetState(5);
         boardController.Matris[13, 8].SetState(5);
 
+        boardController.PlayerFourPieces.Add(boardController.Matris[16, 6]);
+        boardController.PlayerFourPieces.Add(boardController.Matris[15, 6]);
+        boardController.PlayerFourPieces.Add(boardController.Matris[15, 7]);
+        boardController.PlayerFourPieces.Add(boardController.Matris[14, 5]);
+        boardController.PlayerFourPieces.Add(boardController.Matris[14, 6]);
+        boardController.PlayerFourPieces.Add(boardController.Matris[14, 7]);
+        boardController.PlayerFourPieces.Add(boardController.Matris[13, 5]);
+        boardController.PlayerFourPieces.Add(boardController.Matris[13, 6]);
+        boardController.PlayerFourPieces.Add(boardController.Matris[13, 7]);
+        boardController.PlayerFourPieces.Add(boardController.Matris[13, 8]);
+
         if (twoPlayerGame)
          {
-             boardController.Matris[12, 4].SetState(5);
-             boardController.Matris[12, 5].SetState(5);
-             boardController.Matris[12, 6].SetState(5);
-             boardController.Matris[12, 7].SetState(5);
-             boardController.Matris[12, 8].SetState(5);
-         }
+            boardController.PlayerFourPieces.Add(boardController.Matris[12, 4]);
+            boardController.PlayerFourPieces.Add(boardController.Matris[12, 5]);
+            boardController.PlayerFourPieces.Add(boardController.Matris[12, 6]);
+            boardController.PlayerFourPieces.Add(boardController.Matris[12, 7]);
+            boardController.PlayerFourPieces.Add(boardController.Matris[12, 8]);
+        }
     }
     void PlayerFiveSpawn()
     {
@@ -201,6 +229,10 @@ public class BoardSpawn : MonoBehaviour {
                     //tilldela tileobjektet värden för dess egen position i matrisen
                     newObj.GetComponent<Tile>().row = i;
                     newObj.GetComponent<Tile>().column = j;
+
+                    newObj.GetComponent<Tile>().Points = i; //------ test points for 1v1---------------------------------------------------
+
+
                     //lägg in på den positionen i matrisen
                     boardController.Matris[i, j] = newObj.GetComponent<Tile>();
                 }

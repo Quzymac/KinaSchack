@@ -17,6 +17,7 @@ public class Tile : MonoBehaviour {
     public int row { get; set; }
     public int column { get; set; }
 
+    public int Points { get; set; }
 
     //set in inspector, represents the same as Tilestate, invalid=highlighted
     public Material[] materials = new Material[8];

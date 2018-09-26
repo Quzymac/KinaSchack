@@ -24,6 +24,12 @@ public class BoardController : MonoBehaviour
     
     List<Tile> validJumpList = new List<Tile>();
 
+    List<Tile> playerOnePieces = new List<Tile>();
+    List<Tile> playerFourPieces = new List<Tile>();
+
+    public List<Tile> PlayerOnePieces { get { return playerOnePieces; } set { playerOnePieces = value; }  }
+    public List<Tile> PlayerFourPieces { get { return playerFourPieces; } set { playerFourPieces = value; } }
+
     public Tile[,] Matris
     {
         get { return matris; }
@@ -251,6 +257,8 @@ public class BoardController : MonoBehaviour
         {
             destinationTile = tileHit;
             ResetSelectedBall();
+
+
 
             //set state and color of tiles
             destinationTile.SetState(PlayerTurn + 2);
