@@ -30,10 +30,11 @@ public class BoardSpawn : MonoBehaviour {
                                     0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 
                                       0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0 };
     
+
+    
     void Start ()
     {
         boardController = FindObjectOfType<BoardController>();
-
         SpawnBoard();
         SpawnPlayers(numberOfPlayers);
         
@@ -72,10 +73,113 @@ public class BoardSpawn : MonoBehaviour {
         }
     }
 
+    public List<Tile> GetWinPositions(Player player, bool twoPlayers)
+    {
+        List<Tile> WinPositions = new List<Tile>();
+
+        switch (player.PlayerNumber)
+        {
+            case 2:
+                WinPositions.Add(boardController.Matris[16, 6]);
+                WinPositions.Add(boardController.Matris[15, 6]);
+                WinPositions.Add(boardController.Matris[15, 7]);
+                WinPositions.Add(boardController.Matris[14, 5]);
+                WinPositions.Add(boardController.Matris[14, 6]);
+                WinPositions.Add(boardController.Matris[14, 7]);
+                WinPositions.Add(boardController.Matris[13, 5]);
+                WinPositions.Add(boardController.Matris[13, 6]);
+                WinPositions.Add(boardController.Matris[13, 7]);
+                WinPositions.Add(boardController.Matris[13, 8]);
+                if (twoPlayers)
+                {
+                    WinPositions.Add(boardController.Matris[12, 4]);
+                    WinPositions.Add(boardController.Matris[12, 5]);
+                    WinPositions.Add(boardController.Matris[12, 6]);
+                    WinPositions.Add(boardController.Matris[12, 7]);
+                    WinPositions.Add(boardController.Matris[12, 8]);
+                }
+                return WinPositions;
+            case 3:
+                WinPositions.Add(boardController.Matris[9, 11]);
+                WinPositions.Add(boardController.Matris[10, 10]);
+                WinPositions.Add(boardController.Matris[10, 11]);
+                WinPositions.Add(boardController.Matris[11, 10]);
+                WinPositions.Add(boardController.Matris[11, 11]);
+                WinPositions.Add(boardController.Matris[11, 12]);
+                WinPositions.Add(boardController.Matris[12, 9]);
+                WinPositions.Add(boardController.Matris[12, 10]);
+                WinPositions.Add(boardController.Matris[12, 11]);
+                WinPositions.Add(boardController.Matris[12, 12]);
+                return WinPositions;
+            case 4:
+                WinPositions.Add(boardController.Matris[4, 12]);
+                WinPositions.Add(boardController.Matris[4, 11]);
+                WinPositions.Add(boardController.Matris[4, 10]);
+                WinPositions.Add(boardController.Matris[4, 9]);
+                WinPositions.Add(boardController.Matris[5, 12]);
+                WinPositions.Add(boardController.Matris[5, 11]);
+                WinPositions.Add(boardController.Matris[5, 10]);
+                WinPositions.Add(boardController.Matris[6, 11]);
+                WinPositions.Add(boardController.Matris[6, 10]);
+                WinPositions.Add(boardController.Matris[7, 11]);
+                return WinPositions;
+            case 5:
+                WinPositions.Add(boardController.Matris[0, 6]);
+                WinPositions.Add(boardController.Matris[1, 6]);
+                WinPositions.Add(boardController.Matris[1, 7]);
+                WinPositions.Add(boardController.Matris[2, 5]);
+                WinPositions.Add(boardController.Matris[2, 6]);
+                WinPositions.Add(boardController.Matris[2, 7]);
+                WinPositions.Add(boardController.Matris[3, 5]);
+                WinPositions.Add(boardController.Matris[3, 6]);
+                WinPositions.Add(boardController.Matris[3, 7]);
+                WinPositions.Add(boardController.Matris[3, 8]);
+                if (twoPlayers)
+                {
+                    WinPositions.Add(boardController.Matris[4, 4]);
+                    WinPositions.Add(boardController.Matris[4, 5]);
+                    WinPositions.Add(boardController.Matris[4, 6]);
+                    WinPositions.Add(boardController.Matris[4, 7]);
+                    WinPositions.Add(boardController.Matris[4, 8]);
+                }
+                return WinPositions;
+            case 6:
+                WinPositions.Add(boardController.Matris[4, 0]);
+                WinPositions.Add(boardController.Matris[4, 1]);
+                WinPositions.Add(boardController.Matris[4, 2]);
+                WinPositions.Add(boardController.Matris[4, 3]);
+                WinPositions.Add(boardController.Matris[5, 1]);
+                WinPositions.Add(boardController.Matris[5, 2]);
+                WinPositions.Add(boardController.Matris[5, 3]);
+                WinPositions.Add(boardController.Matris[6, 1]);
+                WinPositions.Add(boardController.Matris[6, 2]);
+                WinPositions.Add(boardController.Matris[7, 2]);
+                return WinPositions;
+            case 7:
+                WinPositions.Add(boardController.Matris[9, 2]);
+                WinPositions.Add(boardController.Matris[10, 2]);
+                WinPositions.Add(boardController.Matris[10, 1]);
+                WinPositions.Add(boardController.Matris[11, 3]);
+                WinPositions.Add(boardController.Matris[11, 2]);
+                WinPositions.Add(boardController.Matris[11, 1]);
+                WinPositions.Add(boardController.Matris[12, 3]);
+                WinPositions.Add(boardController.Matris[12, 2]);
+                WinPositions.Add(boardController.Matris[12, 1]);
+                WinPositions.Add(boardController.Matris[12, 0]);
+                return WinPositions;
+            default:
+                return null;
+        }
+    }
 
     void PlayerOneSpawn(bool twoPlayerGame)
     {
-        boardController.playersActive[0] = true;
+        Player player = Player.CreatePlayer(2);
+        boardController.playerList.Add(player);
+        player.WinPositions.AddRange(GetWinPositions(player, twoPlayerGame));
+
+        boardController.playerOneActive = true;
+
         boardController.Matris[0, 6].SetState(2);
         boardController.Matris[1, 6].SetState(2);
         boardController.Matris[1, 7].SetState(2);
@@ -87,36 +191,40 @@ public class BoardSpawn : MonoBehaviour {
         boardController.Matris[3, 7].SetState(2);
         boardController.Matris[3, 8].SetState(2);
 
-        boardController.PlayerOnePieces.Add(boardController.Matris[0, 6]);
-        boardController.PlayerOnePieces.Add(boardController.Matris[1, 6]);
-        boardController.PlayerOnePieces.Add(boardController.Matris[1, 7]);
-        boardController.PlayerOnePieces.Add(boardController.Matris[2, 5]);
-        boardController.PlayerOnePieces.Add(boardController.Matris[2, 6]);
-        boardController.PlayerOnePieces.Add(boardController.Matris[2, 7]);
-        boardController.PlayerOnePieces.Add(boardController.Matris[3, 5]);
-        boardController.PlayerOnePieces.Add(boardController.Matris[3, 6]);
-        boardController.PlayerOnePieces.Add(boardController.Matris[3, 7]);
-        boardController.PlayerOnePieces.Add(boardController.Matris[3, 8]);
+        player.PlayerPieces.Add(boardController.Matris[0, 6]);
+        player.PlayerPieces.Add(boardController.Matris[1, 6]);
+        player.PlayerPieces.Add(boardController.Matris[1, 7]);
+        player.PlayerPieces.Add(boardController.Matris[2, 5]);
+        player.PlayerPieces.Add(boardController.Matris[2, 6]);
+        player.PlayerPieces.Add(boardController.Matris[2, 7]);
+        player.PlayerPieces.Add(boardController.Matris[3, 5]);
+        player.PlayerPieces.Add(boardController.Matris[3, 6]);
+        player.PlayerPieces.Add(boardController.Matris[3, 7]);
+        player.PlayerPieces.Add(boardController.Matris[3, 8]);
 
         if (twoPlayerGame)
-         {
+            {
              boardController.Matris[4, 4].SetState(2);
              boardController.Matris[4, 5].SetState(2);
              boardController.Matris[4, 6].SetState(2);
              boardController.Matris[4, 7].SetState(2);
              boardController.Matris[4, 8].SetState(2);
 
-            boardController.PlayerOnePieces.Add(boardController.Matris[4, 4]);
-            boardController.PlayerOnePieces.Add(boardController.Matris[4, 5]);
-            boardController.PlayerOnePieces.Add(boardController.Matris[4, 6]);
-            boardController.PlayerOnePieces.Add(boardController.Matris[4, 7]);
-            boardController.PlayerOnePieces.Add(boardController.Matris[4, 8]);
-        }
+            player.PlayerPieces.Add(boardController.Matris[4, 4]);
+            player.PlayerPieces.Add(boardController.Matris[4, 5]);
+            player.PlayerPieces.Add(boardController.Matris[4, 6]);
+            player.PlayerPieces.Add(boardController.Matris[4, 7]);
+            player.PlayerPieces.Add(boardController.Matris[4, 8]);
+            }
 
-    }
+        }
     void PlayerTwoSpawn()
     {
-        boardController.playersActive[1] = true;
+        Player player = Player.CreatePlayer(3);
+        boardController.playerList.Add(player);
+        player.WinPositions.AddRange(GetWinPositions(player, false));
+
+        boardController.playerTwoActive = true;
         boardController.Matris[4, 0].SetState(3);
         boardController.Matris[4, 1].SetState(3);
         boardController.Matris[4, 2].SetState(3);
@@ -127,10 +235,26 @@ public class BoardSpawn : MonoBehaviour {
         boardController.Matris[6, 1].SetState(3);
         boardController.Matris[6, 2].SetState(3);
         boardController.Matris[7, 2].SetState(3);
+
+        player.PlayerPieces.Add(boardController.Matris[4, 0]);
+        player.PlayerPieces.Add(boardController.Matris[4, 1]);
+        player.PlayerPieces.Add(boardController.Matris[4, 2]);
+        player.PlayerPieces.Add(boardController.Matris[4, 3]);
+        player.PlayerPieces.Add(boardController.Matris[5, 1]);
+        player.PlayerPieces.Add(boardController.Matris[5, 2]);
+        player.PlayerPieces.Add(boardController.Matris[5, 3]);
+        player.PlayerPieces.Add(boardController.Matris[6, 1]);
+        player.PlayerPieces.Add(boardController.Matris[6, 2]);
+        player.PlayerPieces.Add(boardController.Matris[7, 2]);
+
     }
     void PlayerThreeSpawn()
     {
-        boardController.playersActive[2] = true;
+        Player player = Player.CreatePlayer(4);
+        boardController.playerList.Add(player);
+        player.WinPositions.AddRange(GetWinPositions(player, false));
+
+        boardController.playerThreeActive = true;
         boardController.Matris[9, 2].SetState(4);
         boardController.Matris[10, 2].SetState(4);
         boardController.Matris[10, 1].SetState(4);
@@ -141,10 +265,26 @@ public class BoardSpawn : MonoBehaviour {
         boardController.Matris[12, 2].SetState(4);
         boardController.Matris[12, 1].SetState(4);
         boardController.Matris[12, 0].SetState(4);
+
+        player.PlayerPieces.Add(boardController.Matris[9, 2]);
+        player.PlayerPieces.Add(boardController.Matris[10, 2]);
+        player.PlayerPieces.Add(boardController.Matris[10, 1]);
+        player.PlayerPieces.Add(boardController.Matris[11, 3]);
+        player.PlayerPieces.Add(boardController.Matris[11, 2]);
+        player.PlayerPieces.Add(boardController.Matris[11, 1]);
+        player.PlayerPieces.Add(boardController.Matris[12, 3]);
+        player.PlayerPieces.Add(boardController.Matris[12, 2]);
+        player.PlayerPieces.Add(boardController.Matris[12, 1]);
+        player.PlayerPieces.Add(boardController.Matris[12, 0]);
+
     }
     void PlayerFourSpawn(bool twoPlayerGame)
     {
-        boardController.playersActive[3] = true;
+        Player player = Player.CreatePlayer(5);
+        boardController.playerList.Add(player);
+        player.WinPositions.AddRange(GetWinPositions(player, twoPlayerGame));
+
+        boardController.playerFourActive = true;
         boardController.Matris[16, 6].SetState(5);
         boardController.Matris[15, 6].SetState(5);
         boardController.Matris[15, 7].SetState(5);
@@ -156,29 +296,40 @@ public class BoardSpawn : MonoBehaviour {
         boardController.Matris[13, 7].SetState(5);
         boardController.Matris[13, 8].SetState(5);
 
-        boardController.PlayerFourPieces.Add(boardController.Matris[16, 6]);
-        boardController.PlayerFourPieces.Add(boardController.Matris[15, 6]);
-        boardController.PlayerFourPieces.Add(boardController.Matris[15, 7]);
-        boardController.PlayerFourPieces.Add(boardController.Matris[14, 5]);
-        boardController.PlayerFourPieces.Add(boardController.Matris[14, 6]);
-        boardController.PlayerFourPieces.Add(boardController.Matris[14, 7]);
-        boardController.PlayerFourPieces.Add(boardController.Matris[13, 5]);
-        boardController.PlayerFourPieces.Add(boardController.Matris[13, 6]);
-        boardController.PlayerFourPieces.Add(boardController.Matris[13, 7]);
-        boardController.PlayerFourPieces.Add(boardController.Matris[13, 8]);
+        player.PlayerPieces.Add(boardController.Matris[16, 6]);
+        player.PlayerPieces.Add(boardController.Matris[15, 6]);
+        player.PlayerPieces.Add(boardController.Matris[15, 7]);
+        player.PlayerPieces.Add(boardController.Matris[14, 5]);
+        player.PlayerPieces.Add(boardController.Matris[14, 6]);
+        player.PlayerPieces.Add(boardController.Matris[14, 7]);
+        player.PlayerPieces.Add(boardController.Matris[13, 5]);
+        player.PlayerPieces.Add(boardController.Matris[13, 6]);
+        player.PlayerPieces.Add(boardController.Matris[13, 7]);
+        player.PlayerPieces.Add(boardController.Matris[13, 8]);
 
+        
         if (twoPlayerGame)
          {
-            boardController.PlayerFourPieces.Add(boardController.Matris[12, 4]);
-            boardController.PlayerFourPieces.Add(boardController.Matris[12, 5]);
-            boardController.PlayerFourPieces.Add(boardController.Matris[12, 6]);
-            boardController.PlayerFourPieces.Add(boardController.Matris[12, 7]);
-            boardController.PlayerFourPieces.Add(boardController.Matris[12, 8]);
+            boardController.Matris[12, 4].SetState(5);
+            boardController.Matris[12, 5].SetState(5);
+            boardController.Matris[12, 6].SetState(5);
+            boardController.Matris[12, 7].SetState(5);
+            boardController.Matris[12, 8].SetState(5);
+
+            player.PlayerPieces.Add(boardController.Matris[12, 4]);
+            player.PlayerPieces.Add(boardController.Matris[12, 5]);
+            player.PlayerPieces.Add(boardController.Matris[12, 6]);
+            player.PlayerPieces.Add(boardController.Matris[12, 7]);
+            player.PlayerPieces.Add(boardController.Matris[12, 8]);
         }
     }
     void PlayerFiveSpawn()
     {
-        boardController.playersActive[4] = true;
+        Player player = Player.CreatePlayer(6);
+        boardController.playerList.Add(player);
+        player.WinPositions.AddRange(GetWinPositions(player, false));
+
+        boardController.playerFiveActive = true;
         boardController.Matris[9, 11].SetState(6);
         boardController.Matris[10, 10].SetState(6);
         boardController.Matris[10, 11].SetState(6);
@@ -189,10 +340,26 @@ public class BoardSpawn : MonoBehaviour {
         boardController.Matris[12, 10].SetState(6);
         boardController.Matris[12, 11].SetState(6);
         boardController.Matris[12, 12].SetState(6);
+
+        player.PlayerPieces.Add(boardController.Matris[9, 11]);
+        player.PlayerPieces.Add(boardController.Matris[10, 10]);
+        player.PlayerPieces.Add(boardController.Matris[10, 11]);
+        player.PlayerPieces.Add(boardController.Matris[11, 10]);
+        player.PlayerPieces.Add(boardController.Matris[11, 11]);
+        player.PlayerPieces.Add(boardController.Matris[11, 12]);
+        player.PlayerPieces.Add(boardController.Matris[12, 9]);
+        player.PlayerPieces.Add(boardController.Matris[12, 10]);
+        player.PlayerPieces.Add(boardController.Matris[12, 11]);
+        player.PlayerPieces.Add(boardController.Matris[12, 12]);
+
     }
     void PlayerSixSpawn()
     {
-        boardController.playersActive[5] = true;
+        Player player = Player.CreatePlayer(7);
+        boardController.playerList.Add(player);
+        player.WinPositions.AddRange(GetWinPositions(player, false));
+
+        boardController.playerSixActive = true;
         boardController.Matris[4, 12].SetState(7);
         boardController.Matris[4, 11].SetState(7);
         boardController.Matris[4, 10].SetState(7);
@@ -203,6 +370,17 @@ public class BoardSpawn : MonoBehaviour {
         boardController.Matris[6, 11].SetState(7);
         boardController.Matris[6, 10].SetState(7);
         boardController.Matris[7, 11].SetState(7);
+
+        player.PlayerPieces.Add(boardController.Matris[4, 12]);
+        player.PlayerPieces.Add(boardController.Matris[4, 11]);
+        player.PlayerPieces.Add(boardController.Matris[4, 10]);
+        player.PlayerPieces.Add(boardController.Matris[4, 9]);
+        player.PlayerPieces.Add(boardController.Matris[5, 12]);
+        player.PlayerPieces.Add(boardController.Matris[5, 11]);
+        player.PlayerPieces.Add(boardController.Matris[5, 10]);
+        player.PlayerPieces.Add(boardController.Matris[6, 11]);
+        player.PlayerPieces.Add(boardController.Matris[6, 10]);
+        player.PlayerPieces.Add(boardController.Matris[7, 11]);
     }
 
     void SpawnBoard()

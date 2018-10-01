@@ -16,19 +16,20 @@ public class BoardController : MonoBehaviour
     const int rows = 17;
     const int columns = 13;
 
-    public bool[] playersActive = new bool[6] { false, false, false, false, false, false };
-
-    public int PlayerTurn { get; set; }
-
+    public bool playerOneActive { get; set; }
+    public bool playerTwoActive { get; set; }
+    public bool playerThreeActive { get; set; }
+    public bool playerFourActive { get; set; }
+    public bool playerFiveActive { get; set; }
+    public bool playerSixActive { get; set; }
+    
     Tile[,] matris = new Tile[rows, columns];
     
     List<Tile> validJumpList = new List<Tile>();
 
-    List<Tile> playerOnePieces = new List<Tile>();
-    List<Tile> playerFourPieces = new List<Tile>();
+    public List<Player> playerList = new List<Player>();
 
-    public List<Tile> PlayerOnePieces { get { return playerOnePieces; } set { playerOnePieces = value; }  }
-    public List<Tile> PlayerFourPieces { get { return playerFourPieces; } set { playerFourPieces = value; } }
+    public Player currentPlayer;
 
     public Tile[,] Matris
     {
@@ -44,8 +45,10 @@ public class BoardController : MonoBehaviour
         get { return columns; }
     }
 
-    
-    //add returns to methods if possible
+    void Start()
+    {
+        currentPlayer = playerList[0];
+    }
     //Checks if move to a tile is possible
     public bool TileIsValid(int row, int column)
     {
@@ -241,11 +244,18 @@ public class BoardController : MonoBehaviour
         }
 
     }
+   
+    void ChangeList(Tile previous, Tile next, int playerNum)
+    {
+        Player temp = playerList.Find(x => x.PlayerNumber == playerNum);
+        temp.PlayerPieces.Remove(previous);
+        temp.PlayerPieces.Add(next);
+    }
 
     void ClickTile(Tile tileHit)
     {
         //pick up red ball if you're not already holding a ball
-        if (!HolingBall && tileHit.state == (Tile.TileState)PlayerTurn + 2)
+        if (!HolingBall && tileHit.state == (Tile.TileState)currentPlayer.PlayerNumber)//(Tile.TileState)CurrentPlayer)
         {
             ballTile = tileHit;
 
@@ -256,13 +266,15 @@ public class BoardController : MonoBehaviour
         if (HolingBall && tileHit.state == Tile.TileState.open && tileHit.validMove)
         {
             destinationTile = tileHit;
+
             ResetSelectedBall();
 
-
-
             //set state and color of tiles
-            destinationTile.SetState(PlayerTurn + 2);
+            destinationTile.SetState(currentPlayer.PlayerNumber);
             ballTile.SetState(1);
+
+            //update list of player pieces
+            ChangeList(ballTile, destinationTile, currentPlayer.PlayerNumber);
 
             //resets varibles
             if (ballTile != null)
@@ -271,35 +283,31 @@ public class BoardController : MonoBehaviour
                 HolingBall = false;
             }
 
+            if (CheckWin(currentPlayer))
+            {
+                print((Tile.TileState)currentPlayer.PlayerNumber + " WIINS!");
+            }
+
             //moves to next player
-            PlayerTurn++;
-            if (PlayerTurn == 6)
+            int playerIndex = playerList.IndexOf(currentPlayer) + 1;
+            if(playerIndex >= playerList.Count)
             {
-                PlayerTurn = 0;
+                playerIndex = 0;
             }
-            //if next player is inactive move to next
-            if (!playersActive[PlayerTurn])
+            currentPlayer = playerList[playerIndex];
+        }
+    }
+    bool CheckWin(Player currentPlayer)
+    {
+        List<Tile> winPos = currentPlayer.WinPositions;
+        foreach (var tile in winPos)
+        {
+            if((int)tile.state != currentPlayer.PlayerNumber)
             {
-                PlayerTurn++;
-                if (PlayerTurn == 6)
-                {
-                    PlayerTurn = 0;
-                }
-                //if next player is also inactive move to next, 
-                if (!playersActive[PlayerTurn])
-                {
-                    PlayerTurn++;
-                    if (PlayerTurn == 6)
-                    {
-                        PlayerTurn = 0;
-                    }
-                }
-            }
-            if (PlayerTurn == 6)
-            {
-                PlayerTurn = 0;
+                return false;
             }
         }
+        return true;
     }
 
     //resets validJumpList list and highlighting

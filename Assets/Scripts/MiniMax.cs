@@ -5,14 +5,14 @@ using UnityEngine;
 
 namespace Minimax
 {
-    interface IState
+    public interface IState
     {
         int currentValue { get; set; }
         List<IState> Expand(IPlayer player, IPlayer otherPlayer);
         int Value(IPlayer player);
     }
 
-    interface IPlayer
+    public interface IPlayer
     {
 
     }

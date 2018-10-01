@@ -21,6 +21,8 @@ GameObject:
   - component: {fileID: 4909276111679568}
   - component: {fileID: 114058387042710064}
   - component: {fileID: 114978432200954806}
+  - component: {fileID: 114995951363707368}
+  - component: {fileID: 114400918987809960}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -53,6 +55,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 1374967823276372, guid: 85b74bc319bb77945a056f2cbd191231, type: 2}
+  numberOfPlayers: 6
+--- !u!114 &114400918987809960
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1961394228621028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98821d2fea94e544a98821c87e8c3c85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  winPositions: []
 --- !u!114 &114978432200954806
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -65,9 +80,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 0}
-  ballTile: {fileID: 0}
-  destinationTile: {fileID: 0}
   mask:
     serializedVersion: 2
     m_Bits: 1024
-  red: {fileID: 2100000, guid: e0552f90267d9f34ba1ea3bb3923caff, type: 2}
+  ballTile: {fileID: 0}
+  destinationTile: {fileID: 0}
+  playerList: []
+--- !u!114 &114995951363707368
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1961394228621028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a0a486e12499d246bc76ce1cf6be5c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
