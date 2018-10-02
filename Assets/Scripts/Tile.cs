@@ -22,7 +22,7 @@ public class Tile : MonoBehaviour {
     //set in inspector, represents the same as Tilestate, invalid=highlighted
     public Material[] materials = new Material[8];
     
-
+   
     public void SetState(int setState)
     {
         state = (TileState)setState;

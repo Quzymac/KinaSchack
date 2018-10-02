@@ -157,11 +157,6 @@ Prefab:
       propertyPath: cam
       value: 
       objectReference: {fileID: 1518369832}
-    - target: {fileID: 114058387042710064, guid: 3be6360d16582244b935a1c54e25f1dd,
-        type: 2}
-      propertyPath: numberOfPlayers
-      value: 3
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3be6360d16582244b935a1c54e25f1dd, type: 2}
   m_IsPrefabAsset: 0

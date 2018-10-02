@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Minimax;
 
 public class BoardController : MonoBehaviour
 {
@@ -31,6 +32,7 @@ public class BoardController : MonoBehaviour
 
     public Player currentPlayer;
 
+
     public Tile[,] Matris
     {
         get { return matris; }
@@ -49,6 +51,12 @@ public class BoardController : MonoBehaviour
     {
         currentPlayer = playerList[0];
     }
+
+    public List<Tile> GetValidMovesList()
+    {
+        return validJumpList;
+    }
+
     //Checks if move to a tile is possible
     public bool TileIsValid(int row, int column)
     {
@@ -226,7 +234,7 @@ public class BoardController : MonoBehaviour
         }
     }
 
-    void CheckForValidMoves(Tile tile, bool jumped)
+    public void CheckForValidMoves(Tile tile, bool jumped)
     {
         int row = tile.row;
         int column = tile.column;
@@ -255,7 +263,7 @@ public class BoardController : MonoBehaviour
     void ClickTile(Tile tileHit)
     {
         //pick up red ball if you're not already holding a ball
-        if (!HolingBall && tileHit.state == (Tile.TileState)currentPlayer.PlayerNumber)//(Tile.TileState)CurrentPlayer)
+        if (!HolingBall && tileHit.state == (Tile.TileState)currentPlayer.PlayerNumber)
         {
             ballTile = tileHit;
 
@@ -311,7 +319,7 @@ public class BoardController : MonoBehaviour
     }
 
     //resets validJumpList list and highlighting
-    void ResetSelectedBall()
+    public void ResetSelectedBall()
     {
         foreach (Tile jump in validJumpList)
         {
@@ -320,13 +328,32 @@ public class BoardController : MonoBehaviour
         validJumpList.Clear();
     }
 
+    //returns a copy of matris with enum state values
+    Tile.TileState[,] EnumMatris()
+    {
+        Tile.TileState[,] tempMatris = new Tile.TileState[rows, columns];
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; j++)
+            {
+                if(matris[i, j] != null)
+                {
+                    tempMatris[i, j] = matris[i, j].state;
+                }
+            }
+        }
+        return tempMatris;
+    }
+
     //move with mouse clicks
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            MiniMax.Select(new BoardClone(EnumMatris(), this), playerList[0], playerList[1], 2, true);
+        }
         if (Input.GetButtonDown("Fire1"))
         {
-            //Vector3 ray = cam.ScreenToWorldPoint(Input.mousePosition); //ger en position i världen(vector3) översätt detta till object på denna position, all information finns eftersom inget flyttar på sig.
-
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
             {
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity, mask))
