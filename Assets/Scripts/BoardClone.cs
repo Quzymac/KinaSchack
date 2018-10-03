@@ -11,6 +11,7 @@ public class BoardClone : IState
     BoardController boardController;
     
 
+
     public void BoardCreate()
     {
         board = new Tile.TileState[MAXROW, MAXCOL];
@@ -46,53 +47,62 @@ public class BoardClone : IState
 
     public List<IState> Expand(IPlayer player, IPlayer otherPlayer)  //Clones the board for the AI to use, one clone for each individual move the AI can make
     {
-        BoardCreate();
-        Debug.Log(board);
 
         List<IState> output = new List<IState>();
 
-        foreach(var piece in ((Player)player).PlayerPieces)
+        foreach (var piece in ((Player)player).PlayerPieces)
         {
             boardController.CheckForValidMoves(piece, false);
-            foreach(var validMove in boardController.GetValidMovesList())
+
+            foreach (var validMove in boardController.GetValidMovesList())
             {
-                BoardClone newBoard = new BoardClone((Tile.TileState[,])board.Clone(), boardController);
-
-                newBoard.SetTile(validMove.row, validMove.column, ((Player)player).PlayerNumber);
-                newBoard.SetTile(piece.row, piece.column, (int)Tile.TileState.open);
-
-                newBoard.SetValue(newBoard.Value(player));
-                output.Add(newBoard);
-            }
-            //boardController.ResetSelectedBall();
-
-        }
-        /*
-        for (int row = 0; row < MAXROW; row++)
-            for (int col = 0; col < MAXCOL; col++)
-            {
-                if (board[row, col] != Tile.TileState.invalid)
-                {
+                
                     BoardClone newBoard = new BoardClone((Tile.TileState[,])board.Clone(), boardController);
-                    newBoard.SetTile(row, col, ((Player)player).PlayerNumber);
+                    newBoard.SetTile(piece.row, piece.column, (int)Tile.TileState.open);
+                    newBoard.SetTile(validMove.row, validMove.column, ((Player)player).PlayerNumber);
+
                     newBoard.SetValue(newBoard.Value(player));
+                    
+                    //Debug.Log(newBoard.currentValue);
+
                     output.Add(newBoard);
-                }
-            }*/
+                
+            }
+            boardController.ResetSelectedBall();
+        }
         return (output);
     }
     public int Value(IPlayer player)
-    {       
+    {
         //return value for player
         if (Won(player))
         {
             return int.MaxValue;
         }
         int points = 0;
-        foreach (var playerPiece in ((Player)player).PlayerPieces)
+
+        List<Vector2Int> playerPieces = new List<Vector2Int>();
+        for (int i = 0; i < MAXROW; i++)
         {
-            points += playerPiece.Points;
+            for (int j = 0; j < MAXCOL; j++)
+            {
+                if ((int)board[i, j] == ((Player)player).PlayerNumber)
+                {
+
+                    playerPieces.Add(new Vector2Int(i,j));
+
+                }
+            }
         }
+
+        foreach (var piece in playerPieces)
+        {   
+
+            points += piece.x + piece.y * piece.y ;
+
+            //Debug.Log(piece.Points);
+        }
+        //Debug.Log(points);
         return points;
     }
     public bool Won(IPlayer player)

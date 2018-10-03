@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 114978432200954806}
   - component: {fileID: 114995951363707368}
   - component: {fileID: 114400918987809960}
+  - component: {fileID: 114423309897417678}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -55,7 +56,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 1374967823276372, guid: 85b74bc319bb77945a056f2cbd191231, type: 2}
-  numberOfPlayers: 2
+  numberOfPlayers: 3
 --- !u!114 &114400918987809960
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -70,6 +71,18 @@ MonoBehaviour:
   playerNumber: 0
   playerPieces: []
   winPositions: []
+--- !u!114 &114423309897417678
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1961394228621028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d24459636be5fad45b83bbc21b6cc07c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startGameMenu: {fileID: 0}
 --- !u!114 &114978432200954806
 MonoBehaviour:
   m_ObjectHideFlags: 1

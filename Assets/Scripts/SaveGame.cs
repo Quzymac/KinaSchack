@@ -33,7 +33,7 @@ public class SaveGame : MonoBehaviour {
 
 
 
-    void Save()
+    public void Save()
     {
 
         SaveFile saveFile = new SaveFile();
@@ -66,7 +66,7 @@ public class SaveGame : MonoBehaviour {
 
     }
 
-    void Load()
+    public void Load()
     {
         SaveFile loadFile;
         BinaryFormatter formatter = new BinaryFormatter();
@@ -100,7 +100,7 @@ public class SaveGame : MonoBehaviour {
                 }
             }
         }
-        boardController.currentPlayer.PlayerNumber = loadFile.playersTurn;
+        boardController.currentPlayer = boardController.playerList[0];
     }
 
     void MakePlayerLists(int playerNum, Tile tile)

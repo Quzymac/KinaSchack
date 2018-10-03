@@ -17,6 +17,8 @@ public class BoardController : MonoBehaviour
     const int rows = 17;
     const int columns = 13;
 
+    public bool paused { get; set; } = true;
+
     public bool playerOneActive { get; set; }
     public bool playerTwoActive { get; set; }
     public bool playerThreeActive { get; set; }
@@ -46,11 +48,7 @@ public class BoardController : MonoBehaviour
     {
         get { return columns; }
     }
-
-    void Start()
-    {
-        currentPlayer = playerList[0];
-    }
+    
 
     public List<Tile> GetValidMovesList()
     {
@@ -250,7 +248,6 @@ public class BoardController : MonoBehaviour
         {
             jump.MoveIsValid(true);
         }
-
     }
    
     void ChangeList(Tile previous, Tile next, int playerNum)
@@ -295,16 +292,23 @@ public class BoardController : MonoBehaviour
             {
                 print((Tile.TileState)currentPlayer.PlayerNumber + " WIINS!");
             }
+            NextPlayer();
+            PlayAI();
 
-            //moves to next player
-            int playerIndex = playerList.IndexOf(currentPlayer) + 1;
-            if(playerIndex >= playerList.Count)
-            {
-                playerIndex = 0;
-            }
-            currentPlayer = playerList[playerIndex];
         }
+    }        
+    
+    //moves to next player
+    void NextPlayer()
+    {
+        int playerIndex = playerList.IndexOf(currentPlayer) + 1;
+        if (playerIndex >= playerList.Count)
+        {
+            playerIndex = 0;
+        }
+        currentPlayer = playerList[playerIndex];
     }
+
     bool CheckWin(Player currentPlayer)
     {
         List<Tile> winPos = currentPlayer.WinPositions;
@@ -345,14 +349,45 @@ public class BoardController : MonoBehaviour
         return tempMatris;
     }
 
+    void PlayAI()
+    {
+        BoardClone newBoard = (BoardClone)MiniMax.Select(new BoardClone(EnumMatris(), this), playerList[1], playerList[0], 1, true);
+
+        Tile prev = null;
+        Tile nex = null;
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; j++)
+            {
+                if (matris[i, j] != null)
+                {
+                    if (matris[i, j].state != newBoard.board[i, j])
+                    {
+                        if(matris[i, j].state == Tile.TileState.open)
+                        {
+                            nex = matris[i, j];
+                        }
+                        if(matris[i, j].state == (Tile.TileState)playerList[1].PlayerNumber)
+                        {
+                            prev = matris[i, j];
+                        }
+                        matris[i, j].SetState((int)newBoard.board[i, j]);
+                    }
+                }
+            }
+        }
+        ChangeList(prev, nex, playerList[1].PlayerNumber);
+        NextPlayer();
+    }
+
     //move with mouse clicks
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            MiniMax.Select(new BoardClone(EnumMatris(), this), playerList[0], playerList[1], 2, true);
+            PlayAI();
         }
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1") && !paused)
         {
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
             {

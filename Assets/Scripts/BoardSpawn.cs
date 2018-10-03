@@ -36,28 +36,31 @@ public class BoardSpawn : MonoBehaviour {
     {
         boardController = FindObjectOfType<BoardController>();
         SpawnBoard();
-        SpawnPlayers(numberOfPlayers);
+        //SpawnPlayers(numberOfPlayers);
         
 	}
 
-    void SpawnPlayers(int numberOfplayers)
+    public void SpawnPlayers(int numberOfplayers)
     {
         switch (numberOfplayers)
         {
             case 2:
                 PlayerOneSpawn(true);
                 PlayerFourSpawn(true);
+                boardController.currentPlayer = boardController.playerList[0];
                 break;
             case 3:
                 PlayerOneSpawn(false);
                 PlayerThreeSpawn();
                 PlayerFiveSpawn();
+                boardController.currentPlayer = boardController.playerList[0];
                 break;
             case 4:
                 PlayerOneSpawn(false);
                 PlayerThreeSpawn();
                 PlayerFourSpawn(false);
                 PlayerSixSpawn();
+                boardController.currentPlayer = boardController.playerList[0];
                 break;
             case 6:
                 PlayerOneSpawn(false);
@@ -66,6 +69,7 @@ public class BoardSpawn : MonoBehaviour {
                 PlayerFourSpawn(false);
                 PlayerFiveSpawn();
                 PlayerSixSpawn();
+                boardController.currentPlayer = boardController.playerList[0];
                 break;
             default:
                 print("Number of players invalid");
@@ -389,6 +393,7 @@ public class BoardSpawn : MonoBehaviour {
 
         for (int i = 0; i < boardController.GetRows; i++)
         {
+            int colPointCount = 0;
             for (int j = 0; j < boardController.GetColumns; j++)
             {
                 if (gameBoard[counter] != 0)
@@ -408,10 +413,10 @@ public class BoardSpawn : MonoBehaviour {
                     newObj.GetComponent<Tile>().row = i;
                     newObj.GetComponent<Tile>().column = j;
 
-                    newObj.GetComponent<Tile>().Points = i; //------ test points for 1v1---------------------------------------------------
-
-
+                    newObj.GetComponent<Tile>().Points = i + j*j; //------ test points for 1v1---------------------------------------------------
+                    
                     //lägg in på den positionen i matrisen
+                    newObj.name = string.Format("Tile {0},{1}", i, j);
                     boardController.Matris[i, j] = newObj.GetComponent<Tile>();
                 }
                 counter++;

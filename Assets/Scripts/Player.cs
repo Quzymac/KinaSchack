@@ -21,5 +21,4 @@ public class Player : MonoBehaviour, IPlayer {
 
         return player;
     }
-
 }
