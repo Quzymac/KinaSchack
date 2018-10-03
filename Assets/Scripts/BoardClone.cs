@@ -33,9 +33,9 @@ public class BoardClone : IState
         boardController = bC;
     }
     
-    public void SetTile(int row, int col, int playerNumber)
+    public void SetTile(int row, int col, Tile.TileState state)
     {
-        board[row, col] = (Tile.TileState)playerNumber;
+        board[row, col] = state;
     }
 
     public void SetValue(int value)
@@ -52,14 +52,14 @@ public class BoardClone : IState
 
         foreach (var piece in ((Player)player).PlayerPieces)
         {
-            boardController.CheckForValidMoves(piece, false, board); // need to check on current newBoard
+            boardController.CheckForValidMoves(piece, false, board); // check on current board
 
             foreach (var validMove in boardController.GetValidMovesList())
             {
                 //clones the board for each possible move and then makes the move on the clone-board
                 BoardClone newBoard = new BoardClone((Tile.TileState[,])board.Clone(), boardController);
-                newBoard.SetTile(piece.row, piece.column, (int)Tile.TileState.open);
-                newBoard.SetTile(validMove.x, validMove.y, ((Player)player).PlayerNumber);
+                newBoard.SetTile(piece.row, piece.column, Tile.TileState.open);
+                newBoard.SetTile(validMove.x, validMove.y, (Tile.TileState)((Player)player).PlayerNumber);
 
                 output.Add(newBoard);
             }
@@ -68,7 +68,7 @@ public class BoardClone : IState
         return (output);
     }       
     
-    //return value for player, only for one AI right now, thinking about checking distance to win condition to set point for each position, WIP
+    //return value for player, only for one AI right now, thinking about checking vector2 distance to win condition to set point for each position, WIP
     public int Value(IPlayer player)
     {
         Player p = (Player)player;
@@ -78,21 +78,40 @@ public class BoardClone : IState
         }
         int points = 0;
 
-        List<Vector2Int> playerPieces = new List<Vector2Int>();
         for (int i = 0; i < MAXROW; i++)
         {
             for (int j = 0; j < MAXCOL; j++)
             {
                 if ((int)board[i, j] == p.PlayerNumber)
                 {
-                    playerPieces.Add(new Vector2Int(i,j));
+                    points -= (i * i);
+                    if (j <= 6)
+                    {
+                        points += j;
+                    }
+                    else
+                    {
+                        switch (j) // snabb fullösning för att slippa beräkningar
+                        {
+                            case 7:
+                                points += 5;
+                                break;
+                            case 8:
+                                points += 4;
+                                break;
+                            case 9:
+                                points += 3;
+                                break;
+                            case 10:
+                                points += 2;
+                                break;
+                            case 11:
+                                points += 1;
+                                break;
+                        }
+                    }
                 }
             }
-        }
-        points = 20;
-        foreach (var piece in playerPieces)
-        {   
-            points -= piece.x;
         }
         return points;
     }

@@ -349,10 +349,15 @@ public class BoardController : MonoBehaviour
         }
         return tempMatris;
     }
-    //only works for player vs one AI right now, wip
+
     void PlayAI()
     {
-        BoardClone newBoard = (BoardClone)MiniMax.Select(new BoardClone(EnumMatris(), this), playerList[1], playerList[0], 1, true);
+        //only you vs one AI right now, WIP
+        IPlayer player = playerList[1];
+        IPlayer otherPlayer = playerList[0];
+       
+
+        BoardClone newBoard = (BoardClone)MiniMax.Select(new BoardClone(EnumMatris(), this), player, otherPlayer, 1, true);
 
         Tile prev = null;
         Tile nex = null;
@@ -368,7 +373,7 @@ public class BoardController : MonoBehaviour
                         {
                             nex = matris[i, j];
                         }
-                        if(matris[i, j].state == (Tile.TileState)playerList[1].PlayerNumber)
+                        if(matris[i, j].state == (Tile.TileState)((Player)player).PlayerNumber)
                         {
                             prev = matris[i, j];
                         }
@@ -377,7 +382,7 @@ public class BoardController : MonoBehaviour
                 }
             }
         }
-        ChangeList(prev, nex, playerList[1].PlayerNumber);
+        ChangeList(prev, nex, ((Player)player).PlayerNumber);
         NextPlayer();
     }
 

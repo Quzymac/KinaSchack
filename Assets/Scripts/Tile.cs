@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour {
 
-
-    [SerializeField] BoardController boardController;
-
     [SerializeField] LayerMask ballMask;
 
     public bool validMove { get; set; }
@@ -43,10 +40,4 @@ public class Tile : MonoBehaviour {
             validMove = false;
         }
     }
-
-    void Start()
-    {
-        boardController = FindObjectOfType<BoardController>();
-    }
-    
 }

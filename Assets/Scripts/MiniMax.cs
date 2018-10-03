@@ -22,7 +22,7 @@ namespace Minimax
         public static IState Select(IState state, IPlayer player, IPlayer otherPlayer, int depth, bool maximising)
         {
             IState nextState = state;
-            state.currentValue = state.Value(player);
+            state.currentValue = state.Value(otherPlayer);//någonting har blivit bakvänt så value måste nu kallas på med otherPlayer
             if (depth == 0 || state.currentValue == Int32.MaxValue || state.currentValue == Int32.MinValue)
                 return (state);
 
