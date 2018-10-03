@@ -17,9 +17,6 @@ public class Tile : MonoBehaviour {
     public int row { get; set; }
     public int column { get; set; }
 
-    [SerializeField] int points;
-    public int Points { get { return points; } set { points = value; } }
-
     //set in inspector, represents the same as Tilestate, invalid=highlighted
     public Material[] materials = new Material[8];
     

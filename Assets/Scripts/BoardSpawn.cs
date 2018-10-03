@@ -104,6 +104,7 @@ public class BoardSpawn : MonoBehaviour {
                 }
                 return WinPositions;
             case 3:
+                WinPositions.Add(boardController.Matris[12, 12]);
                 WinPositions.Add(boardController.Matris[9, 11]);
                 WinPositions.Add(boardController.Matris[10, 10]);
                 WinPositions.Add(boardController.Matris[10, 11]);
@@ -113,7 +114,6 @@ public class BoardSpawn : MonoBehaviour {
                 WinPositions.Add(boardController.Matris[12, 9]);
                 WinPositions.Add(boardController.Matris[12, 10]);
                 WinPositions.Add(boardController.Matris[12, 11]);
-                WinPositions.Add(boardController.Matris[12, 12]);
                 return WinPositions;
             case 4:
                 WinPositions.Add(boardController.Matris[4, 12]);
@@ -160,6 +160,7 @@ public class BoardSpawn : MonoBehaviour {
                 WinPositions.Add(boardController.Matris[7, 2]);
                 return WinPositions;
             case 7:
+                WinPositions.Add(boardController.Matris[12, 0]);
                 WinPositions.Add(boardController.Matris[9, 2]);
                 WinPositions.Add(boardController.Matris[10, 2]);
                 WinPositions.Add(boardController.Matris[10, 1]);
@@ -169,7 +170,6 @@ public class BoardSpawn : MonoBehaviour {
                 WinPositions.Add(boardController.Matris[12, 3]);
                 WinPositions.Add(boardController.Matris[12, 2]);
                 WinPositions.Add(boardController.Matris[12, 1]);
-                WinPositions.Add(boardController.Matris[12, 0]);
                 return WinPositions;
             default:
                 return null;
@@ -393,12 +393,10 @@ public class BoardSpawn : MonoBehaviour {
 
         for (int i = 0; i < boardController.GetRows; i++)
         {
-            int colPointCount = 0;
             for (int j = 0; j < boardController.GetColumns; j++)
             {
                 if (gameBoard[counter] != 0)
                 {
-
                     if (i % 2 == 0)
                     {
                         newObj = Instantiate(tilePrefab, new Vector3(0.865f + j * 1.73f, 0, i * 1.5f), transform.rotation);
@@ -412,8 +410,6 @@ public class BoardSpawn : MonoBehaviour {
                     //tilldela tileobjektet värden för dess egen position i matrisen
                     newObj.GetComponent<Tile>().row = i;
                     newObj.GetComponent<Tile>().column = j;
-
-                    newObj.GetComponent<Tile>().Points = i + j*j; //------ test points for 1v1---------------------------------------------------
                     
                     //lägg in på den positionen i matrisen
                     newObj.name = string.Format("Tile {0},{1}", i, j);

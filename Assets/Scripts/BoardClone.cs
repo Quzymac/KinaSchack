@@ -52,29 +52,26 @@ public class BoardClone : IState
 
         foreach (var piece in ((Player)player).PlayerPieces)
         {
-            boardController.CheckForValidMoves(piece, false);
+            boardController.CheckForValidMoves(piece, false, board); // need to check on current newBoard
 
             foreach (var validMove in boardController.GetValidMovesList())
             {
-                
-                    BoardClone newBoard = new BoardClone((Tile.TileState[,])board.Clone(), boardController);
-                    newBoard.SetTile(piece.row, piece.column, (int)Tile.TileState.open);
-                    newBoard.SetTile(validMove.row, validMove.column, ((Player)player).PlayerNumber);
+                //clones the board for each possible move and then makes the move on the clone-board
+                BoardClone newBoard = new BoardClone((Tile.TileState[,])board.Clone(), boardController);
+                newBoard.SetTile(piece.row, piece.column, (int)Tile.TileState.open);
+                newBoard.SetTile(validMove.x, validMove.y, ((Player)player).PlayerNumber);
 
-                    newBoard.SetValue(newBoard.Value(player));
-                    
-                    //Debug.Log(newBoard.currentValue);
-
-                    output.Add(newBoard);
-                
+                output.Add(newBoard);
             }
             boardController.ResetSelectedBall();
         }
         return (output);
-    }
+    }       
+    
+    //return value for player, only for one AI right now, thinking about checking distance to win condition to set point for each position, WIP
     public int Value(IPlayer player)
     {
-        //return value for player
+        Player p = (Player)player;
         if (Won(player))
         {
             return int.MaxValue;
@@ -86,23 +83,17 @@ public class BoardClone : IState
         {
             for (int j = 0; j < MAXCOL; j++)
             {
-                if ((int)board[i, j] == ((Player)player).PlayerNumber)
+                if ((int)board[i, j] == p.PlayerNumber)
                 {
-
                     playerPieces.Add(new Vector2Int(i,j));
-
                 }
             }
         }
-
+        points = 20;
         foreach (var piece in playerPieces)
         {   
-
-            points += piece.x + piece.y * piece.y ;
-
-            //Debug.Log(piece.Points);
+            points -= piece.x;
         }
-        //Debug.Log(points);
         return points;
     }
     public bool Won(IPlayer player)
