@@ -8,6 +8,9 @@ public class UIManager : MonoBehaviour {
     [SerializeField] GameObject startGameMenu;
     BoardController boardController;
     BoardSpawn boardSpawn;
+    [SerializeField] GameObject winScreen;
+    [SerializeField] GameObject resumeButton;
+
 
     private void Start()
     {
@@ -19,11 +22,18 @@ public class UIManager : MonoBehaviour {
     {
         startGameMenu.SetActive(true);
         boardController.paused = true;
+        winScreen.SetActive(false);
     }
+    public void DisableResumeButton()
+    {
+        resumeButton.SetActive(false);
+    }
+
     public void CloseMenu()
     {
         startGameMenu.SetActive(false);
         boardController.paused = false;
+        resumeButton.SetActive(true);
     }
     public void ExitGame()
     {
@@ -35,7 +45,7 @@ public class UIManager : MonoBehaviour {
         ClearBoard();
         boardSpawn.SpawnPlayers(2);
         boardController.currentPlayer = boardController.playerList[0];
-        startGameMenu.SetActive(false);
+        CloseMenu();
         boardController.paused = false;
     }
     public void ThreePlayerGame()
@@ -43,7 +53,7 @@ public class UIManager : MonoBehaviour {
         ClearBoard();
         boardSpawn.SpawnPlayers(3);
         boardController.currentPlayer = boardController.playerList[0];
-        startGameMenu.SetActive(false);
+        CloseMenu();
         boardController.paused = false;
     }
     public void FourPlayerGame()
@@ -51,7 +61,7 @@ public class UIManager : MonoBehaviour {
         ClearBoard();
         boardSpawn.SpawnPlayers(4);
         boardController.currentPlayer = boardController.playerList[0];
-        startGameMenu.SetActive(false);
+        CloseMenu();
         boardController.paused = false;
     }
     public void SixPlayerGame()
@@ -59,7 +69,7 @@ public class UIManager : MonoBehaviour {
         ClearBoard();
         boardSpawn.SpawnPlayers(6);
         boardController.currentPlayer = boardController.playerList[0];
-        startGameMenu.SetActive(false);
+        CloseMenu();
         boardController.paused = false;
     }
 

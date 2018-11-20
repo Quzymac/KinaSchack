@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Minimax;
 
 public class BoardController : MonoBehaviour
@@ -9,6 +10,8 @@ public class BoardController : MonoBehaviour
     [SerializeField] Camera cam;
     RaycastHit hit;
     [SerializeField] LayerMask mask;
+
+    [SerializeField] GameObject winScreen;
 
     public bool HolingBall { get; set; }
     [SerializeField] Tile ballTile;
@@ -234,20 +237,23 @@ public class BoardController : MonoBehaviour
 
     public void CheckForValidMoves(Tile tile, bool jumped, Tile.TileState[,] board)
     {
-        int row = tile.row;
-        int column = tile.column;
-
-
-        NorthEastMove(row, column, jumped, board);
-        EastMove(row, column, jumped, board);
-        SouthEastMove(row, column, jumped, board);
-        SouthWestMove(row, column, jumped, board);
-        WestMove(row, column, jumped, board);
-        NorthWestMove(row, column, jumped, board);
-
-        foreach (Vector2Int jump in validJumpList)
+        if (tile != null) // prevents crash when you win
         {
-            matris[jump.x, jump.y].MoveIsValid(true);
+            int row = tile.row;
+            int column = tile.column;
+
+
+            NorthEastMove(row, column, jumped, board);
+            EastMove(row, column, jumped, board);
+            SouthEastMove(row, column, jumped, board);
+            SouthWestMove(row, column, jumped, board);
+            WestMove(row, column, jumped, board);
+            NorthWestMove(row, column, jumped, board);
+
+            foreach (Vector2Int jump in validJumpList)
+            {
+                matris[jump.x, jump.y].MoveIsValid(true);
+            }
         }
     }
    
@@ -288,26 +294,34 @@ public class BoardController : MonoBehaviour
                 ballTile = null;
                 HolingBall = false;
             }
-
-            if (CheckWin(currentPlayer))
-            {
-                print((Tile.TileState)currentPlayer.PlayerNumber + " WIINS!");
-            }
+            
             NextPlayer();
-            PlayAI();
-
         }
-    }        
-    
+    }
+
     //moves to next player
     void NextPlayer()
     {
-        int playerIndex = playerList.IndexOf(currentPlayer) + 1;
-        if (playerIndex >= playerList.Count)
+        if (CheckWin(currentPlayer))
         {
-            playerIndex = 0;
+            string winText = (Tile.TileState)currentPlayer.PlayerNumber + " wins!";
+            winScreen.GetComponentInChildren<Text>().text = winText.ToUpper();
+            winScreen.SetActive(true);
+            paused = true;
         }
-        currentPlayer = playerList[playerIndex];
+        else
+        {
+            int playerIndex = playerList.IndexOf(currentPlayer) + 1;
+            if (playerIndex >= playerList.Count)
+            {
+                playerIndex = 0;
+            }
+            currentPlayer = playerList[playerIndex];
+            if (playerIndex != 0)
+            {
+                PlayAI();
+            }
+        }
     }
 
     bool CheckWin(Player currentPlayer)
@@ -352,9 +366,24 @@ public class BoardController : MonoBehaviour
 
     void PlayAI()
     {
-        //only you vs one AI right now, WIP
-        IPlayer player = playerList[1];
-        IPlayer otherPlayer = playerList[0];
+        //WIP select players
+        int playerIndex = playerList.IndexOf(currentPlayer);
+        if (playerIndex >= playerList.Count)
+        {
+            playerIndex = 0;
+        }
+        IPlayer player = playerList[playerIndex];
+
+        int otherPlayerIndex = playerList.IndexOf(currentPlayer) - 1;
+
+        if (playerList.IndexOf(currentPlayer) - 1 < 0)
+        {
+            otherPlayerIndex = playerList.Count;
+        }
+        IPlayer otherPlayer = playerList[otherPlayerIndex];
+        
+
+        
        
 
         BoardClone newBoard = (BoardClone)MiniMax.Select(new BoardClone(EnumMatris(), this), player, otherPlayer, 1, true);
@@ -383,6 +412,7 @@ public class BoardController : MonoBehaviour
             }
         }
         ChangeList(prev, nex, ((Player)player).PlayerNumber);
+        
         NextPlayer();
     }
 
@@ -428,6 +458,10 @@ public class BoardController : MonoBehaviour
         //rightclick to spawn red ball --- for testing only
         if (Input.GetButtonDown("Fire2"))
         {
+            string winText = (Tile.TileState)currentPlayer.PlayerNumber + " wins!";
+            winScreen.GetComponentInChildren<Text>().text = winText.ToUpper();
+            winScreen.SetActive(true);
+            paused = true;
 
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
             {
