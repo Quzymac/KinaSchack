@@ -12,6 +12,9 @@ public class Player : MonoBehaviour, IPlayer {
     public List<Tile> PlayerPieces { get { return playerPieces; } set { playerPieces = value; } }
     [SerializeField] List<Tile> winPositions = new List<Tile>();
     public List<Tile> WinPositions { get { return winPositions; } set { winPositions = value; } }
+
+    [SerializeField] Vector2Int goalPos;
+    public Vector2Int GoalPos { get { return goalPos; } set { goalPos = value; } }
     
     public static Player CreatePlayer(int playerNum)
     {

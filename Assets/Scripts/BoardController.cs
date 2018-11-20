@@ -308,6 +308,8 @@ public class BoardController : MonoBehaviour
             winScreen.GetComponentInChildren<Text>().text = winText.ToUpper();
             winScreen.SetActive(true);
             paused = true;
+
+            print((Tile.TileState)currentPlayer.PlayerNumber + " WIINS!");
         }
         else
         {

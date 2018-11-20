@@ -782,7 +782,8 @@ Prefab:
       propertyPath: resumeButton
       value: 
       objectReference: {fileID: 888747612}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 114400918987809960, guid: 3be6360d16582244b935a1c54e25f1dd, type: 2}
   m_SourcePrefab: {fileID: 100100000, guid: 3be6360d16582244b935a1c54e25f1dd, type: 2}
   m_IsPrefabAsset: 0
 --- !u!1 &747576860

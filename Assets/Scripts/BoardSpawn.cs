@@ -181,6 +181,7 @@ public class BoardSpawn : MonoBehaviour {
         Player player = Player.CreatePlayer(2);
         boardController.playerList.Add(player);
         player.WinPositions.AddRange(GetWinPositions(player, twoPlayerGame));
+        player.GoalPos = new Vector2Int(16, 6);
 
         boardController.playerOneActive = true;
 
@@ -227,6 +228,7 @@ public class BoardSpawn : MonoBehaviour {
         Player player = Player.CreatePlayer(3);
         boardController.playerList.Add(player);
         player.WinPositions.AddRange(GetWinPositions(player, false));
+        player.GoalPos = new Vector2Int(12, 12);
 
         boardController.playerTwoActive = true;
         boardController.Matris[4, 0].SetState(3);
@@ -257,6 +259,7 @@ public class BoardSpawn : MonoBehaviour {
         Player player = Player.CreatePlayer(4);
         boardController.playerList.Add(player);
         player.WinPositions.AddRange(GetWinPositions(player, false));
+        player.GoalPos = new Vector2Int(4, 12);
 
         boardController.playerThreeActive = true;
         boardController.Matris[9, 2].SetState(4);
@@ -287,6 +290,7 @@ public class BoardSpawn : MonoBehaviour {
         Player player = Player.CreatePlayer(5);
         boardController.playerList.Add(player);
         player.WinPositions.AddRange(GetWinPositions(player, twoPlayerGame));
+        player.GoalPos = new Vector2Int(0, 6);
 
         boardController.playerFourActive = true;
         boardController.Matris[16, 6].SetState(5);
@@ -332,6 +336,7 @@ public class BoardSpawn : MonoBehaviour {
         Player player = Player.CreatePlayer(6);
         boardController.playerList.Add(player);
         player.WinPositions.AddRange(GetWinPositions(player, false));
+        player.GoalPos = new Vector2Int(4, 0);
 
         boardController.playerFiveActive = true;
         boardController.Matris[9, 11].SetState(6);
@@ -362,6 +367,7 @@ public class BoardSpawn : MonoBehaviour {
         Player player = Player.CreatePlayer(7);
         boardController.playerList.Add(player);
         player.WinPositions.AddRange(GetWinPositions(player, false));
+        player.GoalPos = new Vector2Int(12, 0);
 
         boardController.playerSixActive = true;
         boardController.Matris[4, 12].SetState(7);

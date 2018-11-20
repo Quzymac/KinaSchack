@@ -76,44 +76,63 @@ public class BoardClone : IState
         {
             return int.MaxValue;
         }
-        int points = 0;
 
-        for (int i = 0; i < MAXROW; i++)
+        //float points = 0;
+
+        //Vector2Int goalPos = new Vector2Int(p.WinPositions[0].row, p.WinPositions[0].column);
+        //Debug.Log(goalPos);
+        
+        //foreach (var piece in p.PlayerPieces)
+        //{
+        //    points -= Vector2Int.Distance(new Vector2Int(piece.row, piece.column), p.GoalPos);
+        //}
+        //int value = (int)(points * points);
+        ////Debug.Log(points);
+
+        int points = 0;
+        for (int i = 0; i < MAXROW; i++) 
         {
             for (int j = 0; j < MAXCOL; j++)
             {
                 if ((int)board[i, j] == p.PlayerNumber)
                 {
-                    points -= (i * i);
-                    if (j <= 6)
-                    {
-                        points += j;
-                    }
-                    else
-                    {
-                        switch (j) // snabb fullösning för att slippa beräkningar
-                        {
-                            case 7:
-                                points += 5;
-                                break;
-                            case 8:
-                                points += 4;
-                                break;
-                            case 9:
-                                points += 3;
-                                break;
-                            case 10:
-                                points += 2;
-                                break;
-                            case 11:
-                                points += 1;
-                                break;
-                        }
-                    }
+
+                    //fult men fungerar typ, fastnar när den nästan är inne ---------------------->
+                    float d = Vector2Int.Distance(new Vector2Int(p.WinPositions[0].row, p.WinPositions[0].column), new Vector2Int(i, j));
+                    points -= (int)(Mathf.Pow(d, 3));
+                    //if (j <= 6)
+                    //{
+                    //    points += j;
+                    //}
+                    //else
+                    //{
+                    //    switch (j) // snabb fullösning för att slippa beräkningar
+                    //    {
+                    //        case 7:
+                    //            points += 5;
+                    //            break;
+                    //        case 8:
+                    //            points += 4;
+                    //            break;
+                    //        case 9:
+                    //            points += 3;
+                    //            break;
+                    //        case 10:
+                    //            points += 2;
+                    //            break;
+                    //        case 11:
+                    //            points += 1;
+                    //            break;
+                    //    }
+                    //}
                 }
             }
         }
         return points;
+
+
+        //return value;
+
     }
     public bool Won(IPlayer player)
     {
