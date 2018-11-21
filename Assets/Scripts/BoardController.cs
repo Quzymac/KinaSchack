@@ -6,6 +6,7 @@ using Minimax;
 
 public class BoardController : MonoBehaviour
 {
+    [SerializeField] bool toggleAI = false;
 
     [SerializeField] Camera cam;
     RaycastHit hit;
@@ -298,7 +299,12 @@ public class BoardController : MonoBehaviour
             NextPlayer();
         }
     }
-
+    IEnumerator timer(float wait)
+    {
+        yield return new WaitForSeconds(wait);
+        NextPlayer();
+    }
+    public float speed = 0.1f;
     //moves to next player
     void NextPlayer()
     {
@@ -308,8 +314,6 @@ public class BoardController : MonoBehaviour
             winScreen.GetComponentInChildren<Text>().text = winText.ToUpper();
             winScreen.SetActive(true);
             paused = true;
-
-            print((Tile.TileState)currentPlayer.PlayerNumber + " WIINS!");
         }
         else
         {
@@ -323,11 +327,51 @@ public class BoardController : MonoBehaviour
             {
                 PlayAI();
             }
+            else //if(toggleAI)
+            {
+                ActivatePlayerAI();
+            }
         }
+    }
+
+    void ActivatePlayerAI()
+    {
+        IPlayer player = playerList[0];
+        IPlayer otherPlayer = playerList[1];
+
+        BoardClone newBoard = (BoardClone)MiniMax.Select(new BoardClone(EnumMatris(), this), player, otherPlayer, 1, true);
+
+        Tile prev = null;
+        Tile nex = null;
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; j++)
+            {
+                if (matris[i, j] != null)
+                {
+                    if (matris[i, j].state != newBoard.board[i, j])
+                    {
+                        if (matris[i, j].state == Tile.TileState.open)
+                        {
+                            nex = matris[i, j];
+                        }
+                        if (matris[i, j].state == (Tile.TileState)((Player)player).PlayerNumber)
+                        {
+                            prev = matris[i, j];
+                        }
+                        matris[i, j].SetState((int)newBoard.board[i, j]);
+                    }
+                }
+            }
+        }
+        ChangeList(prev, nex, ((Player)player).PlayerNumber);
+        StartCoroutine(timer(speed));
+        //NextPlayer();
     }
 
     bool CheckWin(Player currentPlayer)
     {
+        return false; //_________________________-------------------------------__---
         List<Tile> winPos = currentPlayer.WinPositions;
         foreach (var tile in winPos)
         {
@@ -414,8 +458,9 @@ public class BoardController : MonoBehaviour
             }
         }
         ChangeList(prev, nex, ((Player)player).PlayerNumber);
-        
-        NextPlayer();
+
+        StartCoroutine(timer(speed));
+        //NextPlayer();
     }
 
     //move with mouse clicks

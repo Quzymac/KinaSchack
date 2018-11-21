@@ -99,7 +99,9 @@ public class BoardClone : IState
 
                     //fult men fungerar typ, fastnar när den nästan är inne ---------------------->
                     float d = Vector2Int.Distance(new Vector2Int(p.WinPositions[0].row, p.WinPositions[0].column), new Vector2Int(i, j));
-                    points -= (int)(Mathf.Pow(d, 3));
+                    points -= (int)(Mathf.Pow(d, 3f));
+                    
+
                     //if (j <= 6)
                     //{
                     //    points += j;
