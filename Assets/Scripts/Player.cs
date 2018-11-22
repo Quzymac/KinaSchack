@@ -16,6 +16,38 @@ public class Player : MonoBehaviour, IPlayer {
     [SerializeField] Vector2Int goalPos;
     public Vector2Int GoalPos { get { return goalPos; } set { goalPos = value; } }
     
+    public void OnePieceLeft(Vector2Int lastOpenPos, Tile[,] board)
+    {
+        goalPos = lastOpenPos;
+        // PlayerPieces.Clear();
+        //PlayerPieces.Add(board[lastOpenPos.x, lastOpenPos.y]);
+        int ccc = 0;
+        foreach (var posi in WinPositions)
+        {
+            if((int)posi.state == playerNumber)
+            {
+                ccc++;
+            }
+        }
+        if (ccc == 1)
+        {
+
+            foreach (var piece in PlayerPieces)
+            {
+                foreach (var winPos in WinPositions)
+                {
+                    if (piece.row == winPos.row && piece.column == winPos.column)
+                    {
+                        //Tile last = piece;
+
+                        //PlayerPieces.Clear();
+                        //PlayerPieces.Add(last);
+                    }
+                }
+            }
+        }
+    }
+
     public static Player CreatePlayer(int playerNum)
     {
         Player player = new GameObject("Player").AddComponent<Player>();

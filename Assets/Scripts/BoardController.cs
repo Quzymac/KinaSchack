@@ -238,6 +238,7 @@ public class BoardController : MonoBehaviour
 
     public void CheckForValidMoves(Tile tile, bool jumped, Tile.TileState[,] board)
     {
+
         if (tile != null) // prevents crash when you win
         {
             int row = tile.row;
@@ -410,8 +411,47 @@ public class BoardController : MonoBehaviour
         return tempMatris;
     }
 
+    Vector2Int CheckIfOnePieceLeft()
+    {
+        List<Vector2Int> openPositions = new List<Vector2Int>();
+        foreach (var piece in currentPlayer.PlayerPieces)
+        {
+            foreach (var winPos in currentPlayer.WinPositions)
+            {
+                if(piece.row == winPos.row && piece.column == winPos.column)
+                {
+                    openPositions.Add(new Vector2Int(piece.row, piece.column));
+                }
+            }
+        }
+        if(aaaaaaaaaaa||openPositions.Count == currentPlayer.WinPositions.Count)
+        {
+            Debug.Log("count");
+
+            //foreach (var pos in currentPlayer.WinPositions)
+            //{
+            //    if(pos.state != (Tile.TileState)currentPlayer.PlayerNumber){
+            //        Debug.Log("pos.state");
+            //        return new Vector2Int(pos.row, pos.column);
+            //    }
+            //}
+           // return openPositions[0];
+        }
+        return new Vector2Int(0,0);
+    }
+    bool aaaaaaaaaaa = false;
+
     void PlayAI()
     {
+        //currentPlayer.OnePieceLeft(new Vector2Int(6,6) ,matris);
+        Vector2Int lastSpot = CheckIfOnePieceLeft();
+
+        Debug.Log(lastSpot);
+        if (lastSpot != new Vector2Int(0, 0))
+        {
+            currentPlayer.OnePieceLeft(new Vector2Int(6, 6), matris);//lastSpot, matris);
+        }
+
         //WIP select players
         int playerIndex = playerList.IndexOf(currentPlayer);
         if (playerIndex >= playerList.Count)
@@ -427,9 +467,6 @@ public class BoardController : MonoBehaviour
             otherPlayerIndex = playerList.Count;
         }
         IPlayer otherPlayer = playerList[otherPlayerIndex];
-        
-
-        
        
 
         BoardClone newBoard = (BoardClone)MiniMax.Select(new BoardClone(EnumMatris(), this), player, otherPlayer, 1, true);
@@ -468,7 +505,7 @@ public class BoardController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            PlayAI();
+            aaaaaaaaaaa = true;
         }
         if (Input.GetButtonDown("Fire1") && !paused)
         {

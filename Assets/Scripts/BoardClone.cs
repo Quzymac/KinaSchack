@@ -77,6 +77,7 @@ public class BoardClone : IState
             return int.MaxValue;
         }
 
+
         //float points = 0;
 
         //Vector2Int goalPos = new Vector2Int(p.WinPositions[0].row, p.WinPositions[0].column);
