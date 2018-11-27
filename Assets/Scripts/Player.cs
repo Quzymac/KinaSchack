@@ -15,10 +15,10 @@ public class Player : MonoBehaviour, IPlayer {
 
     [SerializeField] Vector2Int goalPos;
     public Vector2Int GoalPos { get { return goalPos; } set { goalPos = value; } }
-    
+    bool o = true;
     public void OnePieceLeft(Vector2Int lastOpenPos, Tile[,] board)
     {
-        goalPos = lastOpenPos;
+        //goalPos = lastOpenPos;
         // PlayerPieces.Clear();
         //PlayerPieces.Add(board[lastOpenPos.x, lastOpenPos.y]);
         int ccc = 0;
@@ -29,19 +29,26 @@ public class Player : MonoBehaviour, IPlayer {
                 ccc++;
             }
         }
-        if (ccc == 1)
+        if (ccc == PlayerPieces.Count -1)
         {
-
-            foreach (var piece in PlayerPieces)
+            if (o)
             {
-                foreach (var winPos in WinPositions)
+                Debug.Log("oneleft");
+                o = false;
+                foreach (var piece in PlayerPieces)
                 {
-                    if (piece.row == winPos.row && piece.column == winPos.column)
+                    foreach (var winPos in WinPositions)
                     {
-                        //Tile last = piece;
+                        if (!(piece.row == winPos.row && piece.column == winPos.column))
+                        {
+                            goalPos = new Vector2Int(winPos.row, winPos.column);
+                            Debug.Log(goalPos + " " + (Tile.TileState)playerNumber);
 
-                        //PlayerPieces.Clear();
-                        //PlayerPieces.Add(last);
+                            //Tile last = piece;
+
+                            //PlayerPieces.Clear();
+                            //PlayerPieces.Add(last);
+                        }
                     }
                 }
             }

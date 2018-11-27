@@ -11,7 +11,6 @@ public class BoardClone : IState
     BoardController boardController;
     
 
-
     public void BoardCreate()
     {
         board = new Tile.TileState[MAXROW, MAXCOL];
@@ -43,6 +42,30 @@ public class BoardClone : IState
         currentValue = value;
     }
 
+    public int GetTileState(int row, int col)
+    {
+        return (int)board[row, col];
+    }
+
+    bool SameBoard(BoardClone boardOne, BoardClone boardTwo)
+    {
+        if(boardOne == null || boardTwo == null)
+        {
+            return false;
+        }
+        for (int i = 0; i < MAXROW; i++)
+        {
+            for (int j = 0; j < MAXCOL; j++)
+            {
+                if(boardOne.GetTileState(i, j) != boardTwo.GetTileState(i, j))
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     public int currentValue { set; get; } = 0;
 
     public List<IState> Expand(IPlayer player, IPlayer otherPlayer)  //Clones the board for the AI to use, one clone for each individual move the AI can make
@@ -61,6 +84,29 @@ public class BoardClone : IState
                 newBoard.SetTile(piece.row, piece.column, Tile.TileState.open);
                 newBoard.SetTile(validMove.x, validMove.y, (Tile.TileState)((Player)player).PlayerNumber);
 
+                //bool alreadyUsed = false;
+                //foreach (BoardClone prevBoard in boardController.previousBoards)
+                //{
+                //    if(SameBoard(newBoard, prevBoard))
+                //    {
+                //        Debug.Log("tgvyhbjk");
+                //        alreadyUsed = true; 
+                //    }
+                //}
+                //if (!alreadyUsed)
+                //{
+                //    output.Add(newBoard);
+                //}
+
+                //if(!SameBoard(boardController.previous, newBoard))
+                //{
+                //    output.Add(newBoard);
+                //}
+
+                //if (!boardController.previousBoards.Contains(newBoard))
+                //{
+                //    output.Add(newBoard);
+                //}
                 output.Add(newBoard);
             }
             boardController.ResetSelectedBall();
@@ -102,32 +148,6 @@ public class BoardClone : IState
                     float d = Vector2Int.Distance(new Vector2Int(p.WinPositions[0].row, p.WinPositions[0].column), new Vector2Int(i, j));
                     points -= (int)(Mathf.Pow(d, 3f));
                     
-
-                    //if (j <= 6)
-                    //{
-                    //    points += j;
-                    //}
-                    //else
-                    //{
-                    //    switch (j) // snabb fullösning för att slippa beräkningar
-                    //    {
-                    //        case 7:
-                    //            points += 5;
-                    //            break;
-                    //        case 8:
-                    //            points += 4;
-                    //            break;
-                    //        case 9:
-                    //            points += 3;
-                    //            break;
-                    //        case 10:
-                    //            points += 2;
-                    //            break;
-                    //        case 11:
-                    //            points += 1;
-                    //            break;
-                    //    }
-                    //}
                 }
             }
         }

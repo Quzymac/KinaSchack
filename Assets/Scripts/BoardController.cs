@@ -38,6 +38,9 @@ public class BoardController : MonoBehaviour
 
     public Player currentPlayer;
 
+    public List<BoardClone> previousBoards = new List<BoardClone>();
+    public BoardClone previous;
+
 
     public Tile[,] Matris
     {
@@ -372,7 +375,7 @@ public class BoardController : MonoBehaviour
 
     bool CheckWin(Player currentPlayer)
     {
-        return false; //_________________________-------------------------------__---
+        //return false; //_________________________-------------------------------__---
         List<Tile> winPos = currentPlayer.WinPositions;
         foreach (var tile in winPos)
         {
@@ -443,14 +446,15 @@ public class BoardController : MonoBehaviour
 
     void PlayAI()
     {
+        //currentPlayer.OnePieceLeft(new Vector2Int(6, 6), matris);
         //currentPlayer.OnePieceLeft(new Vector2Int(6,6) ,matris);
-        Vector2Int lastSpot = CheckIfOnePieceLeft();
+        //Vector2Int lastSpot = CheckIfOnePieceLeft();
 
-        Debug.Log(lastSpot);
-        if (lastSpot != new Vector2Int(0, 0))
-        {
-            currentPlayer.OnePieceLeft(new Vector2Int(6, 6), matris);//lastSpot, matris);
-        }
+        //Debug.Log(lastSpot);
+        //if (lastSpot != new Vector2Int(0, 0))
+        //{
+        //    currentPlayer.OnePieceLeft(new Vector2Int(6, 6), matris);//lastSpot, matris);
+        //}
 
         //WIP select players
         int playerIndex = playerList.IndexOf(currentPlayer);
@@ -470,6 +474,8 @@ public class BoardController : MonoBehaviour
        
 
         BoardClone newBoard = (BoardClone)MiniMax.Select(new BoardClone(EnumMatris(), this), player, otherPlayer, 1, true);
+        previousBoards.Add(newBoard);
+        previous = newBoard;
 
         Tile prev = null;
         Tile nex = null;
@@ -500,9 +506,12 @@ public class BoardController : MonoBehaviour
         //NextPlayer();
     }
 
+    [SerializeField] int previusBoardCount;
+
     //move with mouse clicks
     void Update()
     {
+        previusBoardCount = previousBoards.Count;
         if (Input.GetKeyDown(KeyCode.Space))
         {
             aaaaaaaaaaa = true;
