@@ -384,7 +384,9 @@ public class BoardController : MonoBehaviour
                 return false;
             }
         }
-        return true;
+        print("win" + (Tile.TileState)currentPlayer.PlayerNumber);
+        return false;
+        //return true;
     }
 
     //resets validJumpList list and highlighting
@@ -427,7 +429,7 @@ public class BoardController : MonoBehaviour
                 }
             }
         }
-        if(aaaaaaaaaaa||openPositions.Count == currentPlayer.WinPositions.Count)
+        if(openPositions.Count == currentPlayer.WinPositions.Count)
         {
             Debug.Log("count");
 
@@ -442,7 +444,6 @@ public class BoardController : MonoBehaviour
         }
         return new Vector2Int(0,0);
     }
-    bool aaaaaaaaaaa = false;
 
     void PlayAI()
     {
@@ -471,12 +472,19 @@ public class BoardController : MonoBehaviour
             otherPlayerIndex = playerList.Count;
         }
         IPlayer otherPlayer = playerList[otherPlayerIndex];
-       
 
-        BoardClone newBoard = (BoardClone)MiniMax.Select(new BoardClone(EnumMatris(), this), player, otherPlayer, 1, true);
+
+
+        BoardClone newBoard = (BoardClone)MiniMax.Select(new BoardClone(EnumMatris(), this), player, otherPlayer, playerList[playerIndex].Depth, true);
         previousBoards.Add(newBoard);
         previous = newBoard;
 
+        if (newBoard.OneLeft(player))
+        {
+            playerList[playerIndex].Depth = 3;
+            playerList[playerIndex].OnePiece(newBoard);
+            print((Tile.TileState)playerList[playerIndex].PlayerNumber + "d");
+        }
         Tile prev = null;
         Tile nex = null;
         for (int i = 0; i < rows; i++)
@@ -505,17 +513,11 @@ public class BoardController : MonoBehaviour
         StartCoroutine(timer(speed));
         //NextPlayer();
     }
-
-    [SerializeField] int previusBoardCount;
-
+    
     //move with mouse clicks
     void Update()
     {
-        previusBoardCount = previousBoards.Count;
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            aaaaaaaaaaa = true;
-        }
+        
         if (Input.GetButtonDown("Fire1") && !paused)
         {
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);

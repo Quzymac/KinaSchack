@@ -47,19 +47,24 @@ public class BoardClone : IState
         return (int)board[row, col];
     }
 
-    bool SameBoard(BoardClone boardOne, BoardClone boardTwo)
+    bool SameBoard(BoardClone boardOne, BoardClone boardTwo, IPlayer player)
     {
         if(boardOne == null || boardTwo == null)
         {
             return false;
         }
+        
         for (int i = 0; i < MAXROW; i++)
         {
             for (int j = 0; j < MAXCOL; j++)
             {
-                if(boardOne.GetTileState(i, j) != boardTwo.GetTileState(i, j))
+                if(boardOne.GetTileState(i, j) == ((Player)player).PlayerNumber)// && != boardTwo.GetTileState(i, j))
                 {
-                    return false;
+                    if(boardTwo.GetTileState(i,j) != ((Player)player).PlayerNumber)
+                    {
+                        return false;
+
+                    }
                 }
             }
         }
@@ -84,37 +89,32 @@ public class BoardClone : IState
                 newBoard.SetTile(piece.row, piece.column, Tile.TileState.open);
                 newBoard.SetTile(validMove.x, validMove.y, (Tile.TileState)((Player)player).PlayerNumber);
 
-                //bool alreadyUsed = false;
                 //foreach (BoardClone prevBoard in boardController.previousBoards)
                 //{
-                //    if(SameBoard(newBoard, prevBoard))
+                //    if (!SameBoard(newBoard, prevBoard, player))
                 //    {
-                //        Debug.Log("tgvyhbjk");
-                //        alreadyUsed = true; 
+                //        output.Add(newBoard);
                 //    }
                 //}
-                //if (!alreadyUsed)
-                //{
-                //    output.Add(newBoard);
-                //}
+                if (boardController.previousBoards.Count > 20)
+                {
+                    for (int i = 1; i < 5; i++)
+                    {
 
-                //if(!SameBoard(boardController.previous, newBoard))
-                //{
-                //    output.Add(newBoard);
-                //}
-
-                //if (!boardController.previousBoards.Contains(newBoard))
-                //{
-                //    output.Add(newBoard);
-                //}
-                output.Add(newBoard);
+                        if (!SameBoard(newBoard, boardController.previousBoards[boardController.previousBoards.Count - i], player))
+                        {
+                            output.Add(newBoard);
+                        }
+                    }
+                }
+                
+                //output.Add(newBoard);
             }
             boardController.ResetSelectedBall();
         }
         return (output);
     }       
     
-    //return value for player, only for one AI right now, thinking about checking vector2 distance to win condition to set point for each position, WIP
     public int Value(IPlayer player)
     {
         Player p = (Player)player;
@@ -147,6 +147,15 @@ public class BoardClone : IState
                     //fult men fungerar typ, fastnar när den nästan är inne ---------------------->
                     float d = Vector2Int.Distance(new Vector2Int(p.WinPositions[0].row, p.WinPositions[0].column), new Vector2Int(i, j));
                     points -= (int)(Mathf.Pow(d, 3f));
+
+
+                    foreach (var pos in p.WinPositions)
+                    {
+                        if(i == pos.row && j == pos.column)
+                        {
+                            points += 10000;
+                        }
+                    }
                     
                 }
             }
@@ -165,6 +174,49 @@ public class BoardClone : IState
             if ((int)tile.state != ((Player)player).PlayerNumber)
             {
                 return false;
+            }
+        }
+        return true;
+    }
+    public bool OneLeft(IPlayer player)
+    {
+        int c = 0;
+        List<Tile> winPos = ((Player)player).WinPositions;
+        foreach (var tile in winPos)
+        {
+            if ((int)tile.state != ((Player)player).PlayerNumber)
+            {
+                c++;
+                if(c >= 2)
+                {
+                    //for (int i = 0; i < MAXROW; i++)
+                    //{
+                    //    for (int j = 0; j < MAXCOL; j++)
+                    //    {
+                    //        if((int)board[i,j] == ((Player)player).PlayerNumber)
+                    //        {
+                    //            bool inGoal = false;
+                    //            for (int x = 0; x < ((Player)player).WinPositions.Count; x++)
+                    //            {
+                    //                if (i == ((Player)player).WinPositions[x].row && j == ((Player)player).WinPositions[x].column)
+                    //                {
+                    //                    inGoal = true;
+                    //                }
+                    //            }
+                    //            if (!inGoal)
+                    //            {
+                    //                ((Player)player).PlayerPieces.Clear();
+                    //                ((Player)player).PlayerPieces.Add(boardController.Matris[i, j]);
+                                    
+                    //            }
+                    //        }
+            
+                    //    }
+                    //}
+
+                    //((Player)player).OnePiece(this);
+                    return false;
+                }
             }
         }
         return true;

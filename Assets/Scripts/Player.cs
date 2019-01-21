@@ -6,6 +6,8 @@ using Minimax;
 
 public class Player : MonoBehaviour, IPlayer {
 
+    int depth = 1;
+    public int Depth { get { return depth; } set { depth = value; } }
     [SerializeField] int playerNumber;
     public int PlayerNumber { get { return playerNumber; } set { playerNumber = value; } }
     [SerializeField] List<Tile> playerPieces = new List<Tile>();
@@ -16,6 +18,38 @@ public class Player : MonoBehaviour, IPlayer {
     [SerializeField] Vector2Int goalPos;
     public Vector2Int GoalPos { get { return goalPos; } set { goalPos = value; } }
     bool o = true;
+
+    public void OnePiece(BoardClone board)
+    {
+        bool fill = true;
+        for (int i = 0; i < 6; i++)
+        {
+            if(WinPositions[i].state == (Tile.TileState)PlayerNumber)
+            {
+                fill = false;
+            }
+        }
+        if (fill)
+        {
+            foreach (var piece in PlayerPieces)
+            {
+                bool inGoal = false;
+                for (int i = 0; i < WinPositions.Count; i++)
+                {
+                    if (piece.column == winPositions[i].column && piece.row == winPositions[i].row)
+                    {
+                        inGoal = true;
+                    }
+                }
+                if (!inGoal)
+                {
+                    Tile temp = piece;
+                    playerPieces.Clear();
+                    PlayerPieces.Add(temp);
+                }
+            }
+        }
+    }
     public void OnePieceLeft(Vector2Int lastOpenPos, Tile[,] board)
     {
         //goalPos = lastOpenPos;
