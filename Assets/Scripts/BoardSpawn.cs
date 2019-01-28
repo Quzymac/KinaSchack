@@ -8,6 +8,8 @@ public class BoardSpawn : MonoBehaviour {
     BoardController boardController;
 
     [SerializeField] GameObject tilePrefab;
+    [SerializeField] GameObject startGoalText;
+
     GameObject newObj;
 
     [SerializeField] int numberOfPlayers;
@@ -36,8 +38,7 @@ public class BoardSpawn : MonoBehaviour {
     {
         boardController = FindObjectOfType<BoardController>();
         SpawnBoard();
-        //SpawnPlayers(numberOfPlayers);
-        
+        startGoalText.SetActive(true);
 	}
 
     public void SpawnPlayers(int numberOfplayers)

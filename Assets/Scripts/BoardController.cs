@@ -6,7 +6,8 @@ using Minimax;
 
 public class BoardController : MonoBehaviour
 {
-    [SerializeField] bool toggleAI = false;
+    [SerializeField] bool togglePlayerAI = false;
+    public float speed = 0.1f;
 
     [SerializeField] Camera cam;
     RaycastHit hit;
@@ -265,6 +266,7 @@ public class BoardController : MonoBehaviour
     void ChangeList(Tile previous, Tile next, int playerNum)
     {
         Player temp = playerList.Find(x => x.PlayerNumber == playerNum);
+
         temp.PlayerPieces.Remove(previous);
         temp.PlayerPieces.Add(next);
     }
@@ -308,7 +310,7 @@ public class BoardController : MonoBehaviour
         yield return new WaitForSeconds(wait);
         NextPlayer();
     }
-    public float speed = 0.1f;
+    
     //moves to next player
     void NextPlayer()
     {
@@ -327,11 +329,12 @@ public class BoardController : MonoBehaviour
                 playerIndex = 0;
             }
             currentPlayer = playerList[playerIndex];
+
             if (playerIndex != 0)
             {
                 PlayAI();
             }
-            else //if(toggleAI)
+            else if(togglePlayerAI) //AI plays for player, for testing
             {
                 ActivatePlayerAI();
             }
@@ -368,14 +371,16 @@ public class BoardController : MonoBehaviour
                 }
             }
         }
-        ChangeList(prev, nex, ((Player)player).PlayerNumber);
+        if (prev != null && nex != null)
+        {
+            ChangeList(prev, nex, ((Player)player).PlayerNumber);
+
+        }
         StartCoroutine(timer(speed));
-        //NextPlayer();
     }
 
     bool CheckWin(Player currentPlayer)
     {
-        //return false; //_________________________-------------------------------__---
         List<Tile> winPos = currentPlayer.WinPositions;
         foreach (var tile in winPos)
         {
@@ -384,9 +389,7 @@ public class BoardController : MonoBehaviour
                 return false;
             }
         }
-        print("win" + (Tile.TileState)currentPlayer.PlayerNumber);
-        return false;
-        //return true;
+        return true;
     }
 
     //resets validJumpList list and highlighting
@@ -416,48 +419,8 @@ public class BoardController : MonoBehaviour
         return tempMatris;
     }
 
-    Vector2Int CheckIfOnePieceLeft()
-    {
-        List<Vector2Int> openPositions = new List<Vector2Int>();
-        foreach (var piece in currentPlayer.PlayerPieces)
-        {
-            foreach (var winPos in currentPlayer.WinPositions)
-            {
-                if(piece.row == winPos.row && piece.column == winPos.column)
-                {
-                    openPositions.Add(new Vector2Int(piece.row, piece.column));
-                }
-            }
-        }
-        if(openPositions.Count == currentPlayer.WinPositions.Count)
-        {
-            Debug.Log("count");
-
-            //foreach (var pos in currentPlayer.WinPositions)
-            //{
-            //    if(pos.state != (Tile.TileState)currentPlayer.PlayerNumber){
-            //        Debug.Log("pos.state");
-            //        return new Vector2Int(pos.row, pos.column);
-            //    }
-            //}
-           // return openPositions[0];
-        }
-        return new Vector2Int(0,0);
-    }
-
     void PlayAI()
     {
-        //currentPlayer.OnePieceLeft(new Vector2Int(6, 6), matris);
-        //currentPlayer.OnePieceLeft(new Vector2Int(6,6) ,matris);
-        //Vector2Int lastSpot = CheckIfOnePieceLeft();
-
-        //Debug.Log(lastSpot);
-        //if (lastSpot != new Vector2Int(0, 0))
-        //{
-        //    currentPlayer.OnePieceLeft(new Vector2Int(6, 6), matris);//lastSpot, matris);
-        //}
-
-        //WIP select players
         int playerIndex = playerList.IndexOf(currentPlayer);
         if (playerIndex >= playerList.Count)
         {
@@ -474,16 +437,13 @@ public class BoardController : MonoBehaviour
         IPlayer otherPlayer = playerList[otherPlayerIndex];
 
 
-
         BoardClone newBoard = (BoardClone)MiniMax.Select(new BoardClone(EnumMatris(), this), player, otherPlayer, playerList[playerIndex].Depth, true);
         previousBoards.Add(newBoard);
         previous = newBoard;
 
         if (newBoard.OneLeft(player))
         {
-            playerList[playerIndex].Depth = 3;
             playerList[playerIndex].OnePiece(newBoard);
-            print((Tile.TileState)playerList[playerIndex].PlayerNumber + "d");
         }
         Tile prev = null;
         Tile nex = null;
@@ -495,11 +455,11 @@ public class BoardController : MonoBehaviour
                 {
                     if (matris[i, j].state != newBoard.board[i, j])
                     {
-                        if(matris[i, j].state == Tile.TileState.open)
+                        if (matris[i, j].state == Tile.TileState.open)
                         {
                             nex = matris[i, j];
                         }
-                        if(matris[i, j].state == (Tile.TileState)((Player)player).PlayerNumber)
+                        if (matris[i, j].state == (Tile.TileState)((Player)player).PlayerNumber)
                         {
                             prev = matris[i, j];
                         }
@@ -508,10 +468,11 @@ public class BoardController : MonoBehaviour
                 }
             }
         }
-        ChangeList(prev, nex, ((Player)player).PlayerNumber);
-
+        if (prev != null && nex != null)
+        {
+            ChangeList(prev, nex, ((Player)player).PlayerNumber);
+        }
         StartCoroutine(timer(speed));
-        //NextPlayer();
     }
     
     //move with mouse clicks
@@ -550,26 +511,5 @@ public class BoardController : MonoBehaviour
                 }
             }
         }
-        //rightclick to spawn red ball --- for testing only
-        if (Input.GetButtonDown("Fire2"))
-        {
-            string winText = (Tile.TileState)currentPlayer.PlayerNumber + " wins!";
-            winScreen.GetComponentInChildren<Text>().text = winText.ToUpper();
-            winScreen.SetActive(true);
-            paused = true;
-
-            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-            {
-                if (Physics.Raycast(ray, out hit, Mathf.Infinity, mask))
-                {
-                    if (hit.collider.gameObject.GetComponent<Tile>().state == Tile.TileState.open)
-                    {
-                        hit.collider.gameObject.GetComponent<Tile>().SetState(2);
-                        
-                    }
-                }
-            }
-        }
     }
-
 }

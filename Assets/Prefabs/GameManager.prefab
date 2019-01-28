@@ -22,7 +22,6 @@ GameObject:
   - component: {fileID: 114058387042710064}
   - component: {fileID: 114978432200954806}
   - component: {fileID: 114995951363707368}
-  - component: {fileID: 114400918987809960}
   - component: {fileID: 114423309897417678}
   m_Layer: 0
   m_Name: GameManager
@@ -56,21 +55,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 1374967823276372, guid: 85b74bc319bb77945a056f2cbd191231, type: 2}
+  startGoalText: {fileID: 0}
   numberOfPlayers: 3
---- !u!114 &114400918987809960
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1961394228621028}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98821d2fea94e544a98821c87e8c3c85, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerNumber: 0
-  playerPieces: []
-  winPositions: []
 --- !u!114 &114423309897417678
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -83,6 +69,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startGameMenu: {fileID: 0}
+  winScreen: {fileID: 0}
+  resumeButton: {fileID: 0}
 --- !u!114 &114978432200954806
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -94,14 +82,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdb84c295b08f3145a071173ca6fbe59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  toggleAI: 0
   cam: {fileID: 0}
   mask:
     serializedVersion: 2
     m_Bits: 1024
+  winScreen: {fileID: 0}
   ballTile: {fileID: 0}
   destinationTile: {fileID: 0}
   playerList: []
   currentPlayer: {fileID: 0}
+  speed: 0.00001
 --- !u!114 &114995951363707368
 MonoBehaviour:
   m_ObjectHideFlags: 1

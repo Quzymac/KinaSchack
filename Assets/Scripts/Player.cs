@@ -17,7 +17,6 @@ public class Player : MonoBehaviour, IPlayer {
 
     [SerializeField] Vector2Int goalPos;
     public Vector2Int GoalPos { get { return goalPos; } set { goalPos = value; } }
-    bool o = true;
 
     public void OnePiece(BoardClone board)
     {
@@ -29,61 +28,21 @@ public class Player : MonoBehaviour, IPlayer {
                 fill = false;
             }
         }
-        if (fill)
+        if (!fill)
         {
-            foreach (var piece in PlayerPieces)
+            foreach (var piece in WinPositions)
             {
                 bool inGoal = false;
-                for (int i = 0; i < WinPositions.Count; i++)
+                for (int i = 0; i < PlayerPieces.Count; i++)
                 {
-                    if (piece.column == winPositions[i].column && piece.row == winPositions[i].row)
+                    if (piece.column == PlayerPieces[i].column && piece.row == PlayerPieces[i].row)
                     {
                         inGoal = true;
                     }
                 }
                 if (!inGoal)
                 {
-                    Tile temp = piece;
-                    playerPieces.Clear();
-                    PlayerPieces.Add(temp);
-                }
-            }
-        }
-    }
-    public void OnePieceLeft(Vector2Int lastOpenPos, Tile[,] board)
-    {
-        //goalPos = lastOpenPos;
-        // PlayerPieces.Clear();
-        //PlayerPieces.Add(board[lastOpenPos.x, lastOpenPos.y]);
-        int ccc = 0;
-        foreach (var posi in WinPositions)
-        {
-            if((int)posi.state == playerNumber)
-            {
-                ccc++;
-            }
-        }
-        if (ccc == PlayerPieces.Count -1)
-        {
-            if (o)
-            {
-                Debug.Log("oneleft");
-                o = false;
-                foreach (var piece in PlayerPieces)
-                {
-                    foreach (var winPos in WinPositions)
-                    {
-                        if (!(piece.row == winPos.row && piece.column == winPos.column))
-                        {
-                            goalPos = new Vector2Int(winPos.row, winPos.column);
-                            Debug.Log(goalPos + " " + (Tile.TileState)playerNumber);
-
-                            //Tile last = piece;
-
-                            //PlayerPieces.Clear();
-                            //PlayerPieces.Add(last);
-                        }
-                    }
+                    GoalPos = new Vector2Int(piece.row, piece.column);
                 }
             }
         }
